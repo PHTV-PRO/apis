@@ -42,6 +42,8 @@ public class Company extends BaseModel{
     private String logo_image;
     @Column(name = "background_image")
     private String background_image;
+    @Column(name = "enable")
+    private Integer enable;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<ImageCompany> imageCompany;

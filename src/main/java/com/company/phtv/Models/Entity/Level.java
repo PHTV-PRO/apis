@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "location")
-public class Location {
+@Table(name = "level")
+public class Level extends BaseModel{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,6 @@ public class Location {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id")
-    private Company company;
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    private List<Jobs> jobs;
+    @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
+    private List<LevelJob> levelJobs;
 }

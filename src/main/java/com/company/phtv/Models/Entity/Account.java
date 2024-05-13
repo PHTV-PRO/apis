@@ -50,6 +50,9 @@ public class Account extends BaseModel implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Application> applications;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<FollowJob> followJobs;
+
     @OneToOne(mappedBy = "account")
     private Company company;
 

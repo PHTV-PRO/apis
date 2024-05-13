@@ -53,7 +53,21 @@ public class Jobs extends BaseModel{
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_type_id")
+    private JobType jobType;
+
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
     private List<Application> applications;
+
+    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
+    private List<LevelJob> levelJobs;
+
+    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
+    private List<FollowJob> followJobs;
 
 }

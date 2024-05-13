@@ -6,26 +6,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "location")
-public class Location {
+@Table(name = "level_job")
+public class LevelJob extends BaseModel{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name",nullable = false)
-    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id")
-    private Company company;
+    @JoinColumn(name = "level_id")
+    private Level level;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    private List<Jobs> jobs;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id")
+    private Jobs jobs;
 }
