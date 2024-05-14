@@ -8,21 +8,20 @@ import lombok.Setter;
 
 import java.util.Date;
 
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subcription_plan_company")
-public class SubcriptionPlanCompany extends BaseModel{
+public class SubcriptionPlanCompany extends BaseModel {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "start_date",nullable = false)
+    @Column(name = "start_date", nullable = false)
     private Date start_date;
-    @Column(name = "end_date",nullable = false)
+    @Column(name = "end_date", nullable = false)
     private Date end_date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

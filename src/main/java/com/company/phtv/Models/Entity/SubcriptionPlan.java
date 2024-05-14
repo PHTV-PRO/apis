@@ -9,21 +9,20 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "subscription_plan")
-public class SubcriptionPlan extends BaseModel{
+public class SubcriptionPlan extends BaseModel {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private Date name;
-    @Column(name = "price",nullable = false)
+    @Column(name = "price", nullable = false)
     private Float price;
     @Column(name = "expiry")
     private Integer expiry;

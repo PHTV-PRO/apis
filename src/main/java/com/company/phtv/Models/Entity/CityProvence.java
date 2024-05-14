@@ -15,13 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "city")
-public class City extends BaseModel{
+public class CityProvence extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
     @Column(name = "name",nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
-    private List<Jobs> jobs;
+    @OneToMany(mappedBy = "city_provence", cascade = CascadeType.ALL)
+    private List<Location> location;
 }

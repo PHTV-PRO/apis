@@ -17,7 +17,7 @@ import java.util.List;
 public class SkillCompany extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @ManyToMany(mappedBy = "skillCompanyList", fetch = FetchType.EAGER)
     @Transient

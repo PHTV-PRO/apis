@@ -15,16 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "skill_job")
 
-public class SkillJob extends BaseModel{
+public class SkillJob extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    private int id;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tblskill_job_company",
-            joinColumns = @JoinColumn(name = "skill_job_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_company_id"))
+    @JoinTable(name = "tblskill_job_company", joinColumns = @JoinColumn(name = "skill_job_id"), inverseJoinColumns = @JoinColumn(name = "skill_company_id"))
     private List<SkillCompany> skillCompanyList;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

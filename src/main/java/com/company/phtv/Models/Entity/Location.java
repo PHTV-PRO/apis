@@ -26,6 +26,10 @@ public class Location {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_provence")
+    private CityProvence city_provence;
+
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Jobs> jobs;
 }

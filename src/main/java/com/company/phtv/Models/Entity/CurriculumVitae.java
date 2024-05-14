@@ -1,6 +1,5 @@
 package com.company.phtv.Models.Entity;
 
-import com.company.phtv.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
