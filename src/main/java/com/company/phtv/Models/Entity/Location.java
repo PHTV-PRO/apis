@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class Location {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "city_provence")
-    private CityProvence city_provence;
+    private CityProvince city_provence;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Jobs> jobs;

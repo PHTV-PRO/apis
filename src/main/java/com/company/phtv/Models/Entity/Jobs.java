@@ -33,7 +33,7 @@ public class Jobs extends BaseModel{
     @Column(name = "interview_steps")
     private String interview_steps;
     @Column(name = "amount")
-    private Integer amount;
+    private int amount;
     @Column(name = "experience_required")
     private String experience_required;
     @Column(name = "salary_max")
@@ -69,5 +69,8 @@ public class Jobs extends BaseModel{
 
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
     private List<FollowJob> followJobs;
+
+    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
+    private List<SkillJob> skillJobs;
 
 }

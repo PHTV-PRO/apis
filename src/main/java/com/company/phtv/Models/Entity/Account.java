@@ -53,9 +53,6 @@ public class Account extends BaseModel implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<FollowJob> followJobs;
 
-    @OneToOne(mappedBy = "account")
-    private Company company;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

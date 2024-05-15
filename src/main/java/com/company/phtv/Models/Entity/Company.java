@@ -43,13 +43,14 @@ public class Company extends BaseModel{
     @Column(name = "background_image")
     private String background_image;
     @Column(name = "enable")
-    private Integer enable;
+    private int enable;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "employer_id")
+    private Employer employer;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<ImageCompany> imageCompany;
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<CategoryCompany> categoryCompany;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<FollowCompany> followCompany;
@@ -61,11 +62,12 @@ public class Company extends BaseModel{
     private List<Location> locations;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<SkillCompany> skillCompanies;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
-    private Account account;
+
 
 
 }

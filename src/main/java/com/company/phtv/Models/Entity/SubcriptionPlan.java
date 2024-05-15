@@ -25,7 +25,7 @@ public class SubcriptionPlan extends BaseModel {
     @Column(name = "price", nullable = false)
     private Float price;
     @Column(name = "expiry")
-    private Integer expiry;
+    private int expiry;
 
     @OneToMany(mappedBy = "subscription_plan", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;

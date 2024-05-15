@@ -19,7 +19,6 @@ public class SkillJob extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tblskill_job_company", joinColumns = @JoinColumn(name = "skill_job_id"), inverseJoinColumns = @JoinColumn(name = "skill_company_id"))
     private List<SkillCompany> skillCompanyList;
@@ -27,4 +26,8 @@ public class SkillJob extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "skill_id")
     private Skill skills;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "job_id")
+    private Jobs jobs;
 }

@@ -26,4 +26,8 @@ public class SkillCompany extends BaseModel{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "skill_id")
     private Skill skills;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "company_id")
+    private Company company;
 }
