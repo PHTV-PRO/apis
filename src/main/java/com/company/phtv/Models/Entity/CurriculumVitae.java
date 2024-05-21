@@ -27,4 +27,15 @@ public class CurriculumVitae extends BaseModel{
 
     @OneToOne(mappedBy = "curriculumVitae")
     private Application application;
+
+    public CurriculumVitae(int id) {
+        this.id = id;
+    }
+
+    public CurriculumVitae(int id, String file_name, Account account ) {
+        this.id = id;
+        this.file_name = file_name;
+        this.account = account;
+
+    }
 }

@@ -24,4 +24,13 @@ public class Level extends BaseModel{
 
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
     private List<LevelJob> levelJobs;
+
+    public Level(int id) {
+        this.id = id;
+    }
+
+    public Level(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

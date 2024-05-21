@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "notification")
 public class Notification extends BaseModel{
     @Id
@@ -34,4 +33,13 @@ public class Notification extends BaseModel{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "job_id")
     private Jobs jobs;
+
+    public Notification(int id, String title, String content, Company company, Account account, Jobs jobs) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.company = company;
+        this.account = account;
+        this.jobs = jobs;
+    }
 }

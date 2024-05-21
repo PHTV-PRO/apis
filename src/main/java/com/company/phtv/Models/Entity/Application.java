@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "application")
 public class Application extends BaseModel{
     @Id
@@ -34,4 +33,12 @@ public class Application extends BaseModel{
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cv_id")
     private CurriculumVitae curriculumVitae;
+
+    public Application(int id, String note, Account account, Jobs jobs, CurriculumVitae curriculumVitae) {
+        this.id = id;
+        this.note = note;
+        this.account = account;
+        this.jobs = jobs;
+        this.curriculumVitae = curriculumVitae;
+    }
 }

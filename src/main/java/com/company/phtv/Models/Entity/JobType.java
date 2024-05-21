@@ -28,4 +28,9 @@ public class JobType extends BaseModel{
     public JobType(int id) {
         this.id = id;
     }
+
+    public JobType(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

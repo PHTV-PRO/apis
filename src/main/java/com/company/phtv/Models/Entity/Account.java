@@ -56,8 +56,20 @@ public class Account extends BaseModel implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
+    public Account(int id, String name, String email, String password, int gender, String address, String image, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.address = address;
+        this.image = image;
+        this.role = role;
+    }
 
-
+    public Account(int id) {
+        this.id = id;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

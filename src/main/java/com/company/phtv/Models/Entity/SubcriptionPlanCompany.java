@@ -12,7 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "subcription_plan_company")
 public class SubcriptionPlanCompany extends BaseModel {
     @Id
@@ -31,4 +30,12 @@ public class SubcriptionPlanCompany extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "subscription_plan_id")
     private SubcriptionPlan subscription_plan;
+
+    public SubcriptionPlanCompany(int id, Date start_date, Date end_date, Company company, SubcriptionPlan subscription_plan) {
+        this.id = id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.company = company;
+        this.subscription_plan = subscription_plan;
+    }
 }

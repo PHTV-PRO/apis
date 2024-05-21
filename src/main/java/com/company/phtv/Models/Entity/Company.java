@@ -61,8 +61,6 @@ public class Company extends BaseModel{
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Location> locations;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<SkillCompany> skillCompanies;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;
@@ -72,5 +70,22 @@ public class Company extends BaseModel{
 
     public Company(int id) {
         this.id = id;
+    }
+
+    public Company(int id, String name, String introduction, String benefit, String profession, String size_min, String size_max, String skill, String link_website, String nationnality, String logo_image, String background_image, int enable, Employer employer) {
+        this.id = id;
+        this.name = name;
+        this.introduction = introduction;
+        this.benefit = benefit;
+        this.profession = profession;
+        this.size_min = size_min;
+        this.size_max = size_max;
+        this.skill = skill;
+        this.link_website = link_website;
+        this.nationnality = nationnality;
+        this.logo_image = logo_image;
+        this.background_image = background_image;
+        this.enable = enable;
+        this.employer = employer;
     }
 }

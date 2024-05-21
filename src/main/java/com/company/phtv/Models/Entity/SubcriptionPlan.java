@@ -21,7 +21,7 @@ public class SubcriptionPlan extends BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "name", nullable = false)
-    private Date name;
+    private String name;
     @Column(name = "price", nullable = false)
     private Float price;
     @Column(name = "expiry")
@@ -30,4 +30,14 @@ public class SubcriptionPlan extends BaseModel {
     @OneToMany(mappedBy = "subscription_plan", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;
 
+    public SubcriptionPlan(int id) {
+        this.id = id;
+    }
+
+    public SubcriptionPlan(int id, String name, Float price, int expiry) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.expiry = expiry;
+    }
 }

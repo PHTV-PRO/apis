@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "follow_job")
 public class FollowJob extends BaseModel{
     @Id
@@ -26,4 +25,10 @@ public class FollowJob extends BaseModel{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public FollowJob(int id, Jobs jobs, Account account) {
+        this.id = id;
+        this.jobs = jobs;
+        this.account = account;
+    }
 }

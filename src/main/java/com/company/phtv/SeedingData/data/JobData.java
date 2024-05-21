@@ -10,7 +10,8 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class JobData {
     public List<Jobs> Data(){
         List<Jobs> data = new ArrayList<>();
-        data.add(new Jobs(1,
+        data.add(new Jobs(
+                1,
                 "Nhân Viên Thiết Kế - Lương 12 - 18 Triệu (Có Kinh Nghiệm)",
                 "- Tiếp nhận yêu cầu thiết kế ; sản phẩm giường, tủ, bàn ghế...(hàng tháo rời)\n" +
                 "\n" +
@@ -41,11 +42,12 @@ public class JobData {
                 "20/10/2024",
                 true,
                 0,
-                new Company(1),
+                new Company(2),
                 new Location(1),
                 new JobType(1)
                 ));
-        data.add(new Jobs(2,
+        data.add(new Jobs(
+                2,
                 "CƠ HỘI ĐÀO TẠO MIỄN PHÍ VÀ LÀM VIỆC TẠI HÀN QUỐC CHO CÁC BẠN FRESHER (5 tháng đào tạo + cấp visa Kỹ sư E-7)",
                 "Tài trợ 100% bởi Chính phủ Hàn Quốc, đây là dự án đầu tiên thực hiện kết nối việc làm  cho sinh viên Việt Nam với các Doanh nghiệp Start-up Hàn Quốc. Các bạn sẽ trải qua đào tạo thực chiến và được trải nghiệm sinh sống và làm việc tại các thành phố lớn của Hàn Quốc.",
                 "Nội dung đào tạo:\n" +
@@ -81,11 +83,12 @@ public class JobData {
                 "tháng 11 / 2024",
                 true,
                 0,
-                new Company(2),
+                new Company(3),
                 new Location(2),
                 new JobType(2)
         ));
-        data.add(new Jobs(3,
+        data.add(new Jobs(
+                3,
                 ".NET Developer",
                 null,
                 "Thực hiện xây dựng, phát triển, nâng cấp, sửa lỗi sản phẩm trên hệ thống quản trị doanh nghiệp thực hiện theo yêu cầu của Khối phòng nghiệp vụ.\\n\" +\n" +
@@ -118,7 +121,7 @@ public class JobData {
                 null,
                 true,
                 0,
-                new Company(3),
+                new Company(1),
                 new Location(3),
                 new JobType(3)
         ));

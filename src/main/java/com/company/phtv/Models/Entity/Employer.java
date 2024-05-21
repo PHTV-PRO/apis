@@ -31,4 +31,18 @@ public class Employer extends BaseModel{
 
     @OneToOne(mappedBy = "employer")
     private Company company;
+
+    public Employer(int id) {
+        this.id = id;
+    }
+
+    public Employer(int id, String name, String email, String password, String address, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.role = role;
+
+    }
 }

@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "level_job")
 public class LevelJob extends BaseModel{
     @Id
@@ -25,4 +24,10 @@ public class LevelJob extends BaseModel{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "job_id")
     private Jobs jobs;
+
+    public LevelJob(int id, Level level, Jobs jobs) {
+        this.id = id;
+        this.level = level;
+        this.jobs = jobs;
+    }
 }
