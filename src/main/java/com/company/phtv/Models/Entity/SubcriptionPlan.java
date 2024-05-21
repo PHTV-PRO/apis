@@ -20,9 +20,9 @@ public class SubcriptionPlan extends BaseModel {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
-    @Column(name = "price", nullable = false)
+    @Column(name = "price")
     private Float price;
     @Column(name = "expiry")
     private int expiry;

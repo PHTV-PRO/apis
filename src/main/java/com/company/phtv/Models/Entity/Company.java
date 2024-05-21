@@ -20,13 +20,13 @@ public class Company extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name")
     private String name;
-    @Column(name = "introduction")
+    @Column(name = "introduction", length = 2000)
     private String introduction;
-    @Column(name = "benefit")
+    @Column(name = "benefit", length = 1000)
     private String benefit;
-    @Column(name="profession")
+    @Column(name="profession", length = 1000)
     private String profession;
     @Column(name="size_min")
     private String size_min;

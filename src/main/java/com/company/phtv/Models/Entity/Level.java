@@ -19,7 +19,7 @@ public class Level extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "level", cascade = CascadeType.ALL)

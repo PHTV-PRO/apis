@@ -17,7 +17,7 @@ public class Application extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "note")
+    @Column(name = "note", length = 1000)
     private String note;
 
 

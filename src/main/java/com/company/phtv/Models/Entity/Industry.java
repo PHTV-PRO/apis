@@ -20,7 +20,7 @@ public class Industry {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "industry", cascade = CascadeType.ALL)

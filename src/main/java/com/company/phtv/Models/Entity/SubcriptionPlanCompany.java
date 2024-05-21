@@ -18,9 +18,9 @@ public class SubcriptionPlanCompany extends BaseModel {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date")
     private Date start_date;
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private Date end_date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
