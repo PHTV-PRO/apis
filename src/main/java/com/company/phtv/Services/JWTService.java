@@ -58,7 +58,7 @@ public class JWTService  implements IJwtService{
                 .compact();
     }
 
-    public String extractUserName(String token) {
+    public String extractEmail(String token) {
         return extracClaim(token, Claims::getSubject);
     }
 
@@ -100,7 +100,7 @@ public class JWTService  implements IJwtService{
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUserName(token);
+        final String username = extractEmail(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExprired(token));
     }
 

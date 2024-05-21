@@ -13,6 +13,7 @@ import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
 import com.company.phtv.Utils.HttpException;
 
+
 @Service
 public class AuthenticateService implements IAuthenticateService {
     @Autowired
@@ -28,7 +29,7 @@ public class AuthenticateService implements IAuthenticateService {
     PasswordEncoder _passwordEncoder;
 
     @Override
-    public String Login(RequestLogin requestLogin) {
+    public String login(RequestLogin requestLogin) {
         var user = _userRepo.findByEmail(requestLogin.getEmail());
         if (user == null) {
             throw new HttpException(404, "Email or Password incorrect!!");
@@ -47,11 +48,21 @@ public class AuthenticateService implements IAuthenticateService {
     }
 
     @Override
-    public Account Register(RequestLogin requestLogin) {
+    public Account register(RequestLogin requestLogin) {
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
         user.setRole(Role.CANDIDATE);
         user.setPassword(_passwordEncoder.encode(requestLogin.getPassword()));
         return _userRepo.save(user);
+    }
+
+    @Override
+    public Account checkToken(String token) {
+        String email = _jwtservice.extractEmail(token);
+        if(email==null || email.trim().equals("")){
+            throw new HttpException(400,"token error");
+        }
+        Account user = _userRepo.getAccountByEmail(email);
+       return user;
     }
 }

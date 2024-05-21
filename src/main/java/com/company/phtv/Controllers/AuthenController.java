@@ -14,6 +14,7 @@ import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Token;
 
+
 @RestController
 @RequestMapping("")
 public class AuthenController {
@@ -24,9 +25,9 @@ public class AuthenController {
     BaseController<Account> _baseControllerUser = new BaseController<Account>();
 
     @PostMapping("/login")
-    public ResponseEntity<?> Login(@RequestBody RequestLogin requestLogin) {
+    public ResponseEntity<?> login(@RequestBody RequestLogin requestLogin) {
         try {
-            String token = _iauthenRepo.Login(requestLogin);
+            String token = _iauthenRepo.login(requestLogin);
             return _baseController.Ok(new Token(token));
         } catch (HttpException e) {
             return _baseController.Error(null, e.StatusCode, e.message);
@@ -36,9 +37,9 @@ public class AuthenController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> Register(@RequestBody RequestLogin requestLogin) {
+    public ResponseEntity<?> register(@RequestBody RequestLogin requestLogin) {
         try {
-            Account user = _iauthenRepo.Register(requestLogin);
+            Account user = _iauthenRepo.register(requestLogin);
             return _baseControllerUser.Ok(user);
         } catch (HttpException e) {
             return _baseController.Error(null, e.StatusCode, e.message);
@@ -46,4 +47,17 @@ public class AuthenController {
             return _baseController.Error(null, 500, e.getMessage());
         }
     }
+
+    @PostMapping("/getinfo")
+    public ResponseEntity<?> postToken(@RequestBody String token) {
+        try {
+            Account user = _iauthenRepo.checkToken(token);
+            return _baseControllerUser.Ok(user);
+        } catch (HttpException e) {
+            return _baseController.Error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.Error(null, 500, e.getMessage());
+        }
+    }
+    
 }

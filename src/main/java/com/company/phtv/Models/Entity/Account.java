@@ -78,7 +78,7 @@ public class Account extends BaseModel implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override

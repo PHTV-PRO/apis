@@ -9,7 +9,7 @@ public interface IJwtService {
       String generateToken(UserDetails userDetails);
 
 
-    String extractUserName(String token);
+    String extractEmail(String token);
 
     boolean isTokenValid(String token, UserDetails userDetails);
 
