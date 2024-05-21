@@ -24,4 +24,8 @@ public class JobType extends BaseModel{
 
     @OneToMany(mappedBy = "jobType", cascade = CascadeType.ALL)
     private List<Jobs> job;
+
+    public JobType(int id) {
+        this.id = id;
+    }
 }

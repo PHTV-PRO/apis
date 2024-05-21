@@ -19,10 +19,6 @@ public class SkillCompany extends BaseModel{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToMany(mappedBy = "skillCompanyList", fetch = FetchType.EAGER)
-    @Transient
-    List<SkillJob> skillJobs;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "skill_id")
     private Skill skills;

@@ -1,5 +1,6 @@
 package com.company.phtv.Models.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Skill extends BaseModel{
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "industry_id")
     private Industry industry;
 
@@ -31,4 +33,15 @@ public class Skill extends BaseModel{
 
     @OneToMany(mappedBy = "skills", cascade = CascadeType.ALL)
     private List<SkillCompany> skillCompanies;
+
+    public Skill(int id) {
+        this.id = id;
+    }
+    public Skill(int id, String name, Industry industry) {
+        this.id = id;
+        this.name = name;
+        this.industry = industry;
+    }
+
+
 }

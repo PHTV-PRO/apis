@@ -47,7 +47,7 @@ public class Jobs extends BaseModel{
     @Column(name = "is_active",nullable = false)
     private boolean is_active;
     @Column(name = "gender")
-    private boolean gender;
+    private int gender;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
@@ -73,4 +73,31 @@ public class Jobs extends BaseModel{
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
     private List<SkillJob> skillJobs;
 
+    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
+
+    public Jobs(int id) {
+        this.id = id;
+    }
+
+    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, String start_date, String end_date, boolean is_active, int gender, Company company, Location location, JobType jobType) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.reponsibility = reponsibility;
+        this.skill_required = skill_required;
+        this.benefit = benefit;
+        this.interview_steps = interview_steps;
+        this.amount = amount;
+        this.experience_required = experience_required;
+        this.salary_max = salary_max;
+        this.salary_min = salary_min;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.is_active = is_active;
+        this.gender = gender;
+        this.company = company;
+        this.location = location;
+        this.jobType = jobType;
+    }
 }

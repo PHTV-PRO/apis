@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,5 +24,13 @@ public class Industry {
     private String name;
 
     @OneToMany(mappedBy = "industry", cascade = CascadeType.ALL)
-    private List<Skill> skills;
+    private Set<Skill> skills;
+
+    public Industry(int id,String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public Industry(int id) {
+        this.id = id;
+    }
 }

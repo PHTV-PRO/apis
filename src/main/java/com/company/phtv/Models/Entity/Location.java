@@ -28,9 +28,23 @@ public class Location {
     private Company company;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "city_provence")
+    @JoinColumn(name = "city_provence_id")
     private CityProvince city_provence;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     private List<Jobs> jobs;
+
+    public Location(int id) {
+        this.id = id;
+    }
+
+    public Location(int id, String name, Company company, CityProvince city_provence) {
+        this.id = id;
+        this.name = name;
+        this.company = company;
+        this.city_provence = city_provence;
+    }
+
+
+
 }

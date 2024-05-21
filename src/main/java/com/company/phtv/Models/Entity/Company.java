@@ -67,7 +67,10 @@ public class Company extends BaseModel{
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
 
-
-
+    public Company(int id) {
+        this.id = id;
+    }
 }

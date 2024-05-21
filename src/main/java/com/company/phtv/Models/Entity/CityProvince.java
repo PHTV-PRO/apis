@@ -24,4 +24,13 @@ public class CityProvince extends BaseModel{
 
     @OneToMany(mappedBy = "city_provence", cascade = CascadeType.ALL)
     private List<Location> location;
+
+    public CityProvince(int id) {
+        this.id = id;
+    }
+
+    public CityProvince(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

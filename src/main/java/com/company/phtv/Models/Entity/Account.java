@@ -53,6 +53,12 @@ public class Account extends BaseModel implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<FollowJob> followJobs;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
+
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
