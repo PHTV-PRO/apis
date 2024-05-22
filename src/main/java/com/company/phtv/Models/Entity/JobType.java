@@ -19,8 +19,8 @@ public class JobType extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name",nullable = false)
+    private String name="";
 
     @OneToMany(mappedBy = "jobType", cascade = CascadeType.ALL)
     private List<Jobs> job;

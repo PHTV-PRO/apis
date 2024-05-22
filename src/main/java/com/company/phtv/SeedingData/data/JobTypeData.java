@@ -1,6 +1,5 @@
 package com.company.phtv.SeedingData.data;
 
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Entity.JobType;
 
 import java.util.ArrayList;

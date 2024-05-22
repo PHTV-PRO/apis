@@ -1,8 +1,5 @@
 package com.company.phtv.SeedingData.data;
 
-import com.company.phtv.Models.Entity.Jobs;
-import com.company.phtv.Models.Entity.Skill;
-import com.company.phtv.Models.Entity.SkillJob;
 import com.company.phtv.Models.Entity.SubcriptionPlan;
 
 import java.util.ArrayList;

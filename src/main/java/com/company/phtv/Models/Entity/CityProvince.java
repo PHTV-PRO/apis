@@ -19,8 +19,8 @@ public class CityProvince extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name",nullable = false)
+    private String name  = "";
 
     @OneToMany(mappedBy = "city_provence", cascade = CascadeType.ALL)
     private List<Location> location;

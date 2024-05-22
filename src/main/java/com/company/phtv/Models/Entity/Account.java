@@ -66,6 +66,7 @@ public class Account extends BaseModel implements UserDetails {
         this.image = image;
         this.role = role;
     }
+    
 
     public Account(int id) {
         this.id = id;

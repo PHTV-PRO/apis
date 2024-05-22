@@ -16,11 +16,11 @@ public class Notification extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "title")
-    private String title;
+    @Column(name = "title",nullable = false)
+    private String title="";
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "content",nullable = false)
+    private String content="";
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")

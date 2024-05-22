@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Getter
 @Setter
@@ -20,11 +22,11 @@ public class Company extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name",nullable = false)
+    private String name ="";
     @Column(name = "introduction", length = 2000)
     private String introduction;
-    @Column(name = "benefit", length = 1000)
+    @Column(name = "benefit", columnDefinition = "text")
     private String benefit;
     @Column(name="profession", length = 1000)
     private String profession;

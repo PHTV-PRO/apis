@@ -74,32 +74,36 @@ public class Seeding  implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         LoadAccountData();
-        LoadApplicationData();
-        LoadCityProvinceData();
-        LoadCompanyData();
         LoadCurriculumData();
-        LoadEmployerData();
-        LoadFollowCompanyData();
-        LoadFollowJobData();
         LoadIndustryData();
-        LoadJobData();
-        LoadJobTypeData();
+        LoadEmployerData();
+        LoadCompanyData();
         LoadLevelData();
-        LoadLevelJobData();
-        LoadLocationData();
-        LoadNotificationData();
         LoadSkillData();
-        LoadSkillJobData();
+        LoadCityProvinceData();
+        LoadLocationData();
+        LoadJobTypeData();
         LoadSubcriptionPlanData();
+        
+        LoadFollowCompanyData();
+        LoadJobData();
+        LoadLevelJobData();
+
+        LoadNotificationData();
         LoadSubcriptionPlanCompanyData();
+        LoadFollowJobData();
+        LoadApplicationData();
+        LoadSkillJobData();
+
+
     }
 
     private void LoadAccountData() {
         if (_AccountRepo.count() == 0) {
 
             List<Account> list = new AccountData().Data();
-            for (Account a : list) {
-                _AccountRepo.save(a);
+            for (Account acc : list) {
+                _AccountRepo.save(acc);
             }
         }
     }
@@ -107,7 +111,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadApplicationData() {
         if (_ApplicationRepo.count() == 0) {
 
-            List<Application> list = new ApplicationData().Data();
+            List<Application> list = new ApplicationData(_AccountRepo, _JobRepo, _CurriculumRepo).Data();
             for (Application a : list) {
                 _ApplicationRepo.save(a);
             }
@@ -127,7 +131,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadCompanyData() {
         if (_CompanyRepo.count() == 0) {
 
-            List<Company> list = new CompanyData().Data();
+            List<Company> list = new CompanyData(_EmployerRepo).Data();
             for (Company l : list) {
                 _CompanyRepo.save(l);
             }
@@ -137,7 +141,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadCurriculumData() {
         if (_CurriculumRepo.count() == 0) {
 
-            List<CurriculumVitae> list = new CurriculumVitaeData().Data();
+            List<CurriculumVitae> list = new CurriculumVitaeData(_AccountRepo).Data();
             for (CurriculumVitae c : list) {
                 _CurriculumRepo.save(c);
             }
@@ -157,7 +161,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadFollowCompanyData() {
         if (_FollowCompanyRepo.count() == 0) {
 
-            List<FollowCompany> list = new FollowCompanyData().Data();
+            List<FollowCompany> list = new FollowCompanyData(_AccountRepo, _CompanyRepo).Data();
             for (FollowCompany c : list) {
                 _FollowCompanyRepo.save(c);
             }
@@ -167,7 +171,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadFollowJobData() {
         if (_FollowJobRepo.count() == 0) {
 
-            List<FollowJob> list = new FollowJobData().Data();
+            List<FollowJob> list = new FollowJobData(_AccountRepo, _JobRepo).Data();
             for (FollowJob l : list) {
                 _FollowJobRepo.save(l);
             }
@@ -187,7 +191,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadJobData() {
         if (_JobRepo.count() == 0) {
 
-            List<Jobs> list = new JobData().Data();
+            List<Jobs> list = new JobData(_CompanyRepo, _LocationRepo, _JobTypeRepo).Data();
             for (Jobs j : list) {
                 _JobRepo.save(j);
             }
@@ -207,7 +211,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadLevelJobData() {
         if (_LevelJobRepo.count() == 0) {
 
-            List<LevelJob> list = new LevelJobData().Data();
+            List<LevelJob> list = new LevelJobData(_JobRepo, _LevelRepo).Data();
             for (LevelJob l : list) {
                 _LevelJobRepo.save(l);
             }
@@ -227,7 +231,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadLocationData() {
         if (_LocationRepo.count() == 0) {
 
-            List<Location> list = new LocationData().Data();
+            List<Location> list = new LocationData(_CompanyRepo, _CityProvinceRepo).Data();
             for (Location l : list) {
                 _LocationRepo.save(l);
             }
@@ -237,7 +241,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadNotificationData() {
         if (_NotificationRepo.count() == 0) {
 
-            List<Notification> list = new NotificationData().Data();
+            List<Notification> list = new NotificationData(_AccountRepo, _JobRepo, _CompanyRepo).Data();
             for (Notification n : list) {
                 _NotificationRepo.save(n);
             }
@@ -247,7 +251,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadSkillData() {
         if (_SkillRepo.count() == 0) {
 
-            List<Skill> list = new SkillData().Data();
+            List<Skill> list = new SkillData(_IndustryRepo).Data();
             for (Skill s : list) {
                 _SkillRepo.save(s);
             }
@@ -257,7 +261,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadSkillJobData() {
         if (_SkillJobRepo.count() == 0) {
 
-            List<SkillJob> list = new SkillJobData().Data();
+            List<SkillJob> list = new SkillJobData(_JobRepo, _SkillRepo).Data();
             for (SkillJob s : list) {
                 _SkillJobRepo.save(s);
             }
@@ -268,7 +272,7 @@ public class Seeding  implements CommandLineRunner {
     private void LoadSubcriptionPlanCompanyData() {
         if (_SubcriptionPlanCompanyRepo.count() == 0) {
 
-            List<SubcriptionPlanCompany> list = new SubcriptionPlanCompanyData().Data();
+            List<SubcriptionPlanCompany> list = new SubcriptionPlanCompanyData(_CompanyRepo, _SubcriptionPlanRepo).Data();
             for (SubcriptionPlanCompany s : list) {
                 _SubcriptionPlanCompanyRepo.save(s);
             }

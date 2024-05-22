@@ -1,56 +1,63 @@
 package com.company.phtv.SeedingData.data;
 
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Entity.Skill;
+import com.company.phtv.Repository.IndustryRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SkillData {
-    public List<Skill> Data(){
-        List<Skill> data = new ArrayList<>();
-        data.add(new Skill(1,"HTML,CSS"
-                ,new Industry(1)));
-        data.add(new Skill(2,"JavaScript",
-                new Industry(1)));
-        data.add(new Skill(3,"React JS",
-                new Industry(1)));
-        data.add(new Skill(4,"UI-UX",
-                new Industry(1)));
-        data.add(new Skill(5,"Designer",
-                new Industry(1)));
-        data.add(new Skill(6,"Photoshop",
-                new Industry(1)));
-        data.add(new Skill(7,"FireBase",
-                new Industry(1)));
-        data.add(new Skill(8,"UI-UX Design",
-                new Industry(2)));
-        data.add(new Skill(9,"Product Design",
-                new Industry(2)));
-        data.add(new Skill(10,"Game Design",
-                new Industry(2)));
-        data.add(new Skill(11,"Illustrator",
-                new Industry(2)));
-        data.add(new Skill(12,"Web/Mobile",
-                new Industry(2)));
-        data.add(new Skill(13,"Unity",
-                new Industry(1)));
-        data.add(new Skill(13,"Java",
-                new Industry(3)));
-        data.add(new Skill(13,"C#",
-                new Industry(3)));
-        data.add(new Skill(16,"NodeJS",
-                new Industry(3)));
-        data.add(new Skill(17,"ASP.Net",
-                new Industry(3)));
-        data.add(new Skill(18,"Laravel",
-                new Industry(3)));
-        data.add(new Skill(19,"SQL Server",
-                new Industry(3)));
-        data.add(new Skill(20,"Oracle",
-                new Industry(3)));
-        data.add(new Skill(20,"Database",
-                new Industry(3)));
-        return data;
-    }
+        private final IndustryRepo _IndustryRepo;
+
+        public SkillData(IndustryRepo _IndustryRepo) {
+                this._IndustryRepo = _IndustryRepo;
+        }
+
+        @SuppressWarnings("deprecation")
+        public List<Skill> Data() {
+                List<Skill> data = new ArrayList<>();
+                data.add(new Skill(1, "HTML,CSS",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(2, "JavaScript",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(3, "React JS",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(4, "UI-UX",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(5, "Designer",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(6, "Photoshop",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(7, "FireBase",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(8, "UI-UX Design",
+                                _IndustryRepo.getOne(2)));
+                data.add(new Skill(9, "Product Design",
+                                _IndustryRepo.getOne(2)));
+                data.add(new Skill(10, "Game Design",
+                                _IndustryRepo.getOne(2)));
+                data.add(new Skill(11, "Illustrator",
+                                _IndustryRepo.getOne(2)));
+                data.add(new Skill(12, "Web/Mobile",
+                                _IndustryRepo.getOne(2)));
+                data.add(new Skill(13, "Unity",
+                                _IndustryRepo.getOne(1)));
+                data.add(new Skill(14, "Java",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(15, "C#",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(16, "NodeJS",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(17, "ASP.Net",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(18, "Laravel",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(19, "SQL Server",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(20, "Oracle",
+                                _IndustryRepo.getOne(3)));
+                data.add(new Skill(21, "Database",
+                                _IndustryRepo.getOne(3)));
+                return data;
+        }
 }

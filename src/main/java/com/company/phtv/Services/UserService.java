@@ -12,6 +12,7 @@ import com.company.phtv.Services.IServices.IUserService;
 public class UserService  implements IUserService{
     @Autowired
     UserRepo _userRepo;
+    
 
     @Override
     public UserDetailsService userDetailsService() {

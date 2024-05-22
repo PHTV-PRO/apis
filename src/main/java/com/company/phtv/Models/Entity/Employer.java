@@ -18,14 +18,14 @@ public class Employer extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "password")
-    private String password;
-    @Column(name = "address")
-    private String address;
+    @Column(name = "name",nullable = false)
+    private String name="";
+    @Column(name = "email",nullable = false)
+    private String email="";
+    @Column(name = "password",nullable = false)
+    private String password="";
+    @Column(name = "address",nullable = false)
+    private String address="";
     @Column(name = "role")
     private Role role;
 
