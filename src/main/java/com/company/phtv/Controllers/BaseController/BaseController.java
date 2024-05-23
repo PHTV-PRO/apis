@@ -14,19 +14,19 @@ public class BaseController <T>{
         var response = new ResponseData<>(status, message, null, obj);
         switch (status) {
             case 400:
-                response.error = "BadRequest";
+                response.error = "BadRequest!!";
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);
             case 401:
-                response.error = "Authortication";
+                response.error = "Authortication!!";
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);
             case 404:
-                response.error = "Not Found";
+                response.error = "Not Found!!";
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);
             case 409:
-                response.error = "Conflict";
+                response.error = "Conflict!!";
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);
             case 500:
-                response.error = "Service Error";
+                response.error = "Service Error!!";
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);
             default:
                 return ResponseEntity.status(HttpStatusCode.valueOf(status)).body(response);

@@ -1,17 +1,17 @@
 package com.company.phtv.SeedingData;
 
-
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Repository.*;
 import com.company.phtv.SeedingData.data.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class Seeding  implements CommandLineRunner {
+public class Seeding implements CommandLineRunner {
     @Autowired
     AccountRepo _AccountRepo;
 
@@ -69,7 +69,8 @@ public class Seeding  implements CommandLineRunner {
     @Autowired
     SubcriptionPlanCompanyRepo _SubcriptionPlanCompanyRepo;
 
-
+    @Autowired
+    PasswordEncoder _PasswordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -84,7 +85,7 @@ public class Seeding  implements CommandLineRunner {
         LoadLocationData();
         LoadJobTypeData();
         LoadSubcriptionPlanData();
-        
+
         LoadFollowCompanyData();
         LoadJobData();
         LoadLevelJobData();
@@ -95,13 +96,12 @@ public class Seeding  implements CommandLineRunner {
         LoadApplicationData();
         LoadSkillJobData();
 
-
     }
 
     private void LoadAccountData() {
         if (_AccountRepo.count() == 0) {
 
-            List<Account> list = new AccountData().Data();
+            List<Account> list = new AccountData(_PasswordEncoder).Data();
             for (Account acc : list) {
                 _AccountRepo.save(acc);
             }
@@ -268,17 +268,16 @@ public class Seeding  implements CommandLineRunner {
         }
     }
 
-
     private void LoadSubcriptionPlanCompanyData() {
         if (_SubcriptionPlanCompanyRepo.count() == 0) {
 
-            List<SubcriptionPlanCompany> list = new SubcriptionPlanCompanyData(_CompanyRepo, _SubcriptionPlanRepo).Data();
+            List<SubcriptionPlanCompany> list = new SubcriptionPlanCompanyData(_CompanyRepo, _SubcriptionPlanRepo)
+                    .Data();
             for (SubcriptionPlanCompany s : list) {
                 _SubcriptionPlanCompanyRepo.save(s);
             }
         }
     }
-
 
     private void LoadSubcriptionPlanData() {
         if (_SubcriptionPlanRepo.count() == 0) {
@@ -289,10 +288,5 @@ public class Seeding  implements CommandLineRunner {
             }
         }
     }
-
-
-
-
-
 
 }
