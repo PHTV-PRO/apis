@@ -1,6 +1,6 @@
-package com.company.phtv.Models.Request;
+package com.company.phtv.Models.DTO;
 
-import jakarta.annotation.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestIndustry {
-    @Nullable
-    public String name;
+public class JobTypeDTO {
+    private int id;
+    private  String name;
 }
