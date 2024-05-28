@@ -1,15 +1,14 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
-import com.company.phtv.Models.DTO.EmployerDTO;
 import com.company.phtv.Models.Entity.Account;
-import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Services.IServices.IAccountService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +18,13 @@ import java.util.List;
 public class AccountService implements IAccountService {
     @Autowired
     AccountRepo _accountRepo;
+
+    @Autowired 
+    PasswordEncoder _passwordEncoder;
+
+        public AccountService(PasswordEncoder _passwordEncoder) {
+                this._passwordEncoder = _passwordEncoder;
+        }
     @Override
     public List<AccountDTO> GetAll() {
         List<Account> accounts = _accountRepo.findAll();
@@ -34,6 +40,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Create(RequestAccount requestAccount) {
+        requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
         Account account = AccountMapping.account(requestAccount);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
@@ -41,6 +48,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Put(int id, RequestAccount r) {
+        r.setPassword(_passwordEncoder.encode(r.getPassword()));
         Account getAccount = _accountRepo.findIdAccount(id);
         Account account = AccountMapping.AccountPut(r,getAccount);
         account.setId(id);

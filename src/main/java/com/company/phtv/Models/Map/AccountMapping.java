@@ -3,13 +3,8 @@ package com.company.phtv.Models.Map;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestAccount;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class AccountMapping {
-    PasswordEncoder _passwordEncoder;
-    public AccountMapping(PasswordEncoder _passwordEncoder){
-        this._passwordEncoder = _passwordEncoder;
-    }
+public class AccountMapping  {
     public static AccountDTO accountDTO(Account a){
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setId(a.getId());
@@ -27,7 +22,7 @@ public class AccountMapping {
         Account account = new Account();
         account.setName(a.getName());
         account.setEmail(a.getEmail());
-        account.setPassword(a.getPassword());
+        account.setPassword( a.getPassword());
         account.setGender(a.getGender());
         account.setAddress(a.getAddress());
         account.setImage(a.getImage());
