@@ -9,4 +9,6 @@ public interface EmployerRepo extends JpaRepository<Employer,Integer> {
     @Query("select e from Employer e Where id = ?1")
     Employer findIdEmployer(int id);
 
+    Employer getEmployerById(int id);
+
 }
