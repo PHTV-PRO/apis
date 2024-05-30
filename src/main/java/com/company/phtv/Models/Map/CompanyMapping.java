@@ -29,6 +29,7 @@ public class CompanyMapping {
     }
 
     public static Company Company(RequestCompany c) {
+
         Company company = new Company();
         company.setName(c.getName());
         company.setIntroduction(c.getIntroduction());
@@ -42,10 +43,6 @@ public class CompanyMapping {
         company.setLogo_image(c.getLogo_image());
         company.setBackground_image(c.getBackground_image());
         company.setEnable(c.getEnable());
-//        company.setEmployer(
-//                new EmployerDTO(c.getEmployer_id(),null,null,null,null,null));
-
-//        company.setEmployer(new Employer(c.getEmployer_id(), null, null,null,null,null));
         return company;
     }
 

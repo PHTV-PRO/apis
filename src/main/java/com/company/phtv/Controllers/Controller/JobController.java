@@ -1,11 +1,12 @@
 package com.company.phtv.Controllers.Controller;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.CityProvinceDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Request.RequestCompany;
-import com.company.phtv.Services.CityProvinceService;
+import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Services.CompanyService;
+import com.company.phtv.Services.JobService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,27 +15,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
-public class CompanyController {
+@RequestMapping("/job")
+public class JobController {
     @Autowired
-    CompanyService _companyService;
-    BaseController<CompanyDTO> _baseController = new BaseController<CompanyDTO>();
-    BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
+    JobService _jobService;
+    BaseController<JobDTO> _baseController = new BaseController<JobDTO>();
+    BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
     @GetMapping()
     public ResponseEntity<?> get(){
         try {
-            return _baseControllers.Ok(_companyService.GetAll());
+            return _baseControllers.Ok(_jobService.GetAll());
         }catch (HttpException e){
             return _baseControllers.Error(null,e.StatusCode, e.message);
         }catch (Exception e){
             return  _baseControllers.Error(null,500,e.getMessage());
         }
     }
+
     @PostMapping()
-    public ResponseEntity<?> post(@RequestBody RequestCompany requestCompany) {
+    public ResponseEntity<?> post(@RequestBody RequestJob requestJob) {
         try {
-            return _baseController.Ok(_companyService.Create(requestCompany));
+            return _baseController.Ok(_jobService.Create(requestJob));
         } catch (HttpException e) {
             return _baseController.Error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -43,9 +45,9 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> Get(@PathVariable int id) {
+    public ResponseEntity<?> get(@PathVariable int id) {
         try {
-            return _baseController.Ok(_companyService.GetById(id));
+            return _baseController.Ok(_jobService.GetById(id));
         } catch (HttpException e) {
             return _baseController.Error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -54,9 +56,9 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_companyService.Delete(id));
+            return _baseController.Ok(_jobService.Delete(id));
         } catch (HttpException e) {
             return _baseController.Error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -64,14 +66,15 @@ public class CompanyController {
         }
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestCourse course) {
-//        try {
-//            return _baseController.Ok(_courService.Put(id, course));
-//        } catch (HttpException e) {
-//            return _baseController.Error(null, e.StatusCode, e.message);
-//        } catch (Exception e) {
-//            return _baseController.Error(null, 500, e.getMessage());
-//        }
-//    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestJob requestJob) {
+        try {
+            return _baseController.Ok(_jobService.Put(id, requestJob));
+        } catch (HttpException e) {
+            return _baseController.Error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.Error(null, 500, e.getMessage());
+        }
+    }
 }

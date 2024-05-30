@@ -1,6 +1,7 @@
 package com.company.phtv.Models.Entity;
 
 import com.company.phtv.Enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class Employer extends BaseModel{
     private Role role;
 
     @OneToOne(mappedBy = "employer")
+    @JsonIgnore
     private Company company;
 
     public Employer(int id) {
