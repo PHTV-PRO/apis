@@ -7,11 +7,14 @@ import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Services.IServices.IAccountService;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,21 +22,21 @@ public class AccountService implements IAccountService {
     @Autowired
     AccountRepo _accountRepo;
 
-    @Autowired 
+    @Autowired
     PasswordEncoder _passwordEncoder;
 
-        public AccountService(PasswordEncoder _passwordEncoder) {
-                this._passwordEncoder = _passwordEncoder;
-        }
+    public AccountService(PasswordEncoder _passwordEncoder) {
+        this._passwordEncoder = _passwordEncoder;
+    }
+
     @Override
     public List<AccountDTO> GetAll() {
         List<Account> accounts = _accountRepo.findAll();
         List<AccountDTO> accountDTOS = new ArrayList<>();
-        if(accounts.size() < 1){
-            throw new HttpException(404,"Not Found");
-        }
-        for(Account ac : accounts){
-            accountDTOS.add(AccountMapping.accountDTO(ac));
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).getDeleted_at() == null) {
+                accountDTOS.add(AccountMapping.accountDTO(accounts.get(i)));
+            }
         }
         return accountDTOS;
     }
@@ -48,9 +51,12 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Put(int id, RequestAccount r) {
-        r.setPassword(_passwordEncoder.encode(r.getPassword()));
         Account getAccount = _accountRepo.findIdAccount(id);
-        Account account = AccountMapping.AccountPut(r,getAccount);
+        if (getAccount.getDeleted_at() != null) {
+            throw Variable.notFound;
+        }
+        r.setPassword(_passwordEncoder.encode(r.getPassword()));
+        Account account = AccountMapping.AccountPut(r, getAccount);
         account.setId(id);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
@@ -58,13 +64,22 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Delete(int id) {
-        _accountRepo.deleteById(id);
-        return null;
+        Account account = _accountRepo.findIdAccount(id);
+        boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
+        if (checkAccountNotFound) {
+            throw Variable.notFound;
+        }
+        account.setDeleted_at(new Date());
+        _accountRepo.save(account);
+        return AccountMapping.accountDTO(account);
     }
 
     @Override
     public AccountDTO GetById(int id) {
         Account account = _accountRepo.findIdAccount(id);
+        if (account.getDeleted_at() != null) {
+            throw Variable.notFound;
+        }
         AccountDTO accountDTO = AccountMapping.accountDTO(account);
         return accountDTO;
     }

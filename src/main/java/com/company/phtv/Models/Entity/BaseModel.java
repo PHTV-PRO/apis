@@ -33,6 +33,10 @@ public class BaseModel {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated_at;
 
+    @Column(name = "deleted_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deleted_at;
+
     @PreUpdate
     private void onUpdate() {
         this.updated_at = new Date();
