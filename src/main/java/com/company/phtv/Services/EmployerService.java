@@ -10,24 +10,28 @@ import com.company.phtv.Models.Request.RequestEmployer;
 import com.company.phtv.Repository.EmployerRepo;
 import com.company.phtv.Services.IServices.IEmployerService;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class EmployerService implements IEmployerService {
     @Autowired
     EmployerRepo _employerRepo;
+
     @Override
     public List<EmployerDTO> GetAll() {
         List<Employer> employers = _employerRepo.findAll();
         List<EmployerDTO> employerDTOS = new ArrayList<>();
-        if(employers.size() < 1){
-            throw new HttpException(404,"Not Found");
+        if (employers.size() < 1) {
+            throw new HttpException(404, "Not Found");
         }
-        for(Employer e : employers){
+        for (Employer e : employers) {
             employerDTOS.add(EmployerMapping.employerDTO(e));
         }
         return employerDTOS;
@@ -43,7 +47,7 @@ public class EmployerService implements IEmployerService {
     @Override
     public EmployerDTO Put(int id, RequestEmployer requestEmployer) {
         Employer getEmployer = _employerRepo.findIdEmployer(id);
-        Employer employer = EmployerMapping.EmployerPut(requestEmployer,getEmployer);
+        Employer employer = EmployerMapping.EmployerPut(requestEmployer, getEmployer);
         employer.setId(id);
         _employerRepo.save(employer);
         return (EmployerDTO) EmployerMapping.employerDTO(employer);
@@ -51,7 +55,13 @@ public class EmployerService implements IEmployerService {
 
     @Override
     public EmployerDTO Delete(int id) {
-        _employerRepo.deleteById(id);
+        Employer employer = _employerRepo.findIdEmployer(id);
+        boolean checkEmployerNotFound = (employer != null && employer.getDeleted_at() == null) ? false : true;
+        if (checkEmployerNotFound) {
+            throw Variable.notFound;
+        }
+        employer.setDeleted_at(new Date());
+        _employerRepo.save(employer);
         return null;
     }
 

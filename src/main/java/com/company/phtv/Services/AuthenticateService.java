@@ -12,6 +12,7 @@ import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
 
 @Service
 public class AuthenticateService implements IAuthenticateService {
@@ -31,14 +32,14 @@ public class AuthenticateService implements IAuthenticateService {
     public String login(RequestLogin requestLogin) {
         var user = _userRepo.findByEmail(requestLogin.getEmail());
         if (user == null) {
-            throw new HttpException(404, "Email or Password incorrect!!");
+            throw Variable.emailOrPasswordIncorrect;
         }
         try {
             _authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestLogin.getEmail(),
                             requestLogin.getPassword()));
         } catch (Exception e) {
-            throw new HttpException(404, "Email or Password incorrect!!");
+            throw Variable.emailOrPasswordIncorrect;
         }
 
         var token = _jwtservice.generateToken(user);
@@ -58,9 +59,12 @@ public class AuthenticateService implements IAuthenticateService {
     public Account checkToken(String token) {
         String email = _jwtservice.extractEmail(token);
         if (email == null || email.trim().equals("")) {
-            throw new HttpException(400, "token error");
+            throw Variable.tokenError;
         }
         Account user = _userRepo.getAccountByEmail(email);
+        if (user.getDeleted_at() != null) {
+            throw Variable.notFound;
+        }
         return user;
     }
 }

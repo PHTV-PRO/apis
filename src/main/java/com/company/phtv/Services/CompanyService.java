@@ -10,10 +10,13 @@ import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.EmployerRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,12 +25,13 @@ public class CompanyService implements ICompanyService {
     CompanyRepo _companyRepo;
     @Autowired
     EmployerRepo _employerRepo;
+
     @Override
     public List<CompanyDTO> GetAll() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         if (companies.size() < 1) {
-            throw new HttpException(404,"Not Found");
+            throw new HttpException(404, "Not Found");
         }
         for (Company c : companies) {
             companyDTOS.add(CompanyMapping.CompanyDTO(c));
@@ -58,7 +62,14 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public CompanyDTO Delete(int id) {
-        _companyRepo.deleteById(id);
+        Company company = _companyRepo.findCompanyById(id);
+        boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
+
+        if (checkCompanyNotFound) {
+            throw Variable.notFound;
+        }
+        company.setDeleted_at(new Date());
+        _companyRepo.save(company);
         return null;
     }
 }

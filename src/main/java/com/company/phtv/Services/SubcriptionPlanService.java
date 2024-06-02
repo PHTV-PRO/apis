@@ -11,16 +11,20 @@ import com.company.phtv.Models.Request.RequestSubcriptionPlan;
 import com.company.phtv.Repository.SubcriptionPlanRepo;
 import com.company.phtv.Services.IServices.ISubcriptionPlanService;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class SubcriptionPlanService implements ISubcriptionPlanService {
     @Autowired
     SubcriptionPlanRepo _subcriptionPlanRepo;
+
     @Override
     public List<SubcriptionPlanDTO> GetAll() {
         List<SubcriptionPlan> subcriptionPlans = _subcriptionPlanRepo.findAll();
@@ -44,7 +48,8 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     @Override
     public SubcriptionPlanDTO Put(int id, RequestSubcriptionPlan requestSubcriptionPlan) {
         SubcriptionPlan getSubcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
-        SubcriptionPlan subcriptionPlan = SubcriptionPlanMapping.SubcriptionPlanPut(requestSubcriptionPlan,getSubcriptionPlan);
+        SubcriptionPlan subcriptionPlan = SubcriptionPlanMapping.SubcriptionPlanPut(requestSubcriptionPlan,
+                getSubcriptionPlan);
         subcriptionPlan.setId(id);
         _subcriptionPlanRepo.save(subcriptionPlan);
         return (SubcriptionPlanDTO) SubcriptionPlanMapping.subcriptionPlanDTO(subcriptionPlan);
@@ -52,7 +57,15 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
 
     @Override
     public SubcriptionPlanDTO Delete(int id) {
-        _subcriptionPlanRepo.deleteById(id);
+        SubcriptionPlan subcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
+        boolean checkSubcriptionPlanNotFound = (subcriptionPlan != null && subcriptionPlan.getDeleted_at() == null)
+                ? false
+                : true;
+        if (checkSubcriptionPlanNotFound) {
+            throw Variable.notFound;
+        }
+        subcriptionPlan.setDeleted_at(new Date());
+        _subcriptionPlanRepo.save(subcriptionPlan);
         return null;
     }
 
@@ -62,7 +75,5 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         SubcriptionPlanDTO subcriptionPlanDTO = SubcriptionPlanMapping.subcriptionPlanDTO(subcriptionPlan);
         return subcriptionPlanDTO;
     }
-
-
 
 }
