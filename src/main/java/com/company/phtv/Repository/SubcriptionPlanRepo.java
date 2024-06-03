@@ -1,6 +1,5 @@
 package com.company.phtv.Repository;
 
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Entity.SubcriptionPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

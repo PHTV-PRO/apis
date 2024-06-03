@@ -11,7 +11,6 @@ import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
-import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 @Service

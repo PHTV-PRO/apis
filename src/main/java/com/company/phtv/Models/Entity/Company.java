@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-import org.hibernate.annotations.Type;
 
 @Entity
 @Getter

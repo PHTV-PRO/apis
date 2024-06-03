@@ -2,11 +2,8 @@ package com.company.phtv.Controllers.Controller;
 
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.DTO.JobTypeDTO;
-import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Models.Request.RequestJobType;
-import com.company.phtv.Services.IndustryService;
 import com.company.phtv.Services.JobTypeService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;

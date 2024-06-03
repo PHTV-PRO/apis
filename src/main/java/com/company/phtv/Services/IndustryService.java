@@ -1,13 +1,11 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Map.IndustryMapping;
 import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Repository.IndustryRepo;
 import com.company.phtv.Services.IServices.IIndustryService;
-import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +24,10 @@ public class IndustryService implements IIndustryService {
     public List<IndustryDTO> GetAll() {
         List<Industry> industries = _industryRepo.findAll();
         List<IndustryDTO> industryDTOs = new ArrayList<>();
-        if (industries.size() < 1) {
-            throw new HttpException(404, "Not Found");
-        }
-        for (Industry i : industries) {
-            industryDTOs.add(IndustryMapping.industryDTO(i));
+        for (int i = 0; i < industries.size(); i++) {
+            if (industries.get(i).getDeleted_at() == null) {
+                industryDTOs.add(IndustryMapping.industryDTO(industries.get(i)));
+            }
         }
         return industryDTOs;
     }
@@ -45,6 +42,10 @@ public class IndustryService implements IIndustryService {
     @Override
     public IndustryDTO Put(int id, RequestIndustry requestIndustry) {
         Industry getIndustry = _industryRepo.findIdIndustry(id);
+        boolean checkIndustryNotFound = (getIndustry != null && getIndustry.getDeleted_at() == null) ? false : true;
+        if (checkIndustryNotFound) {
+            throw Variable.notFound;
+        }
         Industry industry = IndustryMapping.IndustryPut(requestIndustry, getIndustry);
         industry.setId(id);
         _industryRepo.save(industry);
@@ -66,6 +67,10 @@ public class IndustryService implements IIndustryService {
     @Override
     public IndustryDTO GetById(int id) {
         Industry industry = _industryRepo.findIdIndustry(id);
+        boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
+        if (checkIndustryNotFound) {
+            throw Variable.notFound;
+        }
         IndustryDTO industryDTO = IndustryMapping.industryDTO(industry);
         return industryDTO;
     }

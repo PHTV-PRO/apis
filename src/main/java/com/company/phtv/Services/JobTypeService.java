@@ -1,17 +1,11 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.DTO.JobTypeDTO;
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Entity.JobType;
-import com.company.phtv.Models.Map.IndustryMapping;
 import com.company.phtv.Models.Map.JobTypeMapping;
 import com.company.phtv.Models.Request.RequestJobType;
-import com.company.phtv.Repository.IndustryRepo;
-import com.company.phtv.Repository.JobRepo;
 import com.company.phtv.Repository.JobTypeRepo;
 import com.company.phtv.Services.IServices.IJobTypeService;
-import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +24,10 @@ public class JobTypeService implements IJobTypeService {
     public List<JobTypeDTO> GetAll() {
         List<JobType> jobTypes = _jobTypeRepo.findAll();
         List<JobTypeDTO> jobTypeDTOS = new ArrayList<>();
-        if (jobTypes.size() < 1) {
-            throw new HttpException(404, "Not Found");
-        }
-        for (JobType j : jobTypes) {
-            jobTypeDTOS.add(JobTypeMapping.jobTypeDTO(j));
+        for (int i =0; i< jobTypes.size();i++) {
+            if(jobTypes.get(i).getDeleted_at()==null){
+                jobTypeDTOS.add(JobTypeMapping.jobTypeDTO(jobTypes.get(i)));
+            }
         }
         return jobTypeDTOS;
     }
@@ -49,6 +42,10 @@ public class JobTypeService implements IJobTypeService {
     @Override
     public JobTypeDTO Put(int id, RequestJobType requestJobType) {
         JobType getJobType = _jobTypeRepo.findIdJobType(id);
+        boolean checkJobTypeNotFound = (getJobType != null && getJobType.getDeleted_at() == null) ? false : true;
+        if (checkJobTypeNotFound) {
+            throw Variable.notFound;
+        }
         JobType jobType = JobTypeMapping.JobTypePut(requestJobType, getJobType);
         jobType.setId(id);
         _jobTypeRepo.save(jobType);
@@ -70,6 +67,10 @@ public class JobTypeService implements IJobTypeService {
     @Override
     public JobTypeDTO GetById(int id) {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
+        boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
+        if (checkJobTypeNotFound) {
+            throw Variable.notFound;
+        }
         JobTypeDTO jobTypeDTO = JobTypeMapping.jobTypeDTO(jobType);
         return jobTypeDTO;
     }

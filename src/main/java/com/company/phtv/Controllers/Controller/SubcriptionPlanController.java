@@ -1,11 +1,8 @@
 package com.company.phtv.Controllers.Controller;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
-import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
-import com.company.phtv.Services.IndustryService;
 import com.company.phtv.Services.SubcriptionPlanService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;

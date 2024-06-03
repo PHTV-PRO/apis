@@ -3,11 +3,8 @@ package com.company.phtv.Controllers.Controller;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.EmployerDTO;
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.Request.RequestEmployer;
-import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Services.EmployerService;
-import com.company.phtv.Services.IndustryService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

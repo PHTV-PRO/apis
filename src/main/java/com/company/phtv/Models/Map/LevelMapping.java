@@ -1,8 +1,6 @@
 package com.company.phtv.Models.Map;
 
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.DTO.LevelDTO;
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Entity.Level;
 import com.company.phtv.Models.Request.RequestLevel;
 

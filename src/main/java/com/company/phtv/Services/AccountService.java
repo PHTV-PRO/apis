@@ -6,7 +6,6 @@ import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Services.IServices.IAccountService;
-import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,8 @@ public class AccountService implements IAccountService {
     @Override
     public AccountDTO Put(int id, RequestAccount r) {
         Account getAccount = _accountRepo.findIdAccount(id);
-        if (getAccount.getDeleted_at() != null) {
+        boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
+        if (checkAccountNotFound) {
             throw Variable.notFound;
         }
         r.setPassword(_passwordEncoder.encode(r.getPassword()));
@@ -77,7 +77,8 @@ public class AccountService implements IAccountService {
     @Override
     public AccountDTO GetById(int id) {
         Account account = _accountRepo.findIdAccount(id);
-        if (account.getDeleted_at() != null) {
+        boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
+        if (checkAccountNotFound) {
             throw Variable.notFound;
         }
         AccountDTO accountDTO = AccountMapping.accountDTO(account);

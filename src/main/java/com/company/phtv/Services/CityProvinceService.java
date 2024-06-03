@@ -42,6 +42,11 @@ public class CityProvinceService implements ICityProviceService {
     @Override
     public CityProvinceDTO Put(int id, RequestCityProvince RequestCityProvince) {
         CityProvince getCityProvince = _cityProvinceRepo.findIdCityProvince(id);
+        boolean checkCityProvinceNotFound = (getCityProvince != null && getCityProvince.getDeleted_at() == null) ? false
+                : true;
+        if (checkCityProvinceNotFound) {
+            throw Variable.notFound;
+        }
         CityProvince cityProvince = CityProvinceMapping.CityProvincePut(RequestCityProvince, getCityProvince);
         cityProvince.setId(id);
         _cityProvinceRepo.save(cityProvince);
@@ -64,6 +69,11 @@ public class CityProvinceService implements ICityProviceService {
     @Override
     public CityProvinceDTO GetById(int id) {
         CityProvince cityProvince = _cityProvinceRepo.findIdCityProvince(id);
+        boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
+                : true;
+        if (checkCityProvinceNotFound) {
+            throw Variable.notFound;
+        }
         CityProvinceDTO cityProvinceDTO = CityProvinceMapping.cityProvinceDTO(cityProvince);
         return cityProvinceDTO;
     }

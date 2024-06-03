@@ -1,8 +1,6 @@
 package com.company.phtv.Services.IServices;
 
 import com.company.phtv.Models.DTO.LevelDTO;
-import com.company.phtv.Models.Entity.Level;
-import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Models.Request.RequestLevel;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.company.phtv.Services.IServices;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
-import com.company.phtv.Models.DTO.EmployerDTO;
 import com.company.phtv.Models.Request.RequestCompany;
 
 import java.util.List;

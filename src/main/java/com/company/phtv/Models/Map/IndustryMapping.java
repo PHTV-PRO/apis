@@ -1,9 +1,7 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.IndustryDTO;
-import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Industry;
-import com.company.phtv.Models.Entity.Skill;
 import com.company.phtv.Models.Request.RequestIndustry;
 
 public class IndustryMapping {

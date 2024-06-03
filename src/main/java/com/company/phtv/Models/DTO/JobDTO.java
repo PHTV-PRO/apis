@@ -1,8 +1,5 @@
 package com.company.phtv.Models.DTO;
 
-import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.JobType;
-import com.company.phtv.Models.Entity.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,7 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
-import com.company.phtv.Models.DTO.JobTypeDTO;
 import com.company.phtv.Models.Entity.*;
-import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Repository.*;
@@ -13,8 +10,6 @@ import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,8 +34,10 @@ public class JobService implements IJobService {
         if (jobs.size() < 1) {
             throw new HttpException(404, "Not Found");
         }
-        for (Jobs j : jobs) {
-            jobDTOS.add(JobMapping.getJob(j));
+        for (int i = 0; i < jobs.size(); i++) {
+            if (jobs.get(i).getDeleted_at() == null) {
+                jobDTOS.add(JobMapping.getJob(jobs.get(i)));
+            }
         }
         return jobDTOS;
     }
@@ -48,11 +45,12 @@ public class JobService implements IJobService {
     @Override
     public JobDTO Create(RequestJob requestJob) {
         Jobs job = JobMapping.jobCreate(requestJob);
-        Company c = _companyRepo.getOne(requestJob.getCompany_id());
+        Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
+        @SuppressWarnings("deprecation")
         Location l = _locationRepo.getOne(requestJob.getLocation_id());
         job.setLocation(l);
-        JobType jt = _jobTypeRepo.getOne(requestJob.getJobType_id());
+        JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
         job.setJobType(jt);
         _jobRepo.save(job);
         return (JobDTO) JobMapping.getJob(job);
@@ -61,17 +59,22 @@ public class JobService implements IJobService {
     @Override
     public JobDTO Put(int id, RequestJob requestJob) {
         Jobs getJob = _jobRepo.findJobId(id);
+        boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
+        if (checkJobNotFound) {
+            throw Variable.notFound;
+        }
         Jobs job = JobMapping.jobPut(requestJob, getJob);
         if (requestJob.getCompany_id() != 0) {
-            Company c = _companyRepo.getOne(requestJob.getCompany_id());
+            Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
             job.setCompany(c);
         }
         if (requestJob.getLocation_id() != 0) {
+            @SuppressWarnings("deprecation")
             Location l = _locationRepo.getOne(requestJob.getLocation_id());
             job.setLocation(l);
         }
         if (requestJob.getJobType_id() != 0) {
-            JobType jt = _jobTypeRepo.getOne(requestJob.getJobType_id());
+            JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
             job.setJobType(jt);
         }
         job.setId(id);
@@ -82,6 +85,10 @@ public class JobService implements IJobService {
     @Override
     public JobDTO GetById(int id) {
         Jobs job = _jobRepo.findJobId(id);
+        boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
+        if (checkJobNotFound) {
+            throw Variable.notFound;
+        }
         JobDTO jobDTO = JobMapping.getJob(job);
         return jobDTO;
     }

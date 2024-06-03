@@ -1,11 +1,8 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.CityProvinceDTO;
-import com.company.phtv.Models.DTO.IndustryDTO;
 import com.company.phtv.Models.Entity.CityProvince;
-import com.company.phtv.Models.Entity.Industry;
 import com.company.phtv.Models.Request.RequestCityProvince;
-import com.company.phtv.Models.Request.RequestIndustry;
 
 public class CityProvinceMapping {
 

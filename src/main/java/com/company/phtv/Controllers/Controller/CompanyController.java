@@ -1,10 +1,8 @@
 package com.company.phtv.Controllers.Controller;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.CityProvinceDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.Request.RequestCompany;
-import com.company.phtv.Services.CityProvinceService;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;

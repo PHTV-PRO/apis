@@ -1,11 +1,7 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.*;
-import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Entity.Jobs;
-import com.company.phtv.Models.Entity.Location;
-import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestJob;
 
 public class JobMapping {
