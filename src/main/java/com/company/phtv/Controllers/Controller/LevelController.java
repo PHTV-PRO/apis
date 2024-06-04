@@ -20,7 +20,7 @@ public class LevelController {
     BaseController<List<LevelDTO>> _baseControllers = new BaseController<List<LevelDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_leveService.GetAll());
         }catch (HttpException e){
@@ -31,7 +31,7 @@ public class LevelController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestLevel level){
+    public  ResponseEntity<?> post(@RequestBody RequestLevel level){
         try {
             return _baseController.Ok(_leveService.Create(level));
         }catch (HttpException e){
@@ -42,7 +42,7 @@ public class LevelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_leveService.GetById(id));
         } catch (HttpException e) {
@@ -53,7 +53,7 @@ public class LevelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestLevel industry) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestLevel industry) {
         try {
             return _baseController.Ok(_leveService.Put(id, industry));
         } catch (HttpException e) {
@@ -64,7 +64,7 @@ public class LevelController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_leveService.Delete(id));
         } catch (HttpException e) {

@@ -65,7 +65,7 @@ public class JobController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestJob requestJob) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestJob requestJob) {
         try {
             return _baseController.Ok(_jobService.Put(id, requestJob));
         } catch (HttpException e) {

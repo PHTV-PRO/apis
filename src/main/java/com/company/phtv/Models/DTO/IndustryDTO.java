@@ -15,5 +15,7 @@ import java.util.Set;
 public class IndustryDTO {
     private int id;
     private  String name;
-    private Set<Skill> skills;// skill dto
+    // private Set<Skill> skills;
+    private Set<SkillDTO> skills;// skill dto
+
 }

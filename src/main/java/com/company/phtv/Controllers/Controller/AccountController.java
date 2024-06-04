@@ -21,7 +21,7 @@ public class AccountController {
     BaseController<List<AccountDTO>> _baseControllers = new BaseController<List<AccountDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_accountService.GetAll());
         }catch (HttpException e){
@@ -32,7 +32,7 @@ public class AccountController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestAccount account){
+    public  ResponseEntity<?> post(@RequestBody RequestAccount account){
         try {
             return _baseController.Ok(_accountService.Create(account));
         }catch (HttpException e){
@@ -43,7 +43,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_accountService.GetById(id));
         } catch (HttpException e) {

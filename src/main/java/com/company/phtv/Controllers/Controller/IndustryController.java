@@ -20,7 +20,7 @@ public class IndustryController {
     BaseController<List<IndustryDTO>> _baseControllers = new BaseController<List<IndustryDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?>Get(){
+    public ResponseEntity<?>get(){
         try {
             return _baseControllers.Ok(_industryService.GetAll());
         }catch (HttpException e){
@@ -31,7 +31,7 @@ public class IndustryController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestIndustry industry){
+    public  ResponseEntity<?> post(@RequestBody RequestIndustry industry){
         try {
             return _baseController.Ok(_industryService.Create(industry));
         }catch (HttpException e){
@@ -42,7 +42,7 @@ public class IndustryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_industryService.GetById(id));
         } catch (HttpException e) {

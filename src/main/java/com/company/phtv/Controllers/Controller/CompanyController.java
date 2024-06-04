@@ -41,7 +41,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> Get(@PathVariable int id) {
+    public ResponseEntity<?> get(@PathVariable int id) {
         try {
             return _baseController.Ok(_companyService.GetById(id));
         } catch (HttpException e) {
@@ -52,7 +52,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_companyService.Delete(id));
         } catch (HttpException e) {

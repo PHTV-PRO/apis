@@ -21,7 +21,7 @@ public class EmployerController {
     BaseController<List<EmployerDTO>> _baseControllers = new BaseController<List<EmployerDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_employerService.GetAll());
         }catch (HttpException e){
@@ -32,7 +32,7 @@ public class EmployerController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestEmployer employer){
+    public  ResponseEntity<?> post(@RequestBody RequestEmployer employer){
         try {
             return _baseController.Ok(_employerService.Create(employer));
         }catch (HttpException e){
@@ -43,7 +43,7 @@ public class EmployerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_employerService.GetById(id));
         } catch (HttpException e) {
@@ -54,7 +54,7 @@ public class EmployerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestEmployer requestEmployer) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestEmployer requestEmployer) {
         try {
             return _baseController.Ok(_employerService.Put(id, requestEmployer));
         } catch (HttpException e) {
@@ -65,7 +65,7 @@ public class EmployerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_employerService.Delete(id));
         } catch (HttpException e) {

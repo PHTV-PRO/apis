@@ -21,7 +21,7 @@ public class SubcriptionPlanController {
     BaseController<List<SubcriptionPlanDTO>> _baseControllers = new BaseController<List<SubcriptionPlanDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_subcriptionPlanService.GetAll());
         }catch (HttpException e){
@@ -32,7 +32,7 @@ public class SubcriptionPlanController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestSubcriptionPlan requestSubcriptionPlan){
+    public  ResponseEntity<?> post(@RequestBody RequestSubcriptionPlan requestSubcriptionPlan){
         try {
             return _baseController.Ok(_subcriptionPlanService.Create(requestSubcriptionPlan));
         }catch (HttpException e){
@@ -43,7 +43,7 @@ public class SubcriptionPlanController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_subcriptionPlanService.GetById(id));
         } catch (HttpException e) {
@@ -54,7 +54,7 @@ public class SubcriptionPlanController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestSubcriptionPlan subcriptionPlan) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestSubcriptionPlan subcriptionPlan) {
         try {
             return _baseController.Ok(_subcriptionPlanService.Put(id, subcriptionPlan));
         } catch (HttpException e) {
@@ -65,7 +65,7 @@ public class SubcriptionPlanController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_subcriptionPlanService.Delete(id));
         } catch (HttpException e) {

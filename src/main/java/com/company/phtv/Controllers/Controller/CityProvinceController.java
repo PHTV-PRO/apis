@@ -21,7 +21,7 @@ public class CityProvinceController {
     BaseController<List<CityProvinceDTO>> _baseControllers = new BaseController<List<CityProvinceDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_cityProvinceService.GetAll());
         }catch (HttpException e){
@@ -32,7 +32,7 @@ public class CityProvinceController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestCityProvince rqCityProvince){
+    public  ResponseEntity<?> post(@RequestBody RequestCityProvince rqCityProvince){
         try {
             return _baseController.Ok(_cityProvinceService.Create(rqCityProvince));
         }catch (HttpException e){
@@ -43,7 +43,7 @@ public class CityProvinceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_cityProvinceService.GetById(id));
         } catch (HttpException e) {
@@ -54,7 +54,7 @@ public class CityProvinceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestCityProvince rqCityProvince) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestCityProvince rqCityProvince) {
         try {
             return _baseController.Ok(_cityProvinceService.Put(id, rqCityProvince));
         } catch (HttpException e) {
@@ -65,7 +65,7 @@ public class CityProvinceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_cityProvinceService.Delete(id));
         } catch (HttpException e) {

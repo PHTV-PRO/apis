@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Models.DTO.Token;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
-import com.company.phtv.Utils.Token;
 
 
 @RestController

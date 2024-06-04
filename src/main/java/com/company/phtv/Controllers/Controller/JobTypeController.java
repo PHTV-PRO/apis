@@ -21,7 +21,7 @@ public class JobTypeController {
     BaseController<List<JobTypeDTO>> _baseControllers = new BaseController<List<JobTypeDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> Get(){
+    public ResponseEntity<?> get(){
         try {
             return _baseControllers.Ok(_jobTypeService.GetAll());
         }catch (HttpException e){
@@ -32,7 +32,7 @@ public class JobTypeController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> Post(@RequestBody RequestJobType requestJobType){
+    public  ResponseEntity<?> post(@RequestBody RequestJobType requestJobType){
         try {
             return _baseController.Ok(_jobTypeService.Create(requestJobType));
         }catch (HttpException e){
@@ -43,7 +43,7 @@ public class JobTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.Ok(_jobTypeService.GetById(id));
         } catch (HttpException e) {
@@ -54,7 +54,7 @@ public class JobTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestJobType requestJobType) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestJobType requestJobType) {
         try {
             return _baseController.Ok(_jobTypeService.Put(id, requestJobType));
         } catch (HttpException e) {
@@ -65,7 +65,7 @@ public class JobTypeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> Delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         try {
             return _baseController.Ok(_jobTypeService.Delete(id));
         } catch (HttpException e) {

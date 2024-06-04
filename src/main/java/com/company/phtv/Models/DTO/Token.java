@@ -1,4 +1,4 @@
-package com.company.phtv.Utils;
+package com.company.phtv.Models.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
