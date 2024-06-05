@@ -11,6 +11,7 @@ import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
+import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
 @Service
@@ -30,6 +31,14 @@ public class AuthenticateService implements IAuthenticateService {
     @Override
     public String login(RequestLogin requestLogin) {
         var user = _userRepo.findByEmail(requestLogin.getEmail());
+        boolean checkEmail= Regex.regexEmail(requestLogin.getEmail());
+        if(!checkEmail){
+            throw Variable.EmailInvalid;
+        }
+        boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
+        if(!checkPassword){
+            throw Variable.PasswordInvalid;
+        }
         if (user == null) {
             throw Variable.emailOrPasswordIncorrect;
         }
@@ -47,6 +56,14 @@ public class AuthenticateService implements IAuthenticateService {
 
     @Override
     public Account register(RequestLogin requestLogin) {
+        boolean checkEmail= Regex.regexEmail(requestLogin.getEmail());
+        if(!checkEmail){
+            throw Variable.EmailInvalid;
+        }
+        boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
+        if(!checkPassword){
+            throw Variable.PasswordInvalid;
+        }
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
         user.setRole(Role.CANDIDATE);

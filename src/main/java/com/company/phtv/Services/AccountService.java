@@ -6,6 +6,7 @@ import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Services.IServices.IAccountService;
+import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,14 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Create(RequestAccount requestAccount) {
+        boolean checkEmail = Regex.regexEmail(requestAccount.getEmail());
+        if (!checkEmail) {
+            throw Variable.EmailInvalid;
+        }
+        boolean checkPassword = Regex.regexPassword(requestAccount.getPassword());
+        if (!checkPassword) {
+            throw Variable.PasswordInvalid;
+        }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
         Account account = AccountMapping.account(requestAccount);
         _accountRepo.save(account);
@@ -50,6 +59,14 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO Put(int id, RequestAccount r) {
+        boolean checkEmailValid = Regex.regexEmail(r.getEmail());
+        if (!checkEmailValid) {
+            throw Variable.EmailInvalid;
+        }
+        boolean checkPasswordValid = Regex.regexPassword(r.getPassword());
+        if (!checkPasswordValid) {
+            throw Variable.PasswordInvalid;
+        }
         Account getAccount = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
