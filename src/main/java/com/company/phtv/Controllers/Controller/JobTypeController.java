@@ -32,7 +32,7 @@ public class JobTypeController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestJobType requestJobType){
+    public  ResponseEntity<?> post(@ModelAttribute RequestJobType requestJobType){
         try {
             return _baseController.Ok(_jobTypeService.Create(requestJobType));
         }catch (HttpException e){
@@ -54,7 +54,7 @@ public class JobTypeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestJobType requestJobType) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestJobType requestJobType) {
         try {
             return _baseController.Ok(_jobTypeService.Put(id, requestJobType));
         } catch (HttpException e) {
