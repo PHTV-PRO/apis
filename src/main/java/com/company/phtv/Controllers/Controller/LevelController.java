@@ -31,7 +31,7 @@ public class LevelController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestLevel level){
+    public  ResponseEntity<?> post(@ModelAttribute RequestLevel level){
         try {
             return _baseController.Ok(_leveService.Create(level));
         }catch (HttpException e){
@@ -53,7 +53,7 @@ public class LevelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestLevel industry) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestLevel industry) {
         try {
             return _baseController.Ok(_leveService.Put(id, industry));
         } catch (HttpException e) {
