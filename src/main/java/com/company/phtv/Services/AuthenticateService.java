@@ -36,9 +36,9 @@ public class AuthenticateService implements IAuthenticateService {
             throw Variable.EmailInvalid;
         }
         boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        if(!checkPassword){
-            throw Variable.PasswordInvalid;
-        }
+        // if(!checkPassword){
+        //     throw Variable.PasswordInvalid;
+        // }
         if (user == null) {
             throw Variable.emailOrPasswordIncorrect;
         }
