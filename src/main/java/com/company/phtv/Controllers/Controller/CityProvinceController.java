@@ -32,7 +32,7 @@ public class CityProvinceController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestCityProvince rqCityProvince){
+    public  ResponseEntity<?> post(@ModelAttribute RequestCityProvince rqCityProvince){
         try {
             return _baseController.Ok(_cityProvinceService.Create(rqCityProvince));
         }catch (HttpException e){
@@ -54,7 +54,7 @@ public class CityProvinceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestCityProvince rqCityProvince) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestCityProvince rqCityProvince) {
         try {
             return _baseController.Ok(_cityProvinceService.Put(id, rqCityProvince));
         } catch (HttpException e) {

@@ -34,12 +34,12 @@ public class Config {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                    request -> request.requestMatchers("/login/**","/jobType/**", "/register", "/hello","/getinfo","/industry/**","/level/**","/company/**")
+                    request -> request.requestMatchers("/login/**","/jobType/**", "/register", "/hello","/getinfo","/industry/**","/level/**","/company/**","/cityProvince/**")
                     .permitAll()
                     .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
                     .requestMatchers("/language").hasAnyAuthority(Role.CANDIDATE.name())
                     .requestMatchers("/course").hasAnyAuthority(Role.EMPLOYER.name())
-                            .requestMatchers("/jobType").hasAnyAuthority(Role.ADMIN.name())
+                            .requestMatchers("/cityProvince").hasAnyAuthority(Role.ADMIN.name())
                     .anyRequest().permitAll())
                     
 
