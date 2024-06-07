@@ -32,7 +32,7 @@ public class SubcriptionPlanController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestSubcriptionPlan requestSubcriptionPlan){
+    public  ResponseEntity<?> post(@ModelAttribute RequestSubcriptionPlan requestSubcriptionPlan){
         try {
             return _baseController.Ok(_subcriptionPlanService.Create(requestSubcriptionPlan));
         }catch (HttpException e){
@@ -54,7 +54,7 @@ public class SubcriptionPlanController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestSubcriptionPlan subcriptionPlan) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestSubcriptionPlan subcriptionPlan) {
         try {
             return _baseController.Ok(_subcriptionPlanService.Put(id, subcriptionPlan));
         } catch (HttpException e) {
