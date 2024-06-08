@@ -24,7 +24,7 @@ public class EmployerMapping {
         employer.setEmail(e.getEmail());
         employer.setName(e.getName());
         employer.setPassword(e.getPassword());
-        employer.setRole(e.getRole());
+        employer.setRole(e.getRole().EMPLOYER);
         return employer;
     }
 

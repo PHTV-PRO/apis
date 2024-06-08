@@ -32,7 +32,7 @@ public class EmployerController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestEmployer employer){
+    public  ResponseEntity<?> post(@ModelAttribute RequestEmployer employer){
         try {
             return _baseController.Ok(_employerService.Create(employer));
         }catch (HttpException e){
@@ -54,7 +54,7 @@ public class EmployerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestEmployer requestEmployer) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestEmployer requestEmployer) {
         try {
             return _baseController.Ok(_employerService.Put(id, requestEmployer));
         } catch (HttpException e) {

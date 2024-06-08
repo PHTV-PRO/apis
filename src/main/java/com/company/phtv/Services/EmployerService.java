@@ -1,5 +1,6 @@
 package com.company.phtv.Services;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.EmployerDTO;
 import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Map.EmployerMapping;
@@ -35,6 +36,7 @@ public class EmployerService implements IEmployerService {
     @Override
     public EmployerDTO Create(RequestEmployer requestEmployer) {
         Employer employer = EmployerMapping.employer(requestEmployer);
+//       employer.getRole(requestEmployer.setRole(Role.EMPLOYER));
         _employerRepo.save(employer);
         return (EmployerDTO) EmployerMapping.employerDTO(employer);
     }
