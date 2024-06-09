@@ -32,7 +32,7 @@ public class AccountController {
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestAccount account){
+    public  ResponseEntity<?> post(@ModelAttribute RequestAccount account){
         try {
             return _baseController.Ok(_accountService.Create(account));
         }catch (HttpException e){
@@ -54,7 +54,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestAccount requestAccount) {
+    public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
             return _baseController.Ok(_accountService.Put(id, requestAccount));
         } catch (HttpException e) {

@@ -26,7 +26,7 @@ public class AccountMapping  {
         account.setGender(a.getGender());
         account.setAddress(a.getAddress());
         account.setImage(a.getImage());
-        account.setRole(a.getRole());
+        account.setRole(a.getRole().CANDIDATE);
         return account;
     }
 
