@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
@@ -23,8 +24,10 @@ public class RequestAccount {
     public  int gender;
     @Nullable
     public  String address;
+//    @Nullable
+//    public  String image;
     @Nullable
-    public  String image;
+    public MultipartFile file;
     @Nullable
     public Role role;
 }

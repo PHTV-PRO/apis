@@ -6,13 +6,21 @@ import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Services.IServices.IAccountService;
+import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +60,26 @@ public class AccountService implements IAccountService {
 //            throw Variable.PasswordInvalid;
 //        }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
-        Account account = AccountMapping.account(requestAccount);
+        Path uploadPath = Paths.get("src/main/resources/Uploads/Images/Accounts/");
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectory(uploadPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        String fileCode = RandomStringUtils.randomAlphanumeric(8);
+        String fileName ;
+        try (InputStream inputStream = requestAccount.getFile().getInputStream()) {
+            fileName = fileCode+"_"+requestAccount.getFile().getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new HttpException(500,e.getMessage());
+        }
+        Account account = AccountMapping.account(requestAccount,fileName);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
     }
