@@ -14,7 +14,6 @@ import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
 
-
 @RestController
 @RequestMapping("")
 public class AuthenController {
@@ -28,11 +27,11 @@ public class AuthenController {
     public ResponseEntity<?> login(@RequestBody RequestLogin requestLogin) {
         try {
             String token = _iauthenRepo.login(requestLogin);
-            return _baseController.Ok(new Token(token));
+            return _baseController.success(new Token(token));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
@@ -40,11 +39,11 @@ public class AuthenController {
     public ResponseEntity<?> register(@RequestBody RequestLogin requestLogin) {
         try {
             Account user = _iauthenRepo.register(requestLogin);
-            return _baseControllerUser.Ok(user);
+            return _baseControllerUser.success(user);
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
@@ -52,12 +51,12 @@ public class AuthenController {
     public ResponseEntity<?> postToken(@RequestBody String token) {
         try {
             Account user = _iauthenRepo.checkToken(token);
-            return _baseControllerUser.Ok(user);
+            return _baseControllerUser.success(user);
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
-    
+
 }

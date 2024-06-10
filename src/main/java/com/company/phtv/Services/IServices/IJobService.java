@@ -6,9 +6,13 @@ import com.company.phtv.Models.Request.RequestJob;
 import java.util.List;
 
 public interface IJobService {
-    List<JobDTO> GetAll();
-    JobDTO Create(RequestJob requestJob);
-    JobDTO Put(int id,RequestJob requestJob);
-    JobDTO GetById(int id);
-    JobDTO Delete(int id);
+    List<JobDTO> getAll();
+
+    JobDTO create(RequestJob requestJob);
+
+    JobDTO put(int id, RequestJob requestJob);
+
+    JobDTO getById(int id);
+
+    JobDTO delete(int id);
 }

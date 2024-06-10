@@ -6,12 +6,11 @@ import java.util.Objects;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IJwtService {
-      String generateToken(UserDetails userDetails);
+  String generateToken(UserDetails userDetails);
 
+  String extractEmail(String token);
 
-    String extractEmail(String token);
+  boolean isTokenValid(String token, UserDetails userDetails);
 
-    boolean isTokenValid(String token, UserDetails userDetails);
-
-    String generateRefreshToken(Map<String, Objects> extraClaims, UserDetails userDetails);
+  String generateRefreshToken(Map<String, Objects> extraClaims, UserDetails userDetails);
 }

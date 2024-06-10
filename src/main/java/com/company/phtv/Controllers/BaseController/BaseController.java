@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 
 import com.company.phtv.Utils.ResponseData;
 
-public class BaseController <T>{
-     public ResponseEntity<ResponseData<T>> Ok(T obj) {
-        return ResponseEntity.ok(new ResponseData<>(200, "Action Succes", null, obj));
+public class BaseController<T> {
+    public ResponseEntity<ResponseData<T>> success(T obj) {
+        return ResponseEntity.ok(new ResponseData<>(200, "Action Success", null, obj));
     };
 
-    public ResponseEntity<ResponseData<T>> Error(T obj, int status, String message) {
+    public ResponseEntity<ResponseData<T>> error(T obj, int status, String message) {
         var response = new ResponseData<>(status, message, null, obj);
         switch (status) {
             case 400:

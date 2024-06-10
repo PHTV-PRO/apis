@@ -21,11 +21,11 @@ public class JobTypeService implements IJobTypeService {
     JobTypeRepo _jobTypeRepo;
 
     @Override
-    public List<JobTypeDTO> GetAll() {
+    public List<JobTypeDTO> getAll() {
         List<JobType> jobTypes = _jobTypeRepo.findAll();
         List<JobTypeDTO> jobTypeDTOS = new ArrayList<>();
-        for (int i =0; i< jobTypes.size();i++) {
-            if(jobTypes.get(i).getDeleted_at()==null){
+        for (int i = 0; i < jobTypes.size(); i++) {
+            if (jobTypes.get(i).getDeleted_at() == null) {
                 jobTypeDTOS.add(JobTypeMapping.jobTypeDTO(jobTypes.get(i)));
             }
         }
@@ -33,14 +33,14 @@ public class JobTypeService implements IJobTypeService {
     }
 
     @Override
-    public JobTypeDTO Create(RequestJobType requestJobType) {
+    public JobTypeDTO create(RequestJobType requestJobType) {
         JobType jobType = JobTypeMapping.JobType(requestJobType);
         _jobTypeRepo.save(jobType);
         return (JobTypeDTO) JobTypeMapping.jobTypeDTO(jobType);
     }
 
     @Override
-    public JobTypeDTO Put(int id, RequestJobType requestJobType) {
+    public JobTypeDTO put(int id, RequestJobType requestJobType) {
         JobType getJobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (getJobType != null && getJobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
@@ -53,7 +53,7 @@ public class JobTypeService implements IJobTypeService {
     }
 
     @Override
-    public JobTypeDTO Delete(int id) {
+    public JobTypeDTO delete(int id) {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
@@ -65,7 +65,7 @@ public class JobTypeService implements IJobTypeService {
     }
 
     @Override
-    public JobTypeDTO GetById(int id) {
+    public JobTypeDTO getById(int id) {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {

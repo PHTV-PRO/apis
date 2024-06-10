@@ -6,10 +6,13 @@ import com.company.phtv.Models.Request.RequestIndustry;
 import java.util.List;
 
 public interface IIndustryService {
-    List<IndustryDTO> GetAll();
-   IndustryDTO Create(RequestIndustry requestIndustry);
-   IndustryDTO Put(int id, RequestIndustry requestIndustry);
+    List<IndustryDTO> getAll();
 
-   IndustryDTO Delete(int id);
-   IndustryDTO GetById(int id);
+    IndustryDTO create(RequestIndustry requestIndustry);
+
+    IndustryDTO put(int id, RequestIndustry requestIndustry);
+
+    IndustryDTO delete(int id);
+
+    IndustryDTO getById(int id);
 }

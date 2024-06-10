@@ -21,7 +21,7 @@ public class LevelService implements ILevelService {
     LevelRepo _levelRepo;
 
     @Override
-    public List<LevelDTO> GetAll() {
+    public List<LevelDTO> getAll() {
         List<Level> levels = _levelRepo.findAll();
         List<LevelDTO> levelDTOs = new ArrayList<>();
         for (int i = 0; i < levels.size(); i++) {
@@ -33,14 +33,14 @@ public class LevelService implements ILevelService {
     }
 
     @Override
-    public LevelDTO Create(RequestLevel requestLevel) {
+    public LevelDTO create(RequestLevel requestLevel) {
         Level level = LevelMapping.level(requestLevel);
         _levelRepo.save(level);
         return (LevelDTO) LevelMapping.levelDTO(level);
     }
 
     @Override
-    public LevelDTO Put(int id, RequestLevel requestLevel) {
+    public LevelDTO put(int id, RequestLevel requestLevel) {
         Level getLevel = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (getLevel != null && getLevel.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
@@ -53,7 +53,7 @@ public class LevelService implements ILevelService {
     }
 
     @Override
-    public LevelDTO Delete(int id) {
+    public LevelDTO delete(int id) {
         Level level = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (level != null && level.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
@@ -65,7 +65,7 @@ public class LevelService implements ILevelService {
     }
 
     @Override
-    public LevelDTO GetById(int id) {
+    public LevelDTO getById(int id) {
         Level level = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (level != null && level.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {

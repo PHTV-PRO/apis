@@ -21,7 +21,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     SubcriptionPlanRepo _subcriptionPlanRepo;
 
     @Override
-    public List<SubcriptionPlanDTO> GetAll() {
+    public List<SubcriptionPlanDTO> getAll() {
         List<SubcriptionPlan> subcriptionPlans = _subcriptionPlanRepo.findAll();
         List<SubcriptionPlanDTO> subcriptionPlanDTOS = new ArrayList<>();
         for (int i = 0; i < subcriptionPlans.size(); i++) {
@@ -33,14 +33,14 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     }
 
     @Override
-    public SubcriptionPlanDTO Create(RequestSubcriptionPlan requestSubcriptionPlan) {
+    public SubcriptionPlanDTO create(RequestSubcriptionPlan requestSubcriptionPlan) {
         SubcriptionPlan subcriptionPlan = SubcriptionPlanMapping.SubcriptionPlan(requestSubcriptionPlan);
         _subcriptionPlanRepo.save(subcriptionPlan);
         return (SubcriptionPlanDTO) SubcriptionPlanMapping.subcriptionPlanDTO(subcriptionPlan);
     }
 
     @Override
-    public SubcriptionPlanDTO Put(int id, RequestSubcriptionPlan requestSubcriptionPlan) {
+    public SubcriptionPlanDTO put(int id, RequestSubcriptionPlan requestSubcriptionPlan) {
         SubcriptionPlan getSubcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
         boolean checkSubcriptionPlanNotFound = (getSubcriptionPlan != null
                 && getSubcriptionPlan.getDeleted_at() == null)
@@ -57,7 +57,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     }
 
     @Override
-    public SubcriptionPlanDTO Delete(int id) {
+    public SubcriptionPlanDTO delete(int id) {
         SubcriptionPlan subcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
         boolean checkSubcriptionPlanNotFound = (subcriptionPlan != null && subcriptionPlan.getDeleted_at() == null)
                 ? false
@@ -71,7 +71,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     }
 
     @Override
-    public SubcriptionPlanDTO GetById(int id) {
+    public SubcriptionPlanDTO getById(int id) {
         SubcriptionPlan subcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
         boolean checkSubcriptionPlanNotFound = (subcriptionPlan != null && subcriptionPlan.getDeleted_at() == null)
                 ? false

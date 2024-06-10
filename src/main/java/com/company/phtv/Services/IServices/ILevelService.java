@@ -6,9 +6,13 @@ import com.company.phtv.Models.Request.RequestLevel;
 import java.util.List;
 
 public interface ILevelService {
-    List<LevelDTO> GetAll();
-    LevelDTO Create(RequestLevel requestLevel);
-    LevelDTO Put(int id, RequestLevel requestLevel);
-    LevelDTO Delete(int id);
-    LevelDTO GetById(int id);
+    List<LevelDTO> getAll();
+
+    LevelDTO create(RequestLevel requestLevel);
+
+    LevelDTO put(int id, RequestLevel requestLevel);
+
+    LevelDTO delete(int id);
+
+    LevelDTO getById(int id);
 }

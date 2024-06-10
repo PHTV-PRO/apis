@@ -21,7 +21,7 @@ public class CityProvinceService implements ICityProviceService {
     CityProvinceRepo _cityProvinceRepo;
 
     @Override
-    public List<CityProvinceDTO> GetAll() {
+    public List<CityProvinceDTO> getAll() {
         List<CityProvince> cityProvinces = _cityProvinceRepo.findAll();
         List<CityProvinceDTO> cityProvinceDTOS = new ArrayList<>();
         for (int i = 0; i < cityProvinces.size(); i++) {
@@ -33,14 +33,14 @@ public class CityProvinceService implements ICityProviceService {
     }
 
     @Override
-    public CityProvinceDTO Create(RequestCityProvince requestCityProvince) {
+    public CityProvinceDTO create(RequestCityProvince requestCityProvince) {
         CityProvince cityProvince = CityProvinceMapping.cityProvince(requestCityProvince);
         _cityProvinceRepo.save(cityProvince);
         return (CityProvinceDTO) CityProvinceMapping.cityProvinceDTO(cityProvince);
     }
 
     @Override
-    public CityProvinceDTO Put(int id, RequestCityProvince RequestCityProvince) {
+    public CityProvinceDTO put(int id, RequestCityProvince RequestCityProvince) {
         CityProvince getCityProvince = _cityProvinceRepo.findIdCityProvince(id);
         boolean checkCityProvinceNotFound = (getCityProvince != null && getCityProvince.getDeleted_at() == null) ? false
                 : true;
@@ -54,7 +54,7 @@ public class CityProvinceService implements ICityProviceService {
     }
 
     @Override
-    public CityProvinceDTO Delete(int id) {
+    public CityProvinceDTO delete(int id) {
         CityProvince cityProvince = _cityProvinceRepo.findIdCityProvince(id);
         boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
                 : true;
@@ -67,7 +67,7 @@ public class CityProvinceService implements ICityProviceService {
     }
 
     @Override
-    public CityProvinceDTO GetById(int id) {
+    public CityProvinceDTO getById(int id) {
         CityProvince cityProvince = _cityProvinceRepo.findIdCityProvince(id);
         boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
                 : true;

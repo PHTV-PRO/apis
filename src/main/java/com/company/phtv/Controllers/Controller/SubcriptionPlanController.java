@@ -21,60 +21,58 @@ public class SubcriptionPlanController {
     BaseController<List<SubcriptionPlanDTO>> _baseControllers = new BaseController<List<SubcriptionPlanDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> get(){
+    public ResponseEntity<?> get() {
         try {
-            return _baseControllers.Ok(_subcriptionPlanService.GetAll());
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseControllers.success(_subcriptionPlanService.getAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@ModelAttribute RequestSubcriptionPlan requestSubcriptionPlan){
+    public ResponseEntity<?> post(@ModelAttribute RequestSubcriptionPlan requestSubcriptionPlan) {
         try {
-            return _baseController.Ok(_subcriptionPlanService.Create(requestSubcriptionPlan));
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseController.success(_subcriptionPlanService.create(requestSubcriptionPlan));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.Ok(_subcriptionPlanService.GetById(id));
+            return _baseController.success(_subcriptionPlanService.getById(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestSubcriptionPlan subcriptionPlan) {
         try {
-            return _baseController.Ok(_subcriptionPlanService.Put(id, subcriptionPlan));
+            return _baseController.success(_subcriptionPlanService.put(id, subcriptionPlan));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_subcriptionPlanService.Delete(id));
+            return _baseController.success(_subcriptionPlanService.delete(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
-
-
 
 }

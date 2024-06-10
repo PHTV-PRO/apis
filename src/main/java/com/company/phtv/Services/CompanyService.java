@@ -25,7 +25,7 @@ public class CompanyService implements ICompanyService {
     EmployerRepo _employerRepo;
 
     @Override
-    public List<CompanyDTO> GetAll() {
+    public List<CompanyDTO> getAll() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
@@ -37,7 +37,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public CompanyDTO Create(RequestCompany requestCompany) {
+    public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
         Employer e = _employerRepo.findIdEmployer(requestCompany.getEmployer_id());
         company.setEmployer(e);
@@ -46,12 +46,12 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public CompanyDTO Put(int id, RequestCompany requestCompany) {
+    public CompanyDTO put(int id, RequestCompany requestCompany) {
         return null;
     }
 
     @Override
-    public CompanyDTO GetById(int id) {
+    public CompanyDTO getById(int id) {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {
@@ -62,7 +62,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public CompanyDTO Delete(int id) {
+    public CompanyDTO delete(int id) {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {

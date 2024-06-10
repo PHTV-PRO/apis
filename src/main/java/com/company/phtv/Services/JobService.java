@@ -28,7 +28,7 @@ public class JobService implements IJobService {
     JobTypeRepo _jobTypeRepo;
 
     @Override
-    public List<JobDTO> GetAll() {
+    public List<JobDTO> getAll() {
         List<Jobs> jobs = _jobRepo.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
         if (jobs.size() < 1) {
@@ -43,7 +43,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO Create(RequestJob requestJob) {
+    public JobDTO create(RequestJob requestJob) {
         Jobs job = JobMapping.jobCreate(requestJob);
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
@@ -57,7 +57,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO Put(int id, RequestJob requestJob) {
+    public JobDTO put(int id, RequestJob requestJob) {
         Jobs getJob = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
@@ -83,7 +83,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO GetById(int id) {
+    public JobDTO getById(int id) {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
@@ -94,7 +94,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO Delete(int id) {
+    public JobDTO delete(int id) {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {

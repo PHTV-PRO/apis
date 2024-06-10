@@ -20,58 +20,57 @@ public class JobController {
     BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> get(){
+    public ResponseEntity<?> get() {
         try {
-            return _baseControllers.Ok(_jobService.GetAll());
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseControllers.success(_jobService.getAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @PostMapping()
     public ResponseEntity<?> post(@RequestBody RequestJob requestJob) {
         try {
-            return _baseController.Ok(_jobService.Create(requestJob));
+            return _baseController.success(_jobService.create(requestJob));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable int id) {
         try {
-            return _baseController.Ok(_jobService.GetById(id));
+            return _baseController.success(_jobService.getById(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_jobService.Delete(id));
+            return _baseController.success(_jobService.delete(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestJob requestJob) {
         try {
-            return _baseController.Ok(_jobService.Put(id, requestJob));
+            return _baseController.success(_jobService.put(id, requestJob));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 }

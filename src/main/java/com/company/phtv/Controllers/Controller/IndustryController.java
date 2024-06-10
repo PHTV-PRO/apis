@@ -20,57 +20,57 @@ public class IndustryController {
     BaseController<List<IndustryDTO>> _baseControllers = new BaseController<List<IndustryDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?>get(){
+    public ResponseEntity<?> get() {
         try {
-            return _baseControllers.Ok(_industryService.GetAll());
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseControllers.success(_industryService.getAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@RequestBody RequestIndustry industry){
+    public ResponseEntity<?> post(@RequestBody RequestIndustry industry) {
         try {
-            return _baseController.Ok(_industryService.Create(industry));
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseController.success(_industryService.create(industry));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.Ok(_industryService.GetById(id));
+            return _baseController.success(_industryService.getById(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestIndustry industry) {
         try {
-            return _baseController.Ok(_industryService.Put(id, industry));
+            return _baseController.success(_industryService.put(id, industry));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_industryService.Delete(id));
+            return _baseController.success(_industryService.delete(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 

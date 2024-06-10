@@ -1,14 +1,18 @@
 package com.company.phtv.Services.IServices;
+
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
 
 import java.util.List;
 
 public interface ISubcriptionPlanService {
-    List<SubcriptionPlanDTO> GetAll();
-    SubcriptionPlanDTO Create(RequestSubcriptionPlan requestSubcriptionPlan);
-    SubcriptionPlanDTO Put(int id, RequestSubcriptionPlan requestSubcriptionPlan);
+    List<SubcriptionPlanDTO> getAll();
 
-    SubcriptionPlanDTO Delete(int id);
-    SubcriptionPlanDTO GetById(int id);
+    SubcriptionPlanDTO create(RequestSubcriptionPlan requestSubcriptionPlan);
+
+    SubcriptionPlanDTO put(int id, RequestSubcriptionPlan requestSubcriptionPlan);
+
+    SubcriptionPlanDTO delete(int id);
+
+    SubcriptionPlanDTO getById(int id);
 }

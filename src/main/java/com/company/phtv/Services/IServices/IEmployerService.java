@@ -6,9 +6,13 @@ import com.company.phtv.Models.Request.RequestEmployer;
 import java.util.List;
 
 public interface IEmployerService {
-    List<EmployerDTO> GetAll();
-    EmployerDTO Create(RequestEmployer requestEmployer);
-    EmployerDTO Put(int id, RequestEmployer requestEmployer);
-    EmployerDTO Delete(int id);
-    EmployerDTO GetById(int id);
+    List<EmployerDTO> getAll();
+
+    EmployerDTO create(RequestEmployer requestEmployer);
+
+    EmployerDTO put(int id, RequestEmployer requestEmployer);
+
+    EmployerDTO delete(int id);
+
+    EmployerDTO getById(int id);
 }

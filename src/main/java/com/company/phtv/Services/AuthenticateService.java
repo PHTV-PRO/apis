@@ -33,9 +33,9 @@ public class AuthenticateService implements IAuthenticateService {
         var user = _userRepo.findByEmail(requestLogin.getEmail());
         boolean checkEmail= Regex.regexEmail(requestLogin.getEmail());
         if(!checkEmail){
-            throw Variable.EmailInvalid;
+            throw Variable.emailInvalid;
         }
-        boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
+        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
         // if(!checkPassword){
         //     throw Variable.PasswordInvalid;
         // }
@@ -58,12 +58,12 @@ public class AuthenticateService implements IAuthenticateService {
     public Account register(RequestLogin requestLogin) {
         boolean checkEmail= Regex.regexEmail(requestLogin.getEmail());
         if(!checkEmail){
-            throw Variable.EmailInvalid;
+            throw Variable.emailInvalid;
         }
-        boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        if(!checkPassword){
-            throw Variable.PasswordInvalid;
-        }
+        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
+        // if(!checkPassword){
+        //     throw Variable.passwordInvalid;
+        // }
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
         user.setRole(Role.CANDIDATE);

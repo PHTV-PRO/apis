@@ -20,57 +20,57 @@ public class LevelController {
     BaseController<List<LevelDTO>> _baseControllers = new BaseController<List<LevelDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> get(){
+    public ResponseEntity<?> get() {
         try {
-            return _baseControllers.Ok(_leveService.GetAll());
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseControllers.success(_leveService.getAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @PostMapping()
-    public  ResponseEntity<?> post(@ModelAttribute RequestLevel level){
+    public ResponseEntity<?> post(@ModelAttribute RequestLevel level) {
         try {
-            return _baseController.Ok(_leveService.Create(level));
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseController.success(_leveService.create(level));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.Ok(_leveService.GetById(id));
+            return _baseController.success(_leveService.getById(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestLevel industry) {
         try {
-            return _baseController.Ok(_leveService.Put(id, industry));
+            return _baseController.success(_leveService.put(id, industry));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_leveService.Delete(id));
+            return _baseController.success(_leveService.delete(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 

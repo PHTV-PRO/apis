@@ -6,9 +6,13 @@ import com.company.phtv.Models.Request.RequestCompany;
 import java.util.List;
 
 public interface ICompanyService {
-    List<CompanyDTO> GetAll();
-    CompanyDTO Create(RequestCompany requestCompany);
-    CompanyDTO Put(int id,RequestCompany requestCompany);
-    CompanyDTO GetById(int id);
-    CompanyDTO Delete(int id);
+    List<CompanyDTO> getAll();
+
+    CompanyDTO create(RequestCompany requestCompany);
+
+    CompanyDTO put(int id, RequestCompany requestCompany);
+
+    CompanyDTO getById(int id);
+
+    CompanyDTO delete(int id);
 }

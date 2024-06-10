@@ -22,7 +22,7 @@ public class EmployerService implements IEmployerService {
     EmployerRepo _employerRepo;
 
     @Override
-    public List<EmployerDTO> GetAll() {
+    public List<EmployerDTO> getAll() {
         List<Employer> employers = _employerRepo.findAll();
         List<EmployerDTO> employerDTOS = new ArrayList<>();
          for (int i = 0; i < employers.size(); i++) {
@@ -34,7 +34,7 @@ public class EmployerService implements IEmployerService {
     }
 
     @Override
-    public EmployerDTO Create(RequestEmployer requestEmployer) {
+    public EmployerDTO create(RequestEmployer requestEmployer) {
         Employer employer = EmployerMapping.employer(requestEmployer);
 //       employer.getRole(requestEmployer.setRole(Role.EMPLOYER));
         _employerRepo.save(employer);
@@ -42,7 +42,7 @@ public class EmployerService implements IEmployerService {
     }
 
     @Override
-    public EmployerDTO Put(int id, RequestEmployer requestEmployer) {
+    public EmployerDTO put(int id, RequestEmployer requestEmployer) {
         Employer getEmployer = _employerRepo.findIdEmployer(id);
         boolean checkEmployerNotFound = (getEmployer != null && getEmployer.getDeleted_at() == null) ? false : true;
         if (checkEmployerNotFound) {
@@ -55,7 +55,7 @@ public class EmployerService implements IEmployerService {
     }
 
     @Override
-    public EmployerDTO Delete(int id) {
+    public EmployerDTO delete(int id) {
         Employer employer = _employerRepo.findIdEmployer(id);
         boolean checkEmployerNotFound = (employer != null && employer.getDeleted_at() == null) ? false : true;
         if (checkEmployerNotFound) {
@@ -67,7 +67,7 @@ public class EmployerService implements IEmployerService {
     }
 
     @Override
-    public EmployerDTO GetById(int id) {
+    public EmployerDTO getById(int id) {
         Employer employer = _employerRepo.findIdEmployer(id);
         boolean checkEmployerNotFound = (employer != null && employer.getDeleted_at() == null) ? false : true;
         if (checkEmployerNotFound) {

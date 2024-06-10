@@ -38,7 +38,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public List<AccountDTO> GetAll() {
+    public List<AccountDTO> getAll() {
         List<Account> accounts = _accountRepo.findAll();
         List<AccountDTO> accountDTOS = new ArrayList<>();
         for (int i = 0; i < accounts.size(); i++) {
@@ -50,15 +50,15 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTO Create(RequestAccount requestAccount) {
+    public AccountDTO create(RequestAccount requestAccount) {
         boolean checkEmail = Regex.regexEmail(requestAccount.getEmail());
         if (!checkEmail) {
-            throw Variable.EmailInvalid;
+            throw Variable.emailInvalid;
         }
-//        boolean checkPassword = Regex.regexPassword(requestAccount.getPassword());
-//        if (!checkPassword) {
-//            throw Variable.PasswordInvalid;
-//        }
+        // boolean checkPassword = Regex.regexPassword(requestAccount.getPassword());
+        // if (!checkPassword) {
+        // throw Variable.PasswordInvalid;
+        // }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
         Path uploadPath = Paths.get("src/main/resources/Uploads/Images/Accounts/");
         if (!Files.exists(uploadPath)) {
@@ -71,29 +71,29 @@ public class AccountService implements IAccountService {
         }
 
         String fileCode = RandomStringUtils.randomAlphanumeric(8);
-        String fileName ;
+        String fileName;
         try (InputStream inputStream = requestAccount.getFile().getInputStream()) {
-            fileName = fileCode+"_"+requestAccount.getFile().getOriginalFilename();
+            fileName = fileCode + "_" + requestAccount.getFile().getOriginalFilename();
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
-            throw new HttpException(500,e.getMessage());
+            throw new HttpException(500, e.getMessage());
         }
-        Account account = AccountMapping.account(requestAccount,fileName);
+        Account account = AccountMapping.account(requestAccount, fileName);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
     }
 
     @Override
-    public AccountDTO Put(int id, RequestAccount r) {
+    public AccountDTO put(int id, RequestAccount r) {
         boolean checkEmailValid = Regex.regexEmail(r.getEmail());
         if (!checkEmailValid) {
-            throw Variable.EmailInvalid;
+            throw Variable.emailInvalid;
         }
-//        boolean checkPasswordValid = Regex.regexPassword(r.getPassword());
-//        if (!checkPasswordValid) {
-//            throw Variable.PasswordInvalid;
-//        }
+        // boolean checkPasswordValid = Regex.regexPassword(r.getPassword());
+        // if (!checkPasswordValid) {
+        // throw Variable.PasswordInvalid;
+        // }
         Account getAccount = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
@@ -107,7 +107,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTO Delete(int id) {
+    public AccountDTO delete(int id) {
         Account account = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
@@ -119,7 +119,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTO GetById(int id) {
+    public AccountDTO getById(int id) {
         Account account = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {

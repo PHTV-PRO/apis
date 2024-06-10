@@ -6,10 +6,13 @@ import com.company.phtv.Models.Request.RequestCityProvince;
 import java.util.List;
 
 public interface ICityProviceService {
-    List<CityProvinceDTO> GetAll();
-    CityProvinceDTO Create(RequestCityProvince requestCityProvince);
-    CityProvinceDTO Put(int id, RequestCityProvince requestCityProvince);
+    List<CityProvinceDTO> getAll();
 
-    CityProvinceDTO Delete(int id);
-    CityProvinceDTO GetById(int id);
+    CityProvinceDTO create(RequestCityProvince requestCityProvince);
+
+    CityProvinceDTO put(int id, RequestCityProvince requestCityProvince);
+
+    CityProvinceDTO delete(int id);
+
+    CityProvinceDTO getById(int id);
 }

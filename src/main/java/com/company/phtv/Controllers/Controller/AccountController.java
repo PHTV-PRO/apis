@@ -1,6 +1,5 @@
 package com.company.phtv.Controllers.Controller;
 
-
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.Request.RequestAccount;
@@ -22,58 +21,58 @@ public class AccountController {
     BaseController<List<AccountDTO>> _baseControllers = new BaseController<List<AccountDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> get(){
+    public ResponseEntity<?> get() {
         try {
-            return _baseControllers.Ok(_accountService.GetAll());
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseControllers.success(_accountService.getAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
-    @PostMapping(value = "",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    public  ResponseEntity<?> post(@ModelAttribute RequestAccount account){
+    @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> post(@ModelAttribute RequestAccount account) {
         try {
-            return _baseController.Ok(_accountService.Create(account));
-        }catch (HttpException e){
-            return _baseControllers.Error(null,e.StatusCode, e.message);
-        }catch (Exception e){
-            return  _baseControllers.Error(null,500,e.getMessage());
+            return _baseController.success(_accountService.create(account));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.Ok(_accountService.GetById(id));
+            return _baseController.success(_accountService.getById(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
-            return _baseController.Ok(_accountService.Put(id, requestAccount));
+            return _baseController.success(_accountService.put(id, requestAccount));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {
         try {
-            return _baseController.Ok(_accountService.Delete(id));
+            return _baseController.success(_accountService.delete(id));
         } catch (HttpException e) {
-            return _baseController.Error(null, e.StatusCode, e.message);
+            return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
-            return _baseController.Error(null, 500, e.getMessage());
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 }

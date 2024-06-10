@@ -21,7 +21,7 @@ public class IndustryService implements IIndustryService {
     IndustryRepo _industryRepo;
 
     @Override
-    public List<IndustryDTO> GetAll() {
+    public List<IndustryDTO> getAll() {
         List<Industry> industries = _industryRepo.findAll();
         List<IndustryDTO> industryDTOs = new ArrayList<>();
         for (int i = 0; i < industries.size(); i++) {
@@ -33,14 +33,14 @@ public class IndustryService implements IIndustryService {
     }
 
     @Override
-    public IndustryDTO Create(RequestIndustry requestIndustry) {
+    public IndustryDTO create(RequestIndustry requestIndustry) {
         Industry industry = IndustryMapping.Industry(requestIndustry);
         _industryRepo.save(industry);
         return (IndustryDTO) IndustryMapping.industryDTO(industry);
     }
 
     @Override
-    public IndustryDTO Put(int id, RequestIndustry requestIndustry) {
+    public IndustryDTO put(int id, RequestIndustry requestIndustry) {
         Industry getIndustry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (getIndustry != null && getIndustry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
@@ -53,7 +53,7 @@ public class IndustryService implements IIndustryService {
     }
 
     @Override
-    public IndustryDTO Delete(int id) {
+    public IndustryDTO delete(int id) {
         Industry industry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
@@ -65,7 +65,7 @@ public class IndustryService implements IIndustryService {
     }
 
     @Override
-    public IndustryDTO GetById(int id) {
+    public IndustryDTO getById(int id) {
         Industry industry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
