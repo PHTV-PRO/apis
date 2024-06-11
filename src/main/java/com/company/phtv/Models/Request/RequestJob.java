@@ -1,5 +1,7 @@
 package com.company.phtv.Models.Request;
 
+import java.util.Date;
+
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,9 +34,9 @@ public class RequestJob {
     @Nullable
     public  String salary_min;
     @Nullable
-    public  String start_date;
+    public  Date start_date;
     @Nullable
-    public  String end_date;
+    public  Date end_date;
     @Nullable
     public  boolean is_active;
     @Nullable

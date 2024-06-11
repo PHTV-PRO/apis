@@ -1,5 +1,7 @@
 package com.company.phtv.Models.DTO;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,8 @@ public class JobDTO {
     private  String experience_required;
     private  String salary_max;
     private  String salary_min;
-    private  String start_date;
-    private  String end_date;
+    private  Date start_date;
+    private  Date end_date;
     private  boolean is_active;
     private  int gender;
 

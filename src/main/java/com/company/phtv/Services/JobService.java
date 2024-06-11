@@ -3,15 +3,16 @@ package com.company.phtv.Services;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Request.RequestIntermediaryJob;
 import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Repository.*;
 import com.company.phtv.Services.IServices.IJobService;
-import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,14 +27,15 @@ public class JobService implements IJobService {
     LocationRepo _locationRepo;
     @Autowired
     JobTypeRepo _jobTypeRepo;
+    @Autowired
+    FollowJobRepo _followJobRepo;
+    @Autowired
+    AccountRepo _accountRepo;
 
     @Override
     public List<JobDTO> getAll() {
         List<Jobs> jobs = _jobRepo.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
-        if (jobs.size() < 1) {
-            throw new HttpException(404, "Not Found");
-        }
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null) {
                 jobDTOS.add(JobMapping.getJob(jobs.get(i)));
@@ -103,5 +105,39 @@ public class JobService implements IJobService {
         job.setDeleted_at(new Date());
         _jobRepo.save(job);
         return null;
+    }
+
+    public List<JobDTO> getJobsNew() {
+        List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
+        List<JobDTO> jobDTOS = new ArrayList<>();
+        for (int i = 0; i < jobs.size(); i++) {
+            if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
+                jobDTOS.add(JobMapping.getJob(jobs.get(i)));
+            }
+        }
+        return jobDTOS;
+    }
+
+    public List<JobDTO> getJobsSave(String id) {
+        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
+        List<FollowJob> followJobs = _followJobRepo.findJobByUserId(account);
+        List<JobDTO> jobDTOS = new ArrayList<>();
+        for (int i = 0; i < followJobs.size(); i++) {
+            if (followJobs.get(i).getDeleted_at() == null
+                    && (followJobs.get(i).getJobs().getEnd_date()).after(Date.from(Instant.now()))) {
+                jobDTOS.add(JobMapping.getJob(followJobs.get(i).getJobs()));
+            }
+        }
+        return jobDTOS;
+    }
+
+    public Boolean postJobsSave(RequestIntermediaryJob requestIntermediaryJob) {
+        Account account = _accountRepo.getAccountById(Integer.parseInt(requestIntermediaryJob.account_id));
+        Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
+        if (account == null || job == null) {
+            return false;
+        }
+        _followJobRepo.save(new FollowJob(0, job, account));
+        return true;
     }
 }

@@ -1,6 +1,5 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.EmployerDTO;
 import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Map.EmployerMapping;

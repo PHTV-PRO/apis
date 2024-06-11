@@ -3,6 +3,7 @@ package com.company.phtv.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,9 +41,9 @@ public class Config {
                                         "/employer/**", "/account/**")
                                 .permitAll()
                                 .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/industry/**").hasAnyAuthority(Role.ADMIN.name(), Role.CANDIDATE.name())
-                                .requestMatchers("/industry/**").hasAnyAuthority(Role.CANDIDATE.name())
-                                .requestMatchers("/course").hasAnyAuthority(Role.EMPLOYER.name())
+                                // .requestMatchers("/industry/**").hasAnyAuthority(Role.ADMIN.name(), Role.CANDIDATE.name())
+                                // .requestMatchers("/industry/**").hasAnyAuthority(Role.CANDIDATE.name())
+                                .requestMatchers(HttpMethod.GET,"/course").hasAnyAuthority(Role.EMPLOYER.name())
                                 .anyRequest().permitAll())
 
                 .sessionManagement(mannager -> mannager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

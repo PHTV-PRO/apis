@@ -22,6 +22,7 @@ public class FollowJobData {
         data.add(new FollowJob(1, _JobRepo.getOne(1), _AccountRepo.getAccountById(1)));
         data.add(new FollowJob(2, _JobRepo.getOne(2), _AccountRepo.getAccountById(2)));
         data.add(new FollowJob(3, _JobRepo.getOne(3), _AccountRepo.getAccountById(3)));
+        data.add(new FollowJob(4, _JobRepo.getOne(3), _AccountRepo.getAccountById(1)));
 
         return data;
     }

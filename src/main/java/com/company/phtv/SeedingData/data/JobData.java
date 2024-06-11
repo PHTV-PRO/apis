@@ -6,6 +6,7 @@ import com.company.phtv.Repository.JobTypeRepo;
 import com.company.phtv.Repository.LocationRepo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class JobData {
@@ -52,8 +53,8 @@ public class JobData {
                                 "5 năm",
                                 "18 triệu",
                                 "12 triệu",
-                                "20/05/2024",
-                                "20/10/2024",
+                                new Date("2/6/2024"),
+                                new Date("21/6/2024"),
                                 true,
                                 0,
                                 _CompanyRepo.getOne(2),
@@ -93,8 +94,8 @@ public class JobData {
                                 "Không yêu cầu",
                                 null,
                                 null,
-                                "tháng 6 / 2024",
-                                "tháng 11 / 2024",
+                                new Date("1/6/2024"),
+                                new Date("2/7/2024"),
                                 true,
                                 0,
                                 _CompanyRepo.getOne(3),
@@ -138,8 +139,8 @@ public class JobData {
                                                 "Ưu tiên ứng viên đã biết nghiệp vụ bank: kết nối thanh toán, tra soát đối soát, kpi, xếp hạng tín dụng...",
                                 null,
                                 "Thương Lượng",
-                                "20/5/2024",
-                                null,
+                                new Date("2/5/2024"),
+                                new Date("6/7/2024"),
                                 true,
                                 0,
                                 _CompanyRepo.getOne(1),
@@ -147,4 +148,5 @@ public class JobData {
                                 _JobTypeRepo.getOne(3)));
                 return data;
         }
+
 }

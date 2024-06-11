@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -41,9 +42,9 @@ public class Jobs extends BaseModel{
     @Column(name = "salary_min")
     private String salary_min;
     @Column(name = "start_date")
-    private String start_date;
+    private Date start_date;
     @Column(name = "end_date")
-    private String end_date;
+    private Date end_date;
     @Column(name = "is_active",nullable = false)
     private boolean is_active=true;
     @Column(name = "gender")
@@ -80,7 +81,7 @@ public class Jobs extends BaseModel{
         this.id = id;
     }
 
-    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, String start_date, String end_date, boolean is_active, int gender, Company company, Location location, JobType jobType) {
+    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, Date start_date, Date end_date, boolean is_active, int gender, Company company, Location location, JobType jobType) {
         this.id = id;
         this.title = title;
         this.description = description;

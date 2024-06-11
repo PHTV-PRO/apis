@@ -15,4 +15,9 @@ public interface IJobService {
     JobDTO getById(int id);
 
     JobDTO delete(int id);
+
+    List<JobDTO> getJobsNew();
+
+    List<JobDTO> getJobsSave(String id);
+
 }
