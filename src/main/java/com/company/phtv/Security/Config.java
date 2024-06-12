@@ -38,7 +38,7 @@ public class Config {
                         request -> request
                                 .requestMatchers("/login/**", "/jobType/**", "/register", "/hello", "/getinfo",
                                         "/level/**", "/company/**", "/cityProvince/**", "/subcriptionPlan/**",
-                                        "/employer/**", "/account/**")
+                                        "/employer/**", "/account/**","/file")
                                 .permitAll()
                                 .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
                                 // .requestMatchers("/industry/**").hasAnyAuthority(Role.ADMIN.name(), Role.CANDIDATE.name())
