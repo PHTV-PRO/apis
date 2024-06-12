@@ -20,6 +20,8 @@ import com.company.phtv.Enums.Role;
 import com.company.phtv.Services.UserService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +41,7 @@ public class Config {
                     .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
                     .requestMatchers("/language").hasAnyAuthority(Role.CANDIDATE.name())
                     .requestMatchers("/course").hasAnyAuthority(Role.EMPLOYER.name())
-                            .requestMatchers("/account").hasAnyAuthority(Role.ADMIN.name())
+                                .requestMatchers("/account").hasAnyAuthority(Role.ADMIN.name())
                     .anyRequest().permitAll())
                     
 
@@ -66,4 +68,6 @@ public class Config {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
+
 }

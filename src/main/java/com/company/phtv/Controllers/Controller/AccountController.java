@@ -55,7 +55,8 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+            ,produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
             return _baseController.Ok(_accountService.Put(id, requestAccount));

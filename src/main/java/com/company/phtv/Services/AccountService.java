@@ -60,7 +60,7 @@ public class AccountService implements IAccountService {
 //            throw Variable.PasswordInvalid;
 //        }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
-        Path uploadPath = Paths.get("src/main/resources/Uploads/Images/Accounts/");
+        Path uploadPath = Paths.get("src/main/resources/static/Images/Accounts/");
         if (!Files.exists(uploadPath)) {
             try {
                 Files.createDirectory(uploadPath);
@@ -72,8 +72,8 @@ public class AccountService implements IAccountService {
 
         String fileCode = RandomStringUtils.randomAlphanumeric(8);
         String fileName ;
-        try (InputStream inputStream = requestAccount.getFile().getInputStream()) {
-            fileName = fileCode+"_"+requestAccount.getFile().getOriginalFilename();
+        try (InputStream inputStream = requestAccount.getUploadFile().getInputStream()) {
+            fileName = fileCode+"_"+requestAccount.getUploadFile().getOriginalFilename();
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
@@ -94,13 +94,33 @@ public class AccountService implements IAccountService {
 //        if (!checkPasswordValid) {
 //            throw Variable.PasswordInvalid;
 //        }
+
         Account getAccount = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
             throw Variable.notFound;
         }
         r.setPassword(_passwordEncoder.encode(r.getPassword()));
-        Account account = AccountMapping.AccountPut(r, getAccount);
+        Path uploadPath = Paths.get("src/main/resources/static/Images/Accounts/");
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectory(uploadPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        String fileCode = RandomStringUtils.randomAlphanumeric(8);
+        String fileName ;
+        try (InputStream inputStream = r.getUploadFile().getInputStream()) {
+            fileName = fileCode+"_"+r.getUploadFile().getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            throw new HttpException(500,e.getMessage());
+        }
+        Account account = AccountMapping.AccountPut(r, getAccount,fileName);
         account.setId(id);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
