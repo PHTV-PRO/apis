@@ -24,10 +24,9 @@ public class RequestAccount {
     public  int gender;
     @Nullable
     public  String address;
-//    @Nullable
-//    public  String image;
+
     @Nullable
-    public MultipartFile file;
+    public MultipartFile UploadFile;
     @Nullable
     public Role role;
 }

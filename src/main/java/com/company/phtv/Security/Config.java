@@ -43,7 +43,7 @@ public class Config {
                                 .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
                                 // .requestMatchers("/industry/**").hasAnyAuthority(Role.ADMIN.name(), Role.CANDIDATE.name())
                                 // .requestMatchers("/industry/**").hasAnyAuthority(Role.CANDIDATE.name())
-                                .requestMatchers(HttpMethod.GET,"/course").hasAnyAuthority(Role.EMPLOYER.name())
+                                .requestMatchers(HttpMethod.GET,"/course","/account","/api/job").hasAnyAuthority(Role.EMPLOYER.name())
                                 .anyRequest().permitAll())
 
                 .sessionManagement(mannager -> mannager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

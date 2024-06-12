@@ -15,7 +15,7 @@ public class FileController {
     @GetMapping("/image/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) {
         // Tạo Resource từ đường dẫn image
-        Resource imageResource = new ClassPathResource("Uploads/Images/" + imageName);
+        Resource imageResource = new ClassPathResource("Uploads/Images/Accounts/" + imageName);
 
         // Kiểm tra xem image có tồn tại hay không
         if (!imageResource.exists()) {
