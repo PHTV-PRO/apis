@@ -1,4 +1,4 @@
-package com.company.phtv.Security;
+package com.company.phtv.Config;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class CloudinaryConfig {
+public class ConfigCloudinary {
 
     @Value("${cloudinary.cloud-name}")
     private String cloudName;

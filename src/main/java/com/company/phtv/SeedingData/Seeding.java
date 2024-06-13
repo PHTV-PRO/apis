@@ -151,7 +151,7 @@ public class Seeding implements CommandLineRunner {
     private void LoadEmployerData() {
         if (_EmployerRepo.count() == 0) {
 
-            List<Employer> list = new EmployerData().Data();
+            List<Employer> list = new EmployerData(_PasswordEncoder).Data();
             for (Employer e : list) {
                 _EmployerRepo.save(e);
             }

@@ -17,12 +17,14 @@ public class CloudinaryService {
         this.cloudinary = cloudinary;
     }
 
+    @SuppressWarnings("rawtypes")
     public Map uploadFile(MultipartFile file, String folderName) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(
                         "Images", folderName));
     }
 
+    @SuppressWarnings("rawtypes")
     public Map uploadVideo(MultipartFile file, String folderName) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(

@@ -1,4 +1,4 @@
-package com.company.phtv.Security;
+package com.company.phtv.Config;
 
 import java.io.IOException;
 

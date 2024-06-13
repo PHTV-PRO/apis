@@ -2,6 +2,7 @@ package com.company.phtv.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
 
+
 @RestController
 @RequestMapping("")
 public class AuthenController {
@@ -21,7 +23,8 @@ public class AuthenController {
     AuthenticateService _iauthenRepo;
 
     BaseController<Token> _baseController = new BaseController<Token>();
-    BaseController<Account> _baseControllerUser = new BaseController<Account>();
+    BaseController<Account> _baseControllerAccount = new BaseController<Account>();
+    BaseController<UserDetails> _baseControllerInfo = new BaseController<UserDetails>();
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody RequestLogin requestLogin) {
@@ -38,8 +41,8 @@ public class AuthenController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RequestLogin requestLogin) {
         try {
-            Account user = _iauthenRepo.register(requestLogin);
-            return _baseControllerUser.success(user);
+            Account account = _iauthenRepo.register(requestLogin);
+            return _baseControllerAccount.success(account);
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -50,13 +53,38 @@ public class AuthenController {
     @PostMapping("/getinfo")
     public ResponseEntity<?> postToken(@RequestBody String token) {
         try {
-            Account user = _iauthenRepo.checkToken(token);
-            return _baseControllerUser.success(user);
+            UserDetails user = _iauthenRepo.checkToken(token);
+            return _baseControllerInfo.success(user);
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
+    @PostMapping("/loginEmployer")
+    public ResponseEntity<?> loginEmployer(@RequestBody RequestLogin requestLogin) {
+        try {
+            String token = _iauthenRepo.loginEmployer(requestLogin);
+            return _baseController.success(new Token(token));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+
+    // @PostMapping("/registerEMployer")
+    // public ResponseEntity<?> registerEmployer(@RequestBody RequestLogin requestLogin) {
+    //     try {
+    //         // Account account = _iauthenRepo.registerEmployer(requestLogin);
+    //         return _baseControllerAccount.success(account);
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
+
 
 }

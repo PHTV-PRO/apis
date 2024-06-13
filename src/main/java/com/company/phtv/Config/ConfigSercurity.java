@@ -1,4 +1,4 @@
-package com.company.phtv.Security;
+package com.company.phtv.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class Config {
+public class ConfigSercurity {
     @Autowired
     JWTTokenFilter _jwtTokenFilter;
     @Autowired
@@ -36,7 +36,7 @@ public class Config {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/login/**", "/jobType/**", "/register", "/hello", "/getinfo",
+                                .requestMatchers("/login/**","/loginEmployer", "/jobType/**", "/register", "/hello", "/getinfo",
                                         "/level/**", "/company/**", "/cityProvince/**", "/subcriptionPlan/**",
                                         "/employer/**", "/account/**","/file")
                                 .permitAll()
