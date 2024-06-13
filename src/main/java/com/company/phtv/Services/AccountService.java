@@ -85,15 +85,16 @@ public class AccountService implements IAccountService {
         // } catch (Exception e) {
         // throw new HttpException(500, e.getMessage());
         // }
-        Account account = AccountMapping.account(requestAccount, "");
-        try {
-            @SuppressWarnings("rawtypes")
-            Map check = _cloudinaryService.uploadFile(requestAccount.UploadFile, account.getImage());
-            account.setImage(check.get("public_id").toString());
-        } catch (IOException e) {
-            throw Variable.AddImageFail;
+        Account account = AccountMapping.account(requestAccount);
+        if (requestAccount.UploadFile != null) {
+            try {
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadFile(requestAccount.UploadFile, account.getImage());
+                account.setImage(check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.AddImageFail;
+            }
         }
-
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
     }

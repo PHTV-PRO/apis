@@ -18,18 +18,24 @@ public class CloudinaryService {
     }
 
     public Map uploadFile(MultipartFile file, String folderName) throws IOException {
-        return cloudinary.uploader().upload(file.getBytes(), 
-            ObjectUtils.asMap(
-                "Images", folderName
-            ));
+        return cloudinary.uploader().upload(file.getBytes(),
+                ObjectUtils.asMap(
+                        "Images", folderName));
     }
 
     public Map uploadVideo(MultipartFile file, String folderName) throws IOException {
-        return cloudinary.uploader().upload(file.getBytes(), 
-            ObjectUtils.asMap(
-                "resource_type", "video",
-                "folder", folderName
-            ));
+        return cloudinary.uploader().upload(file.getBytes(),
+                ObjectUtils.asMap(
+                        "resource_type", "video",
+                        "folder", folderName));
     }
-    
+
+    public void deleteImage(String publicId) {
+        try {
+            cloudinary.uploader().destroy(publicId, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

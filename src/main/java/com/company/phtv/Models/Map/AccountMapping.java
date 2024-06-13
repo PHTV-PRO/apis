@@ -18,14 +18,13 @@ public class AccountMapping  {
         return accountDTO;
     }
 
-    public static Account account(RequestAccount a ,String imageClient){
+    public static Account account(RequestAccount a ){
         Account account = new Account();
         account.setName(a.getName());
         account.setEmail(a.getEmail());
         account.setPassword( a.getPassword());
         account.setGender(a.getGender());
         account.setAddress(a.getAddress());
-        account.setImage(imageClient);
         account.setRole(a.getRole().CANDIDATE);
         return account;
     }
@@ -37,7 +36,6 @@ public class AccountMapping  {
         if(re.getEmail() != null){
             a.setEmail(re.getEmail());
         }
-
         if(re.getPassword() != null){
             a.setPassword(re.getPassword());
         }
