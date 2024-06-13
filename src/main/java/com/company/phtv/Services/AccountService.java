@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AccountService implements IAccountService {
@@ -32,6 +33,9 @@ public class AccountService implements IAccountService {
 
     @Autowired
     PasswordEncoder _passwordEncoder;
+
+    @Autowired
+    CloudinaryService _cloudinaryService;
 
     public AccountService(PasswordEncoder _passwordEncoder) {
         this._passwordEncoder = _passwordEncoder;
@@ -60,26 +64,36 @@ public class AccountService implements IAccountService {
         // throw Variable.PasswordInvalid;
         // }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
-        Path uploadPath = Paths.get("src/main/resources/Uploads/Images/Accounts/");
-        if (!Files.exists(uploadPath)) {
-            try {
-                Files.createDirectory(uploadPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        // Path uploadPath = Paths.get("src/main/resources/Uploads/Images/Accounts/");
+        // if (!Files.exists(uploadPath)) {
+        // try {
+        // Files.createDirectory(uploadPath);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
 
+        // }
+
+        // String fileCode = RandomStringUtils.randomAlphanumeric(8);
+        // String fileName;
+        // try (InputStream inputStream =
+        // requestAccount.getUploadFile().getInputStream()) {
+        // fileName = fileCode + "_" +
+        // requestAccount.getUploadFile().getOriginalFilename();
+        // Path filePath = uploadPath.resolve(fileName);
+        // Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        // } catch (Exception e) {
+        // throw new HttpException(500, e.getMessage());
+        // }
+        Account account = AccountMapping.account(requestAccount, "");
+        try {
+            @SuppressWarnings("rawtypes")
+            Map check = _cloudinaryService.uploadFile(requestAccount.UploadFile, account.getImage());
+            account.setImage(check.get("public_id").toString());
+        } catch (IOException e) {
+            throw Variable.AddImageFail;
         }
 
-        String fileCode = RandomStringUtils.randomAlphanumeric(8);
-        String fileName;
-        try (InputStream inputStream = requestAccount.getUploadFile().getInputStream()) {
-            fileName = fileCode + "_" + requestAccount.getUploadFile().getOriginalFilename();
-            Path filePath = uploadPath.resolve(fileName);
-            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception e) {
-            throw new HttpException(500, e.getMessage());
-        }
-        Account account = AccountMapping.account(requestAccount, fileName);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
     }
@@ -118,7 +132,7 @@ public class AccountService implements IAccountService {
         } catch (Exception e) {
             throw new HttpException(500, e.getMessage());
         }
-        Account account = AccountMapping.AccountPut(r, getAccount,fileName);
+        Account account = AccountMapping.AccountPut(r, getAccount, fileName);
         account.setId(id);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);

@@ -9,5 +9,6 @@ public interface Variable {
   public static HttpException emailInvalid = new HttpException(400, "Enter Email invalid. please change email!!");
   public static HttpException passwordInvalid = new HttpException(400, "Enter Password invalid!!");
   public static Exception Fail = new HttpException(500, "Action Fail");
+  public static HttpException AddImageFail = new HttpException(500, "Action add image Fail");
 
 }
