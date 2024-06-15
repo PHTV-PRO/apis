@@ -72,6 +72,9 @@ public class Jobs extends BaseModel{
     private List<FollowJob> followJobs;
 
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
+    private List<ViewedJob> viewedJobs ;
+
+    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
     private List<SkillJob> skillJobs;
 
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)

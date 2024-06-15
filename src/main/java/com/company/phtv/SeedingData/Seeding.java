@@ -28,13 +28,13 @@ public class Seeding implements CommandLineRunner {
     CurriculumRepo _CurriculumRepo;
 
     @Autowired
-    EmployerRepo _EmployerRepo;
-
-    @Autowired
     FollowCompanyRepo _FollowCompanyRepo;
 
     @Autowired
     FollowJobRepo _FollowJobRepo;
+
+    @Autowired
+    ViewedJobRepo _ViewedJobRepo;
 
     @Autowired
     IndustryRepo _IndustryRepo;
@@ -77,7 +77,7 @@ public class Seeding implements CommandLineRunner {
         LoadAccountData();
         LoadCurriculumData();
         LoadIndustryData();
-        LoadEmployerData();
+        // LoadEmployerData();
         LoadCompanyData();
         LoadLevelData();
         LoadSkillData();
@@ -93,6 +93,7 @@ public class Seeding implements CommandLineRunner {
         LoadNotificationData();
         LoadSubcriptionPlanCompanyData();
         LoadFollowJobData();
+        LoadViewedJobData();
         LoadApplicationData();
         LoadSkillJobData();
 
@@ -131,7 +132,7 @@ public class Seeding implements CommandLineRunner {
     private void LoadCompanyData() {
         if (_CompanyRepo.count() == 0) {
 
-            List<Company> list = new CompanyData(_EmployerRepo).Data();
+            List<Company> list = new CompanyData(_AccountRepo).Data();
             for (Company l : list) {
                 _CompanyRepo.save(l);
             }
@@ -148,15 +149,15 @@ public class Seeding implements CommandLineRunner {
         }
     }
 
-    private void LoadEmployerData() {
-        if (_EmployerRepo.count() == 0) {
+    // private void LoadEmployerData() {
+    // if (_EmployerRepo.count() == 0) {
 
-            List<Employer> list = new EmployerData(_PasswordEncoder).Data();
-            for (Employer e : list) {
-                _EmployerRepo.save(e);
-            }
-        }
-    }
+    // List<Employer> list = new EmployerData(_PasswordEncoder).Data();
+    // for (Employer e : list) {
+    // _EmployerRepo.save(e);
+    // }
+    // }
+    // }
 
     private void LoadFollowCompanyData() {
         if (_FollowCompanyRepo.count() == 0) {
@@ -174,6 +175,16 @@ public class Seeding implements CommandLineRunner {
             List<FollowJob> list = new FollowJobData(_AccountRepo, _JobRepo).Data();
             for (FollowJob l : list) {
                 _FollowJobRepo.save(l);
+            }
+        }
+    }
+
+    private void LoadViewedJobData() {
+        if (_ViewedJobRepo.count() == 0) {
+
+            List<ViewedJob> list = new ViewedJobData(_AccountRepo, _JobRepo).Data();
+            for (ViewedJob l : list) {
+                _ViewedJobRepo.save(l);
             }
         }
     }

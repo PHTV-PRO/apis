@@ -38,5 +38,5 @@ public class RequestCompany {
     public  int enable;
 
     @Nullable
-    public int employer_id;
+    public int account_id;
 }

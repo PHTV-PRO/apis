@@ -1,17 +1,17 @@
 package com.company.phtv.SeedingData.data;
 
 import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Repository.EmployerRepo;
+import com.company.phtv.Repository.AccountRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyData {
 
-        private final EmployerRepo _EmployerRepo;
+        private final AccountRepo _AccountRepo;
 
-        public CompanyData(EmployerRepo _EmployerRepo) {
-                this._EmployerRepo = _EmployerRepo;
+        public CompanyData(AccountRepo _AccountRepo) {
+                this._AccountRepo = _AccountRepo;
         }
 
         @SuppressWarnings("deprecation")
@@ -46,7 +46,8 @@ public class CompanyData {
                                 null,
                                 null,
                                 0,
-                                _EmployerRepo.getOne(1)));
+                                0,
+                                _AccountRepo.getOne(1)));
                 data.add(new Company(2,
                                 "CÔNG TY TNHH SPRAYWAY-TPR",
                                 "Giới thiệu về công ty Sprayway-TPR\n" +
@@ -68,7 +69,8 @@ public class CompanyData {
                                 null,
                                 null,
                                 0,
-                                _EmployerRepo.getOne(2)));
+                                0,
+                                _AccountRepo.getOne(2)));
                 data.add(new Company(3,
                                 "CÔNG TY TNHH LIKELION",
                                 "Tài trợ 100% bởi Chính phủ Hàn Quốc, đây là dự án đầu tiên thực hiện kết nối việc làm  cho sinh viên Việt Nam với các Doanh nghiệp Start-up Hàn Quốc. Các bạn sẽ trải qua đào tạo thực chiến và được trải nghiệm sinh sống và làm việc tại các thành phố lớn của Hàn Quốc.",
@@ -87,8 +89,8 @@ public class CompanyData {
                                 "South-Korea",
                                 null,
                                 null,
-                                0,
-                                _EmployerRepo.getOne(3)));
+                                0, 0,
+                                _AccountRepo.getOne(3)));
 
                 return data;
         }

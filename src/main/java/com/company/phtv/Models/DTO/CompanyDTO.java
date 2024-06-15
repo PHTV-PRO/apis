@@ -1,5 +1,7 @@
 package com.company.phtv.Models.DTO;
 
+import com.company.phtv.Models.Entity.Account;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,5 @@ public class CompanyDTO {
     private  String background_image;
     private  int enable;
 
-    private EmployerDTO employer;
+    private Account account;
 }

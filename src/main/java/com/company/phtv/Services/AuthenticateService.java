@@ -8,10 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Enums.Role;
+import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
-import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Request.RequestLogin;
-import com.company.phtv.Repository.EmployerRepo;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
 import com.company.phtv.Utils.Regex;
@@ -21,8 +20,6 @@ import com.company.phtv.Utils.Variable;
 public class AuthenticateService implements IAuthenticateService {
     @Autowired
     UserRepo _userRepo;
-    @Autowired
-    EmployerRepo _employerRepo;
     @Autowired
     AuthenticationManager _authenticationManager;
 
@@ -34,7 +31,7 @@ public class AuthenticateService implements IAuthenticateService {
 
     // login and register for admin and candidate
     @Override
-    public String login(RequestLogin requestLogin) {
+    public TokenUser login(RequestLogin requestLogin) {
         var user = _userRepo.findByEmail(requestLogin.getEmail());
         boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
         if (!checkEmail) {
@@ -54,9 +51,8 @@ public class AuthenticateService implements IAuthenticateService {
         } catch (Exception e) {
             throw Variable.emailOrPasswordIncorrect;
         }
-
         var token = _jwtservice.generateToken(user);
-        return token;
+        return new TokenUser(token, _userRepo.getAccountByEmail(requestLogin.getEmail()));
     }
 
     @Override
@@ -69,6 +65,10 @@ public class AuthenticateService implements IAuthenticateService {
         // if(!checkPassword){
         // throw Variable.passwordInvalid;
         // }
+        Account account = _userRepo.getAccountByEmail(requestLogin.getEmail());
+        if (account != null) {
+            throw Variable.EmailExisted;
+        }
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
         user.setRole(Role.CANDIDATE);
@@ -84,55 +84,9 @@ public class AuthenticateService implements IAuthenticateService {
         }
         // get Account
         Account account = _userRepo.getAccountByEmail(email);
-        Employer employer = _employerRepo.getEmployerByEmail(email);
         if (account != null && account.getDeleted_at() == null) {
             return account;
         }
-        if (employer != null && employer.getDeleted_at() == null) {
-            return employer;
-        }
         throw Variable.notFound;
-    }
-
-    // login and register for Employer
-    @Override
-    public String loginEmployer(RequestLogin requestLogin) {
-        boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
-        if (!checkEmail) {
-            throw Variable.emailInvalid;
-        }
-        var employer = _employerRepo.findByEmail(requestLogin.getEmail());
-        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        // if(!checkPassword){
-        // throw Variable.PasswordInvalid;
-        // }
-        if (employer == null) {
-            throw Variable.emailOrPasswordIncorrect;
-        }
-        boolean checkPass = _passwordEncoder.matches(requestLogin.getPassword(), employer.getPassword());
-        if (checkPass == false) {
-            throw Variable.emailOrPasswordIncorrect;
-
-        }
-
-        var token = _jwtservice.generateToken(employer);
-        return token;
-    }
-
-    @Override
-    public Employer registerEmployer(RequestLogin requestLogin) {
-        boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
-        if (!checkEmail) {
-            throw Variable.emailInvalid;
-        }
-        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        // if(!checkPassword){
-        // throw Variable.passwordInvalid;
-        // }
-        Employer employer = new Employer();
-        employer.setEmail(requestLogin.getEmail());
-        employer.setRole(Role.CANDIDATE);
-        employer.setPassword(_passwordEncoder.encode(requestLogin.getPassword()));
-        return _employerRepo.save(employer);
     }
 }

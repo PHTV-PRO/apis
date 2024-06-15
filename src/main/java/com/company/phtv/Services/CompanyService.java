@@ -1,12 +1,12 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Request.RequestCompany;
+import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
-import com.company.phtv.Repository.EmployerRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Variable;
 
@@ -22,7 +22,7 @@ public class CompanyService implements ICompanyService {
     @Autowired
     CompanyRepo _companyRepo;
     @Autowired
-    EmployerRepo _employerRepo;
+    AccountRepo _AccountRepo;
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -39,8 +39,17 @@ public class CompanyService implements ICompanyService {
     @Override
     public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
-        Employer e = _employerRepo.findIdEmployer(requestCompany.getEmployer_id());
-        company.setEmployer(e);
+        Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
+        if (a == null) {
+            throw Variable.AccountNotFound;
+        }
+        for (Company c : a.getCompanies()) {
+            // check list company of account is deleted
+            if (c.getDeleted_at() != null) {
+                throw Variable.CompanyOfAccountIsExist;
+            }
+        }
+        company.setAccount(a);
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }

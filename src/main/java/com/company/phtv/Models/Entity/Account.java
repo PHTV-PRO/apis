@@ -49,14 +49,20 @@ public class Account extends BaseModel implements UserDetails {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Application> applications;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Company> companies;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<FollowJob> followJobs;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<ViewedJob> viewedJobs;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
-    public Account(int id, String name, String email, String password, int gender, String address, String image, Role role) {
+    public Account(int id, String name, String email, String password, int gender, String address, String image,
+            Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -66,7 +72,6 @@ public class Account extends BaseModel implements UserDetails {
         this.image = image;
         this.role = role;
     }
-    
 
     public Account(int id) {
         this.id = id;

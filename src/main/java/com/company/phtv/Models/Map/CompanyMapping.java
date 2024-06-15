@@ -1,9 +1,8 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
-import com.company.phtv.Models.DTO.EmployerDTO;
+import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.Employer;
 import com.company.phtv.Models.Request.RequestCompany;
 
 public class CompanyMapping {
@@ -23,8 +22,7 @@ public class CompanyMapping {
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setEnable(c.getEnable());
 
-        companyDTO.setEmployer(
-                new EmployerDTO(c.getEmployer().getId(), c.getEmployer().getName(),c.getEmployer().getAddress(),c.getEmployer().getEmail(),c.getEmployer().getPassword(),c.getEmployer().getRole()));
+        companyDTO.setAccount(c.getAccount());
         return companyDTO;
     }
 
@@ -84,8 +82,8 @@ public class CompanyMapping {
         if (rc.getEnable() != 0) {
             c.setEnable(rc.getEnable());
         }
-        if (rc.getEmployer_id() != 0) {
-            c.setEmployer(new Employer(rc.getEmployer_id(), null, null,null,null,null));
+        if (rc.getAccount_id() != 0) {
+            c.setAccount(new Account(0));
         }
         return c;
     }
