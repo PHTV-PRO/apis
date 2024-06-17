@@ -30,6 +30,8 @@ public class JobService implements IJobService {
     @Autowired
     FollowJobRepo _followJobRepo;
     @Autowired
+    ViewedJobRepo _ViewedJobRepo;
+    @Autowired
     AccountRepo _accountRepo;
 
     @Override
@@ -139,5 +141,19 @@ public class JobService implements IJobService {
         }
         _followJobRepo.save(new FollowJob(0, job, account));
         return true;
+    }
+
+    public List<JobDTO> getJobsViewed(String id) {
+        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
+        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(account);
+        List<JobDTO> jobDTOS = new ArrayList<>();
+        for (int i = 0; i < viewedJobs.size(); i++) {
+            boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
+            if (!checkJobDeleted) {
+                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
+            }
+        }
+        return jobDTOS;
+
     }
 }

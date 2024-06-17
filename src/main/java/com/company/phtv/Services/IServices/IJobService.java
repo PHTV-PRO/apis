@@ -20,4 +20,6 @@ public interface IJobService {
 
     List<JobDTO> getJobsSave(String id);
 
+    List<JobDTO> getJobsViewed(String id);
+
 }

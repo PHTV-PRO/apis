@@ -22,7 +22,7 @@ public class CompanyMapping {
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setEnable(c.getEnable());
 
-        companyDTO.setAccount(c.getAccount());
+        // companyDTO.se;
         return companyDTO;
     }
 

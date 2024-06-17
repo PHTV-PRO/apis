@@ -62,6 +62,16 @@ public class CompanyController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+    @GetMapping("/contract")
+    public ResponseEntity<?> companyContract() {
+        try {
+            return _baseControllers.success(_companyService.companyContractAll());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
 
     // @PutMapping("/{id}")
     // public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestCourse

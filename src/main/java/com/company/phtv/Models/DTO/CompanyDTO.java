@@ -25,6 +25,7 @@ public class CompanyDTO {
     private  String logo_image;
     private  String background_image;
     private  int enable;
+    private  int contract;
 
-    private Account account;
+    private AccountDTO account;
 }

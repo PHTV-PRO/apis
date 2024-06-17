@@ -18,6 +18,7 @@ public class AccountMapping  {
         return accountDTO;
     }
 
+    @SuppressWarnings("static-access")
     public static Account account(RequestAccount a ){
         Account account = new Account();
         account.setName(a.getName());

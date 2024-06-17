@@ -15,4 +15,7 @@ public interface ICompanyService {
     CompanyDTO getById(int id);
 
     CompanyDTO delete(int id);
+
+    List<CompanyDTO> companyContractAll();
+
 }

@@ -117,7 +117,7 @@ public class JobController {
     @GetMapping("/viewed/{id}")
     public ResponseEntity<?> getJobsViewd(@PathVariable String id) {
         try {
-            return _baseControllers.success(_jobService.getJobsNew());
+            return _baseControllers.success(_jobService.getJobsViewed(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

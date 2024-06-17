@@ -81,4 +81,18 @@ public class CompanyService implements ICompanyService {
         _companyRepo.save(company);
         return null;
     }
+
+    @Override
+    public List<CompanyDTO> companyContractAll() {
+        List<Company> companies = _companyRepo.findAll();
+        List<CompanyDTO> companyDTOS = new ArrayList<>();
+        for (int i = 0; i < companies.size(); i++) {
+            boolean checkDeleted = companies.get(i).getDeleted_at() != null;
+            boolean checkContract = companies.get(i).getContract() == 1;
+            if (!checkDeleted && checkContract) {
+                companyDTOS.add(CompanyMapping.CompanyDTO(companies.get(i)));
+            }
+        }
+        return companyDTOS;
+    }
 }

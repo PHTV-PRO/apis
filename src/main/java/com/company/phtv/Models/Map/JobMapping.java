@@ -30,7 +30,7 @@ public class JobMapping {
                         , jobs.getCompany().getLink_website()
                         , jobs.getCompany().getNationnality(),jobs.getCompany().getLogo_image()
                         ,jobs.getCompany().getBackground_image()
-                        ,jobs.getCompany().getEnable(),null));
+                        ,jobs.getCompany().getEnable(),jobs.getCompany().getContract(),null));
         jobDTO.setLocation(
                 new LocationDTO(jobs.getLocation().getId(),jobs.getLocation().getName(),null,null));
         jobDTO.setJobType(
