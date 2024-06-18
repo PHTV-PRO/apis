@@ -21,8 +21,7 @@ public class CompanyMapping {
         companyDTO.setLogo_image(c.getLogo_image());
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setEnable(c.getEnable());
-
-        // companyDTO.se;
+        companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
         return companyDTO;
     }
 
@@ -43,7 +42,6 @@ public class CompanyMapping {
         company.setEnable(c.getEnable());
         return company;
     }
-
 
     public static Company CompanyPut(RequestCompany rc, Company c) {
         if (rc.getName() != null) {
