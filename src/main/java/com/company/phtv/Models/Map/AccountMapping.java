@@ -26,7 +26,7 @@ public class AccountMapping {
         account.setPassword(a.getPassword());
         account.setGender(a.getGender());
         account.setAddress(a.getAddress());
-        account.setRole(a.getRole().CANDIDATE);
+        account.setRole(a.getRole());
         return account;
     }
 
@@ -46,9 +46,9 @@ public class AccountMapping {
         if (a.getImage() != null) {
             a.setImage(a.getImage());
         }
-        if (re.getRole() != null) {
-            a.setRole(re.getRole());
-        }
+//        if (re.getRole() != null) {
+//            a.setRole(re.getRole());
+//        }
         return a;
     }
 }

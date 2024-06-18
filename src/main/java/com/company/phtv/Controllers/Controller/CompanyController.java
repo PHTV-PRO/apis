@@ -31,7 +31,7 @@ public class CompanyController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> post(@RequestBody RequestCompany requestCompany) {
+    public ResponseEntity<?> post(@ModelAttribute RequestCompany requestCompany) {
         try {
             return _baseController.success(_companyService.create(requestCompany));
         } catch (HttpException e) {
@@ -73,15 +73,15 @@ public class CompanyController {
         }
     }
 
-    // @PutMapping("/{id}")
-    // public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestCourse
-    // course) {
-    // try {
-    // return _baseController.success(_courService.Put(id, course));
-    // } catch (HttpException e) {
-    // return _baseController.error(null, e.StatusCode, e.message);
-    // } catch (Exception e) {
-    // return _baseController.error(null, 500, e.getMessage());
-    // }
-    // }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestCompany company) {
+        try {
+            return _baseController.success(_companyService.put(id, company));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+
 }

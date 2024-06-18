@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountRepo extends JpaRepository<Account,Integer> {
     Account getAccountById (int id);
 
-    @Query("select a from Account a Where id = ?1")
+    @Query("select a from Account a Where a.id = ?1")
     Account findIdAccount(int id);
 }

@@ -56,7 +56,18 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public CompanyDTO put(int id, RequestCompany requestCompany) {
-        return null;
+        Company getCompany = _companyRepo.findCompanyById(id);
+        boolean checkCompanyNotFound = (getCompany != null && getCompany.getDeleted_at() == null) ? false : true;
+        if (checkCompanyNotFound) {
+            throw Variable.notFound;
+        }
+        Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
+        if(requestCompany.getAccount_id() != 0){
+            company.setAccount(_AccountRepo.getAccountById(requestCompany.getAccount_id()));
+        }
+        company.setId(id);
+        _companyRepo.save(company);
+        return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 
     @Override
