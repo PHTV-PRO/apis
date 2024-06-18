@@ -32,15 +32,15 @@ public class AuthenticateService implements IAuthenticateService {
     // login and register for admin and candidate
     @Override
     public TokenUser login(RequestLogin requestLogin) {
-        var user = _userRepo.findByEmail(requestLogin.getEmail());
         boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
         if (!checkEmail) {
             throw Variable.emailInvalid;
         }
-        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        // if(!checkPassword){
-        // throw Variable.PasswordInvalid;
-        // }
+        boolean checkPassword = Regex.regexPassword(requestLogin.getPassword());
+        if (!checkPassword) {
+            throw Variable.passwordInvalid;
+        }
+        var user = _userRepo.findByEmail(requestLogin.getEmail());
         if (user == null) {
             throw Variable.emailOrPasswordIncorrect;
         }
@@ -61,10 +61,10 @@ public class AuthenticateService implements IAuthenticateService {
         if (!checkEmail) {
             throw Variable.emailInvalid;
         }
-        // boolean checkPassword= Regex.regexPassword(requestLogin.getPassword());
-        // if(!checkPassword){
-        // throw Variable.passwordInvalid;
-        // }
+        boolean checkPassword = Regex.regexPassword(requestLogin.getPassword());
+        if (!checkPassword) {
+            throw Variable.passwordInvalid;
+        }
         Account account = _userRepo.getAccountByEmail(requestLogin.getEmail());
         if (account != null) {
             throw Variable.EmailExisted;
@@ -82,7 +82,6 @@ public class AuthenticateService implements IAuthenticateService {
         if (email == null || email.trim().equals("")) {
             throw Variable.tokenError;
         }
-        // get Account
         Account account = _userRepo.getAccountByEmail(email);
         if (account != null && account.getDeleted_at() == null) {
             return account;

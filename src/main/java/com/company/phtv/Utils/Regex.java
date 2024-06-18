@@ -10,7 +10,7 @@ public class Regex {
         return matcher.matches();
     }
     public static boolean regexPassword(String password) {
-        Pattern pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{2,}$");//At least one letter and one number
+        Pattern pattern = Pattern.compile("^\\S{2,}$");//At least one letter and one number
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }

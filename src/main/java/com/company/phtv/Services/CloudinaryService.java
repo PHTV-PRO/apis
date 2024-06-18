@@ -18,20 +18,18 @@ public class CloudinaryService {
     }
 
     @SuppressWarnings("rawtypes")
-    public Map uploadFile(MultipartFile file, String folderName) throws IOException {
+    public Map uploadImage(MultipartFile file, String folderName) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(
                         "Images", folderName));
     }
 
     @SuppressWarnings("rawtypes")
-    public Map uploadVideo(MultipartFile file, String folderName) throws IOException {
+    public Map uploadCV(MultipartFile file, String folderName) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(),
                 ObjectUtils.asMap(
-                        "resource_type", "video",
-                        "folder", folderName));
+                        "Images", folderName));
     }
-
     public void deleteImage(String publicId) {
         try {
             cloudinary.uploader().destroy(publicId, null);
