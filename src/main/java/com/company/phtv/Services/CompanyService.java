@@ -3,6 +3,7 @@ package com.company.phtv.Services;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Repository.AccountRepo;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -62,7 +65,7 @@ public class CompanyService implements ICompanyService {
             throw Variable.notFound;
         }
         Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
-        if(requestCompany.getAccount_id() != 0){
+        if (requestCompany.getAccount_id() != 0) {
             company.setAccount(_AccountRepo.getAccountById(requestCompany.getAccount_id()));
         }
         company.setId(id);
@@ -105,5 +108,34 @@ public class CompanyService implements ICompanyService {
             }
         }
         return companyDTOS;
+    }
+
+    public List<CompanyDTO> companyApplicationMost() {
+        List<Company> companies = _companyRepo.findAll();
+        List<CompanyDTO> companyDTOS = new ArrayList<>();
+        HashMap<Integer, Company> companiesWithCounts = new HashMap<Integer, Company>();
+        for (int i = 0; i < companies.size(); i++) {
+            int count = 0;
+            boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
+            if (!checkCompanyDeleted) {
+                for (Jobs job : companies.get(i).getJobs()) {
+                    boolean checkJobDeleted = job.getDeleted_at() != null;
+                    if (!checkJobDeleted) {
+                        count += job.getApplications().size();
+                    }
+                }
+                if (count != 0) {
+                    companiesWithCounts.put(count, companies.get(i));
+                }
+            }
+
+        }
+
+        TreeMap<Integer, Company> sorted = new TreeMap<Integer, Company>(companiesWithCounts);
+        sorted.entrySet();
+
+        
+        return companyDTOS;
+
     }
 }

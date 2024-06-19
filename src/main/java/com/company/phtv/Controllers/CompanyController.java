@@ -71,6 +71,16 @@ public class CompanyController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
+    @GetMapping("/application_most")
+    public ResponseEntity<?> companyApplicationMost() {
+        try {
+            return _baseControllers.success(_companyService.companyApplicationMost());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
 
     // @PutMapping("/{id}")
     // public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestCompany company) {

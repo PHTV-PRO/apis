@@ -3,9 +3,7 @@ package com.company.phtv.Controllers.Candidate;
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Services.CompanyService;
-import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
