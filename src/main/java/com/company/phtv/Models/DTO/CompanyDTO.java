@@ -1,7 +1,5 @@
 package com.company.phtv.Models.DTO;
 
-import com.company.phtv.Models.Entity.Account;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

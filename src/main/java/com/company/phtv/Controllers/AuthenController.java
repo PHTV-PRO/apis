@@ -16,7 +16,7 @@ import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/general")
 public class AuthenController {
     @Autowired
     AuthenticateService _iauthenRepo;
@@ -49,7 +49,7 @@ public class AuthenController {
         }
     }
 
-    @PostMapping("/getinfo")
+    @PostMapping("/check_token")
     public ResponseEntity<?> postToken(@RequestBody String token) {
         try {
             UserDetails user = _iauthenRepo.checkToken(token);

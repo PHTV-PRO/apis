@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers.Controller;
+package com.company.phtv.Controllers.Admin;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.CityProvinceDTO;
@@ -12,24 +12,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cityProvince")
-public class CityProvinceController {
+@RequestMapping("/admin/city_province")
+public class AdminCityProvinceController {
     @Autowired
     CityProvinceService _cityProvinceService;
     BaseController<CityProvinceDTO> _baseController = new BaseController<CityProvinceDTO>();
     BaseController<List<CityProvinceDTO>> _baseControllers = new BaseController<List<CityProvinceDTO>>();
 
-    @GetMapping()
-    public ResponseEntity<?> get() {
-        try {
-            return _baseControllers.success(_cityProvinceService.getAll());
-        } catch (HttpException e) {
-            return _baseControllers.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseControllers.error(null, 500, e.getMessage());
-        }
-    }
+    // @GetMapping()
+    // public ResponseEntity<?> get() {
+    //     try {
+    //         return _baseControllers.success(_cityProvinceService.getAll());
+    //     } catch (HttpException e) {
+    //         return _baseControllers.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseControllers.error(null, 500, e.getMessage());
+    //     }
+    // }
 
+    // @GetMapping("/{id}")
+    // public ResponseEntity<?> getById(@PathVariable int id) {
+    //     try {
+    //         return _baseController.success(_cityProvinceService.getById(id));
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
     @PostMapping()
     public ResponseEntity<?> post(@ModelAttribute RequestCityProvince rqCityProvince) {
         try {
@@ -38,17 +48,6 @@ public class CityProvinceController {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseControllers.error(null, 500, e.getMessage());
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id) {
-        try {
-            return _baseController.success(_cityProvinceService.getById(id));
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
         }
     }
 

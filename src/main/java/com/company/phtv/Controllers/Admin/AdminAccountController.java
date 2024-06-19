@@ -1,28 +1,29 @@
-package com.company.phtv.Controllers.Controller;
+package com.company.phtv.Controllers.Admin;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.IndustryDTO;
-import com.company.phtv.Models.Request.RequestIndustry;
-import com.company.phtv.Services.IndustryService;
+import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.Request.RequestAccount;
+import com.company.phtv.Services.AccountService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/industry")
-public class IndustryController {
+@RequestMapping("/admin/account")
+public class AdminAccountController {
     @Autowired
-    IndustryService _industryService;
-    BaseController<IndustryDTO> _baseController = new BaseController<IndustryDTO>();
-    BaseController<List<IndustryDTO>> _baseControllers = new BaseController<List<IndustryDTO>>();
+    AccountService _accountService;
+    BaseController<AccountDTO> _baseController = new BaseController<AccountDTO>();
+    BaseController<List<AccountDTO>> _baseControllers = new BaseController<List<AccountDTO>>();
 
     @GetMapping()
     public ResponseEntity<?> get() {
         try {
-            return _baseControllers.success(_industryService.getAll());
+            return _baseControllers.success(_accountService.getAll());
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -30,10 +31,11 @@ public class IndustryController {
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<?> post(@RequestBody RequestIndustry industry) {
+    @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> post(@ModelAttribute RequestAccount account) {
         try {
-            return _baseController.success(_industryService.create(industry));
+            return _baseController.success(_accountService.create(account));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -44,7 +46,7 @@ public class IndustryController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.success(_industryService.getById(id));
+            return _baseController.success(_accountService.getById(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -52,10 +54,11 @@ public class IndustryController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestIndustry industry) {
+    @PutMapping(value = "/{id}" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+            ,produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
-            return _baseController.success(_industryService.put(id, industry));
+            return _baseController.success(_accountService.put(id, requestAccount));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -66,12 +69,11 @@ public class IndustryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {
         try {
-            return _baseController.success(_industryService.delete(id));
+            return _baseController.success(_accountService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
-
 }

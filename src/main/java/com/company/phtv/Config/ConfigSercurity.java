@@ -3,7 +3,6 @@ package com.company.phtv.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -36,14 +35,10 @@ public class ConfigSercurity {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/login/**","/loginEmployer", "/jobType/**", "/register", "/hello", "/getinfo",
-                                        "/level/**", "/company/**", "/cityProvince/**", "/subcriptionPlan/**",
-                                        "/employer/**", "/account/**","/file")
-                                .permitAll()
-                                .requestMatchers("/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
-                                // .requestMatchers("/industry/**").hasAnyAuthority(Role.ADMIN.name(), Role.CANDIDATE.name())
-                                // .requestMatchers("/industry/**").hasAnyAuthority(Role.CANDIDATE.name())
-                                .requestMatchers(HttpMethod.GET,"/course","/account","/api/job","/employer","/company").hasAnyAuthority(Role.EMPLOYER.name())
+                                .requestMatchers("/general/**", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.name())
+                                .requestMatchers("/candidate/**").hasAnyAuthority(Role.CANDIDATE.name())
+                                .requestMatchers("/employer/**").hasAnyAuthority(Role.EMPLOYER.name())
                                 .anyRequest().permitAll())
 
                 .sessionManagement(mannager -> mannager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

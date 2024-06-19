@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers.Controller;
+package com.company.phtv.Controllers.Admin;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/subcriptionPlan")
+@RequestMapping("/admin/subcription_plan")
 
-public class SubcriptionPlanController {
+public class AdminSubcriptionPlanController {
     @Autowired
     SubcriptionPlanService _subcriptionPlanService;
     BaseController<SubcriptionPlanDTO> _baseController = new BaseController<SubcriptionPlanDTO>();
     BaseController<List<SubcriptionPlanDTO>> _baseControllers = new BaseController<List<SubcriptionPlanDTO>>();
 
-    @GetMapping()
-    public ResponseEntity<?> get() {
-        try {
-            return _baseControllers.success(_subcriptionPlanService.getAll());
-        } catch (HttpException e) {
-            return _baseControllers.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseControllers.error(null, 500, e.getMessage());
-        }
-    }
+    // @GetMapping()
+    // public ResponseEntity<?> get() {
+    //     try {
+    //         return _baseControllers.success(_subcriptionPlanService.getAll());
+    //     } catch (HttpException e) {
+    //         return _baseControllers.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseControllers.error(null, 500, e.getMessage());
+    //     }
+    // }
 
     @PostMapping()
     public ResponseEntity<?> post(@ModelAttribute RequestSubcriptionPlan requestSubcriptionPlan) {
@@ -42,16 +42,16 @@ public class SubcriptionPlanController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable int id) {
-        try {
-            return _baseController.success(_subcriptionPlanService.getById(id));
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
+    // @GetMapping("/{id}")
+    // public ResponseEntity<?> getById(@PathVariable int id) {
+    //     try {
+    //         return _baseController.success(_subcriptionPlanService.getById(id));
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestSubcriptionPlan subcriptionPlan) {
