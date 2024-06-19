@@ -52,7 +52,7 @@ public class JobService implements IJobService {
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
         @SuppressWarnings("deprecation")
-        Location l = _locationRepo.getOne(requestJob.getLocation_id());
+        Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
         job.setLocation(l);
         JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
         job.setJobType(jt);
@@ -74,7 +74,7 @@ public class JobService implements IJobService {
         }
         if (requestJob.getLocation_id() != 0) {
             @SuppressWarnings("deprecation")
-            Location l = _locationRepo.getOne(requestJob.getLocation_id());
+            Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
             job.setLocation(l);
         }
         if (requestJob.getJobType_id() != 0) {
@@ -144,16 +144,18 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsViewed(String id) {
-        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
-        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(account);
-        List<JobDTO> jobDTOS = new ArrayList<>();
-        for (int i = 0; i < viewedJobs.size(); i++) {
-            boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
-            if (!checkJobDeleted) {
-                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
-            }
-        }
-        return jobDTOS;
+//        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
+//        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(account);
+//        List<JobDTO> jobDTOS = new ArrayList<>();
+//        for (int i = 0; i < viewedJobs.size(); i++) {
+//            boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
+//            if (!checkJobDeleted) {
+//                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
+//            }
+//        }
+//        return jobDTOS;
+
+        return null;
 
     }
 }
