@@ -115,38 +115,43 @@ public class CompanyService implements ICompanyService {
     public List<CompanyDTO> companyApplicationMost() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
-        HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
-        for (int i = 0; i < companies.size(); i++) {
-            int count = 0;
-            boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
-            if (!checkCompanyDeleted) {
-                for (Jobs job : companies.get(i).getJobs()) {
-                    boolean checkJobDeleted = job.getDeleted_at() != null;
-                    if (!checkJobDeleted) {
-                        count += job.getApplications().size();
+        if (companies.size() > 5) {
+            HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
+            for (int i = 0; i < companies.size(); i++) {
+                int count = 0;
+                boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
+                if (!checkCompanyDeleted) {
+                    for (Jobs job : companies.get(i).getJobs()) {
+                        boolean checkJobDeleted = job.getDeleted_at() != null;
+                        if (!checkJobDeleted) {
+                            count += job.getApplications().size();
+                        }
+                    }
+                    if (count != 0) {
+                        companiesWithCounts.put(companies.get(i), count);
                     }
                 }
-                if (count != 0) {
-                    companiesWithCounts.put(companies.get(i), count);
-                }
+
             }
-
+            if (companiesWithCounts.size() > 5) {
+                PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+                        (e1, e2) -> e2.getValue() - e1.getValue());
+                pq.addAll(companiesWithCounts.entrySet());
+                if (pq.size() > 5) {
+                    pq.poll();
+                }
+                while (!pq.isEmpty() && companyDTOS.size() < 5) {
+                    Map.Entry<Company, Integer> entry = pq.poll();
+                    Company company = entry.getKey();
+                    companyDTOS.add(CompanyMapping.CompanyDTO(company));
+                }
+                return companyDTOS;
+            }
         }
-        // Extract top k companies with highest application counts using a PriorityQueue
-        PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>((e1, e2) -> e2.getValue() - e1.getValue());
 
-        // Ensure the PriorityQueue won't exceed the requested k entries
-        pq.addAll(companiesWithCounts.entrySet());
-        if (pq.size() > 5) {
-            pq.poll(); // Remove the least significant entry to maintain max k elements
+        for (Company cpn : companies) {
+            companyDTOS.add(CompanyMapping.CompanyDTO(cpn));
         }
-
-        while (!pq.isEmpty() && companyDTOS.size() < 5) {
-            Map.Entry<Company, Integer> entry = pq.poll();
-            Company company = entry.getKey();
-            companyDTOS.add(CompanyMapping.CompanyDTO(company));
-        }
-
         return companyDTOS;
 
     }
