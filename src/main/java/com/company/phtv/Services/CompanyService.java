@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.TreeMap;
 
 @Service
@@ -113,7 +115,7 @@ public class CompanyService implements ICompanyService {
     public List<CompanyDTO> companyApplicationMost() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
-        HashMap<Integer, Company> companiesWithCounts = new HashMap<Integer, Company>();
+        HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
         for (int i = 0; i < companies.size(); i++) {
             int count = 0;
             boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
@@ -125,16 +127,26 @@ public class CompanyService implements ICompanyService {
                     }
                 }
                 if (count != 0) {
-                    companiesWithCounts.put(count, companies.get(i));
+                    companiesWithCounts.put(companies.get(i), count);
                 }
             }
 
         }
+        // Extract top k companies with highest application counts using a PriorityQueue
+        PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>((e1, e2) -> e2.getValue() - e1.getValue());
 
-        TreeMap<Integer, Company> sorted = new TreeMap<Integer, Company>(companiesWithCounts);
-        sorted.entrySet();
+        // Ensure the PriorityQueue won't exceed the requested k entries
+        pq.addAll(companiesWithCounts.entrySet());
+        if (pq.size() > 5) {
+            pq.poll(); // Remove the least significant entry to maintain max k elements
+        }
 
-        
+        while (!pq.isEmpty() && companyDTOS.size() < 5) {
+            Map.Entry<Company, Integer> entry = pq.poll();
+            Company company = entry.getKey();
+            companyDTOS.add(CompanyMapping.CompanyDTO(company));
+        }
+
         return companyDTOS;
 
     }
