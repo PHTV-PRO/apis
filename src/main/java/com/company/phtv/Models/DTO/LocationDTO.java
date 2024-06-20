@@ -13,6 +13,6 @@ import lombok.Setter;
 public class LocationDTO {
     private int id;
     private  String name;
-    private CompanyDTO companyDTO;
-    private CityProvinceDTO cityProvinceDTO;
+    private CompanyDTO company;
+    private CityProvinceDTO cityProvince;
 }
