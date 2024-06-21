@@ -1,10 +1,17 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
+import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Map.AccountMapping;
+import com.company.phtv.Models.Map.CompanyMapping;
+import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
+import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Services.IServices.IAccountService;
 import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
@@ -29,6 +36,9 @@ public class AccountService implements IAccountService {
 
     @Autowired
     CloudinaryService _cloudinaryService;
+
+    @Autowired
+    CompanyRepo _companyRepo;
 
     public AccountService(PasswordEncoder _passwordEncoder) {
         this._passwordEncoder = _passwordEncoder;
@@ -124,6 +134,26 @@ public class AccountService implements IAccountService {
             throw Variable.notFound;
         }
         AccountDTO accountDTO = AccountMapping.accountDTO(account);
+//        accountDTO.setCompany(acc);
+        return accountDTO;
+    }
+    @Override
+    public AccountDTO getAccountCompanyJob(int id) {
+        Account account = _accountRepo.findIdAccount(id);
+        boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
+        if (checkAccountNotFound) {
+            throw Variable.notFound;
+        }
+        Company company = _companyRepo.findOneCompanyWithAccount(account);
+        CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+        List<JobDTO> jobDTOs = new ArrayList<>();
+        for(Jobs job : company.getJobs()){
+            jobDTOs.add(JobMapping.getJob(job));
+        }
+        companyDTO.setJobs(jobDTOs);
+        AccountDTO accountDTO = AccountMapping.accountDTO(account);
+        accountDTO.setCompany(companyDTO);
+//        accountDTO.setCompany(acc);
         return accountDTO;
     }
 }

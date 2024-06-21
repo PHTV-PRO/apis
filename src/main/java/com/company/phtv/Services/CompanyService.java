@@ -45,7 +45,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
         Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
-        if (a == null) {
+        if (a == null && a.getDeleted_at()!=null ) {
             throw Variable.AccountNotFound;
         }
         for (Company c : a.getCompanies()) {

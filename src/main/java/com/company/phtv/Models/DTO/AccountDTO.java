@@ -19,4 +19,7 @@ public class AccountDTO {
     private  String address;
     private  String image;
     private Role role;
+
+    private  CompanyDTO company;
+
 }

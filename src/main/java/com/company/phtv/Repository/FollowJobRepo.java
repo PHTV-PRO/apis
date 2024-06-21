@@ -10,6 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface FollowJobRepo extends JpaRepository<FollowJob, Integer> {
-    @Query("select j from FollowJob j Where  account = :account_id ORDER BY j.created_at DESC")
+    @Query("select j from FollowJob j Where  j.account = :account_id ORDER BY j.created_at DESC")
     List<FollowJob> findJobByUserId(@Param("account_id") Account acc);
 }
