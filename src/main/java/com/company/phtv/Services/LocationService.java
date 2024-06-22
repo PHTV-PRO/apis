@@ -1,12 +1,9 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
-import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.CityProvince;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Location;
-import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Request.RequestLocation;
 import com.company.phtv.Repository.CityProvinceRepo;

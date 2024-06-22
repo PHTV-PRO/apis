@@ -1,5 +1,6 @@
 package com.company.phtv.Services.IServices;
 
+import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
@@ -9,7 +10,7 @@ public interface IAuthenticateService {
 
     Account register(RequestLogin requestLogin);
 
-    Object checkToken(String token);
+    AccountDTO checkToken(String token);
 
 
 

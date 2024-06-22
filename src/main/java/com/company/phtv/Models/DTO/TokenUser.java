@@ -1,7 +1,6 @@
 package com.company.phtv.Models.DTO;
 
 
-import com.company.phtv.Models.Entity.Account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,5 +13,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TokenUser {
     private String token;
-    private Account account;
+    private AccountDTO account;
 }

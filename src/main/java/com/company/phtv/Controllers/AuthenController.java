@@ -2,13 +2,13 @@ package com.company.phtv.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
@@ -23,7 +23,7 @@ public class AuthenController {
 
     BaseController<TokenUser> _baseController = new BaseController<TokenUser>();
     BaseController<Account> _baseControllerAccount = new BaseController<Account>();
-    BaseController<UserDetails> _baseControllerInfo = new BaseController<UserDetails>();
+    BaseController<AccountDTO> _baseControllerInfo = new BaseController<AccountDTO>();
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody RequestLogin requestLogin) {
@@ -52,8 +52,7 @@ public class AuthenController {
     @PostMapping("/check_token")
     public ResponseEntity<?> postToken(@RequestBody String token) {
         try {
-            UserDetails user = _iauthenRepo.checkToken(token);
-            return _baseControllerInfo.success(user);
+            return _baseControllerInfo.success(_iauthenRepo.checkToken(token));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

@@ -1,8 +1,6 @@
 package com.company.phtv.Services.IServices;
 
-import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
-import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestLocation;
 
 import java.util.List;

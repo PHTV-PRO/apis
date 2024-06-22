@@ -3,13 +3,14 @@ package com.company.phtv.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Enums.Role;
+import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
+import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
@@ -51,8 +52,9 @@ public class AuthenticateService implements IAuthenticateService {
         } catch (Exception e) {
             throw Variable.emailOrPasswordIncorrect;
         }
+
         var token = _jwtservice.generateToken(user);
-        return new TokenUser(token, _userRepo.getAccountByEmail(requestLogin.getEmail()));
+        return new TokenUser(token, AccountMapping.accountDTO(_userRepo.getAccountByEmail(requestLogin.getEmail())));
     }
 
     @Override
@@ -77,14 +79,14 @@ public class AuthenticateService implements IAuthenticateService {
     }
 
     @Override
-    public UserDetails checkToken(String token) {
+    public AccountDTO checkToken(String token) {
         String email = _jwtservice.extractEmail(token);
         if (email == null || email.trim().equals("")) {
             throw Variable.tokenError;
         }
         Account account = _userRepo.getAccountByEmail(email);
         if (account != null && account.getDeleted_at() == null) {
-            return account;
+            return AccountMapping.accountDTO(account);
         }
         throw Variable.notFound;
     }

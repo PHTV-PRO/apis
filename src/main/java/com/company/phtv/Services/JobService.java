@@ -51,7 +51,6 @@ public class JobService implements IJobService {
         Jobs job = JobMapping.jobCreate(requestJob);
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
-        @SuppressWarnings("deprecation")
         Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
         job.setLocation(l);
         JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
@@ -73,7 +72,6 @@ public class JobService implements IJobService {
             job.setCompany(c);
         }
         if (requestJob.getLocation_id() != 0) {
-            @SuppressWarnings("deprecation")
             Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
             job.setLocation(l);
         }
