@@ -2,11 +2,9 @@ package com.company.phtv.Controllers.Employer;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.AccountDTO;
-import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Services.AccountService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

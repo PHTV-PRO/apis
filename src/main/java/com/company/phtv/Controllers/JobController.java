@@ -42,7 +42,8 @@ public class JobController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
-      @GetMapping("/new")
+
+    @GetMapping("/new")
     public ResponseEntity<?> getJobsNew() {
         try {
             return _baseControllers.success(_jobService.getJobsNew());
@@ -83,6 +84,21 @@ public class JobController {
     public ResponseEntity<?> getJobsViewd(@PathVariable String id) {
         try {
             return _baseControllers.success(_jobService.getJobsViewed(id));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/viewed")
+    public ResponseEntity<?> postJobsViewed(@RequestBody RequestIntermediaryJob requestIntermediaryJob) {
+        try {
+            boolean success = _jobService.postJobsViewed(requestIntermediaryJob);
+            if (success) {
+                return _baseControllers.success(null);
+            }
+            throw Variable.Fail;
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

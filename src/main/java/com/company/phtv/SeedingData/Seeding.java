@@ -25,7 +25,7 @@ public class Seeding implements CommandLineRunner {
     CompanyRepo _CompanyRepo;
 
     @Autowired
-    CurriculumRepo _CurriculumRepo;
+    CVRepo _CurriculumRepo;
 
     @Autowired
     FollowCompanyRepo _FollowCompanyRepo;

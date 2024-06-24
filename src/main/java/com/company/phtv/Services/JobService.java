@@ -142,18 +142,25 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsViewed(String id) {
-//        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
-//        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(account);
-//        List<JobDTO> jobDTOS = new ArrayList<>();
-//        for (int i = 0; i < viewedJobs.size(); i++) {
-//            boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
-//            if (!checkJobDeleted) {
-//                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
-//            }
-//        }
-//        return jobDTOS;
+        Account account = _accountRepo.findIdAccount(Integer.parseInt(id));
+        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(account);
+        List<JobDTO> jobDTOS = new ArrayList<>();
+        for (int i = 0; i < viewedJobs.size(); i++) {
+            boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
+            if (!checkJobDeleted) {
+                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
+            }
+        }
+        return jobDTOS;
+    }
 
-        return null;
-
+    public Boolean postJobsViewed(RequestIntermediaryJob requestIntermediaryJob) {
+        Account account = _accountRepo.getAccountById(Integer.parseInt(requestIntermediaryJob.account_id));
+        Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
+        if (account == null || job == null) {
+            return false;
+        }
+        _ViewedJobRepo.save(new ViewedJob(0, job, account));
+        return true;
     }
 }

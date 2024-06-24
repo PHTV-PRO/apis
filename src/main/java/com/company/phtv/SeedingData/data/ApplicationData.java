@@ -2,7 +2,7 @@ package com.company.phtv.SeedingData.data;
 
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Repository.AccountRepo;
-import com.company.phtv.Repository.CurriculumRepo;
+import com.company.phtv.Repository.CVRepo;
 import com.company.phtv.Repository.JobRepo;
 
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ public class ApplicationData {
 
     private final AccountRepo _AccountRepo;
     private final JobRepo _JobRepo;
-    private final CurriculumRepo _CurriculumRepo;
+    private final CVRepo _CurriculumRepo;
 
-    public ApplicationData(AccountRepo _AccountRepo, JobRepo _JobRepo, CurriculumRepo _CurriculumRepo) {
+    public ApplicationData(AccountRepo _AccountRepo, JobRepo _JobRepo, CVRepo _CurriculumRepo) {
         this._AccountRepo = _AccountRepo;
         this._JobRepo = _JobRepo;
         this._CurriculumRepo = _CurriculumRepo;
