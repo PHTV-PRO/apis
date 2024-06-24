@@ -92,7 +92,12 @@ public class CVService implements ICVService {
         }
         List<CVDTO> cvdto = new ArrayList<>();
         for (CurriculumVitae CV : CVs) {
-            cvdto.add(CVMapping.CVDTO(CV));
+            if (CV.getDeleted_at() == null) {
+                cvdto.add(CVMapping.CVDTO(CV));
+            }
+        }
+        if (cvdto.size() < 1) {
+            throw Variable.notFound;
         }
         return cvdto;
     }
