@@ -20,7 +20,7 @@ public class EmployerAccountController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getByIdTest(@PathVariable int id) {
+    public ResponseEntity<?> get(@PathVariable int id) {
         try {
             return _baseController.success(_accountService.getAccountCompanyJob(id));
         } catch (HttpException e) {

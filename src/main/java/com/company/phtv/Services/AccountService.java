@@ -134,26 +134,32 @@ public class AccountService implements IAccountService {
             throw Variable.notFound;
         }
         AccountDTO accountDTO = AccountMapping.accountDTO(account);
-//        accountDTO.setCompany(acc);
+        // accountDTO.setCompany(acc);
         return accountDTO;
     }
+
     @Override
     public AccountDTO getAccountCompanyJob(int id) {
         Account account = _accountRepo.findIdAccount(id);
+        AccountDTO accountDTO = new AccountDTO();
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
             throw Variable.notFound;
         }
         Company company = _companyRepo.findOneCompanyWithAccount(account);
-        CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
-        List<JobDTO> jobDTOs = new ArrayList<>();
-        for(Jobs job : company.getJobs()){
-            jobDTOs.add(JobMapping.getJob(job));
+        boolean checkCompanyExisting = company != null;
+        if (checkCompanyExisting) {
+            CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+            if (company.getJobs().size() > 0) {
+                List<JobDTO> jobDTOs = new ArrayList<>();
+                for (Jobs job : company.getJobs()) {
+                    jobDTOs.add(JobMapping.getJob(job));
+                }
+                companyDTO.setJobs(jobDTOs);
+            }
+            accountDTO = AccountMapping.accountDTO(account);
+            accountDTO.setCompany(companyDTO);
         }
-        companyDTO.setJobs(jobDTOs);
-        AccountDTO accountDTO = AccountMapping.accountDTO(account);
-        accountDTO.setCompany(companyDTO);
-//        accountDTO.setCompany(acc);
         return accountDTO;
     }
 }
