@@ -15,6 +15,6 @@ import lombok.Setter;
 public class RequestCV {
     private int account_id;
     @Nullable
-    public MultipartFile UploadFile;
+    public MultipartFile upload_file;
 
 }

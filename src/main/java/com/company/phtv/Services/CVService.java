@@ -39,11 +39,11 @@ public class CVService implements ICVService {
         if (checkAccountNotFound) {
             throw Variable.AccountNotFound;
         }
-        if (requestCV.UploadFile != null) {
+        if (requestCV.getUpload_file() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadCV(requestCV.UploadFile, requestCV.toString());
+                Map check = _cloudinaryService.uploadCV(requestCV.getUpload_file(), requestCV.toString());
                 CV.setFile_name(check.get("public_id").toString());
                 CV.setAccount(account);
                 return new CVDTO();
