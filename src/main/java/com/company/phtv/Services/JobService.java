@@ -169,7 +169,7 @@ public class JobService implements IJobService {
         return true;
     }
 
-    public JobDTO jobApplication(RequestApplication requestApplication) {
+    public JobDTO CreatejobApplication(RequestApplication requestApplication) {
         Account account = _accountRepo.getAccountById(Integer.parseInt(requestApplication.getAccount_id()));
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
         CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
@@ -185,6 +185,17 @@ public class JobService implements IJobService {
         }
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
         return new JobDTO();
+    }
+
+    @Override
+    public List<JobDTO> getJobApplicationByAccount(int id) {
+        Account account = _accountRepo.getAccountById(id);
+        List<Application> application = _applicationRepo.findByAccount(account);
+        List<JobDTO> jobDTOs = new ArrayList<>();
+        for (Application a : application) {
+            jobDTOs.add(JobMapping.getJob(a.getJobs()));
+        }
+        return jobDTOs;
     }
 
 }

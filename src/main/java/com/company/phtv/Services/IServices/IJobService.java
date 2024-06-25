@@ -23,7 +23,8 @@ public interface IJobService {
 
     List<JobDTO> getJobsViewed(String id);
 
-    JobDTO jobApplication(RequestApplication requestApplication);
+    List<JobDTO> getJobApplicationByAccount(int id);
 
+    JobDTO CreatejobApplication(RequestApplication requestApplication);
 
 }

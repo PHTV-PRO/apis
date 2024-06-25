@@ -43,35 +43,24 @@ public class LocationService implements ILocationService {
     public LocationDTO create(RequestLocation requestLocation) {
         Location location = LocationMapping.LocationPost(requestLocation);
         CityProvince c = _cityProvinceRepo.findById(requestLocation.getCity_provence_id()).get();
-        if (c == null) {
-            throw Variable.AccountNotFound;
-        }
-        for (Location l : c.getLocation()) {
-            // check list company of account is deleted
-            if (c.getDeleted_at() != null) {
-                throw Variable.CompanyOfAccountIsExist;
-            }
+        Company cm = _companyRepo.findById(requestLocation.getCompany_id()).get();
+        boolean checkCityProvenceNotFound = c == null || c.getDeleted_at() != null;
+        if (checkCityProvenceNotFound) {
+            throw Variable.notFound;
         }
         location.setCity_provence(c);
-        Company cm = _companyRepo.findById(requestLocation.getCompany_id()).get();
-        if (cm == null) {
-            throw Variable.AccountNotFound;
-        }
-        for (Location l : cm.getLocations()) {
-            // check list company of account is deleted
-            if (c.getDeleted_at() != null) {
-                throw Variable.CompanyOfAccountIsExist;
-            }
+        boolean checkCompanyNotFound = cm == null || cm.getDeleted_at() != null;
+        if (checkCompanyNotFound) {
+            throw Variable.notFound;
         }
         location.setCompany(cm);
-
         _locationRepo.save(location);
         return (LocationDTO) LocationMapping.LocationDTO(location);
     }
 
     @Override
     public LocationDTO put(int id, RequestLocation requestLocation) {
-        Location getLocation  = _locationRepo.findIdLocation(id);
+        Location getLocation = _locationRepo.findIdLocation(id);
         boolean checkLocationNotFound = (getLocation != null && getLocation.getDeleted_at() == null) ? false : true;
         if (checkLocationNotFound) {
             throw Variable.notFound;
