@@ -31,7 +31,7 @@ public class AdminIndustryController {
     // }
 
     @PostMapping()
-    public ResponseEntity<?> post(@RequestBody RequestIndustry industry) {
+    public ResponseEntity<?> post(@ModelAttribute RequestIndustry industry) {
         try {
             return _baseController.success(_industryService.create(industry));
         } catch (HttpException e) {
@@ -53,7 +53,7 @@ public class AdminIndustryController {
     // }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> Put(@PathVariable int id, @RequestBody RequestIndustry industry) {
+    public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestIndustry industry) {
         try {
             return _baseController.success(_industryService.put(id, industry));
         } catch (HttpException e) {

@@ -14,13 +14,6 @@ public class IndustryMapping {
         IndustryDTO industryDTO = new IndustryDTO();
         industryDTO.setId(i.getId());
         industryDTO.setName(i.getName());
-        Set<SkillDTO> skill = new HashSet<>();
-        for (Skill s : i.getSkills()) {
-            if (s.getDeleted_at() == null) {
-                skill.add(new SkillDTO(s.getId(), s.getName()));
-            }
-        }
-        industryDTO.setSkills(skill);
         return industryDTO;
     }
 
