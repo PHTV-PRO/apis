@@ -3,6 +3,7 @@ package com.company.phtv.Services;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Request.RequestApplication;
 import com.company.phtv.Models.Request.RequestIntermediaryJob;
 import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Repository.*;
@@ -33,6 +34,10 @@ public class JobService implements IJobService {
     ViewedJobRepo _ViewedJobRepo;
     @Autowired
     AccountRepo _accountRepo;
+    @Autowired
+    CVRepo _cvRepo;
+    @Autowired
+    ApplicationRepo _applicationRepo;
 
     @Override
     public List<JobDTO> getAll() {
@@ -163,4 +168,23 @@ public class JobService implements IJobService {
         _ViewedJobRepo.save(new ViewedJob(0, job, account));
         return true;
     }
+
+    public JobDTO jobApplication(RequestApplication requestApplication) {
+        Account account = _accountRepo.getAccountById(Integer.parseInt(requestApplication.getAccount_id()));
+        Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
+        CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
+        if (account == null || job == null || Cv == null) {
+            throw Variable.ActionFail;
+        }
+        for (int i = 0; i < account.getApplications().size(); i++) {
+            boolean checkApplicated = account.getApplications().get(i).getAccount() == account
+                    && account.getApplications().get(i).getJobs() == job;
+            if (checkApplicated) {
+                throw Variable.ActionFail;
+            }
+        }
+        _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
+        return new JobDTO();
+    }
+
 }

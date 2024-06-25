@@ -1,6 +1,5 @@
 package com.company.phtv.Models.Entity;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,15 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "application")
-public class Application extends BaseModel{
+public class Application extends BaseModel {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "note", length = 1000)
     private String note;
-
-
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
@@ -29,7 +26,7 @@ public class Application extends BaseModel{
     @JoinColumn(name = "job_id")
     private Jobs jobs;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cv_id")
     private CurriculumVitae curriculumVitae;
 
