@@ -1,5 +1,7 @@
 package com.company.phtv.Models.Map;
 
+import java.util.Date;
+
 import com.company.phtv.Models.DTO.*;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Request.RequestJob;
@@ -23,21 +25,21 @@ public class JobMapping {
         jobDTO.set_active(jobs.is_active());
         jobDTO.setGender(jobs.getGender());
         jobDTO.setCompany(
-                new CompanyDTO(jobs.getCompany().getId(), jobs.getCompany().getName()
-                        , jobs.getCompany().getIntroduction(),jobs.getCompany().getBenefit()
-                        ,jobs.getCompany().getProfession(),jobs.getCompany().getSize_min()
-                        ,jobs.getCompany().getSize_max(),jobs.getCompany().getSkill()
-                        , jobs.getCompany().getLink_website()
-                        , jobs.getCompany().getNationnality(),jobs.getCompany().getLogo_image()
-                        ,jobs.getCompany().getBackground_image()
-                        ,jobs.getCompany().getEnable(),jobs.getCompany().getContract(),null,null));
+                new CompanyDTO(jobs.getCompany().getId(), jobs.getCompany().getName(),
+                        jobs.getCompany().getIntroduction(), jobs.getCompany().getBenefit(),
+                        jobs.getCompany().getProfession(), jobs.getCompany().getSize_min(),
+                        jobs.getCompany().getSize_max(), jobs.getCompany().getSkill(),
+                        jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
+                        jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
+                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), null, null));
         jobDTO.setLocation(
-                new LocationDTO(jobs.getLocation().getId(),jobs.getLocation().getName(),null,null));
+                new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null, null));
         jobDTO.setJobType(
-                new JobTypeDTO(jobs.getJobType().getId(),jobs.getJobType().getName()));
+                new JobTypeDTO(jobs.getJobType().getId(), jobs.getJobType().getName()));
         return jobDTO;
     }
 
+    @SuppressWarnings("deprecation")
     public static Jobs jobCreate(RequestJob j) {
         Jobs jobs = new Jobs();
         jobs.setTitle(j.getTitle());
@@ -50,13 +52,14 @@ public class JobMapping {
         jobs.setExperience_required(j.getExperience_required());
         jobs.setSalary_max(j.getSalary_max());
         jobs.setSalary_min(j.getSalary_min());
-        jobs.setStart_date(j.getStart_date());
-        jobs.setEnd_date(j.getEnd_date());
+        jobs.setStart_date(new Date(j.getStart_date()));
+        jobs.setEnd_date(new Date(j.getEnd_date()));
         jobs.set_active(j.is_active());
         jobs.setGender(j.getGender());
         return jobs;
     }
 
+    @SuppressWarnings("deprecation")
     public static Jobs jobPut(RequestJob rj, Jobs j) {
         if (rj.getTitle() != null) {
             j.setTitle(rj.getTitle());
@@ -89,10 +92,10 @@ public class JobMapping {
             j.setSalary_min(rj.getSalary_min());
         }
         if (rj.getStart_date() != null) {
-            j.setStart_date(rj.getStart_date());
+            j.setStart_date(new Date(rj.getStart_date()));
         }
         if (rj.getEnd_date() != null) {
-            j.setEnd_date(rj.getEnd_date());
+            j.setEnd_date(new Date(rj.getEnd_date()));
         }
         if (rj.is_active != false) {
             j.set_active(rj.is_active());

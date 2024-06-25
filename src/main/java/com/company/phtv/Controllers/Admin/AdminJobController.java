@@ -32,7 +32,7 @@ public class AdminJobController {
     // }
 
     @PostMapping()
-    public ResponseEntity<?> post(@RequestBody RequestJob requestJob) {
+    public ResponseEntity<?> post(@ModelAttribute RequestJob requestJob) {
         try {
             return _baseController.success(_jobService.create(requestJob));
         } catch (HttpException e) {

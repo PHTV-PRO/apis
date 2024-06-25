@@ -34,9 +34,9 @@ public class RequestJob {
     @Nullable
     public  String salary_min;
     @Nullable
-    public  Date start_date;
+    public  String start_date;
     @Nullable
-    public  Date end_date;
+    public  String end_date;
     @Nullable
     public  boolean is_active;
     @Nullable
@@ -47,5 +47,5 @@ public class RequestJob {
     @Nullable
     public int location_id;
     @Nullable
-    public int jobType_id;
+    public int job_type_id;
 }

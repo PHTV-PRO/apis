@@ -58,7 +58,7 @@ public class JobService implements IJobService {
         job.setCompany(c);
         Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
         job.setLocation(l);
-        JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
+        JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
         job.setJobType(jt);
         _jobRepo.save(job);
         return (JobDTO) JobMapping.getJob(job);
@@ -80,8 +80,8 @@ public class JobService implements IJobService {
             Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
             job.setLocation(l);
         }
-        if (requestJob.getJobType_id() != 0) {
-            JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJobType_id());
+        if (requestJob.getJob_type_id() != 0) {
+            JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
             job.setJobType(jt);
         }
         job.setId(id);
