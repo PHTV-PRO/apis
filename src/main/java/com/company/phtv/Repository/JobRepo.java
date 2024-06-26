@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import com.company.phtv.Models.Entity.FollowJob;
+
 
 public interface JobRepo extends JpaRepository<Jobs,Integer> {
     @Query("select j from Jobs j Where  id = ?1")
@@ -16,4 +18,5 @@ public interface JobRepo extends JpaRepository<Jobs,Integer> {
     List<Jobs> findAllByStartDateBefore(@Param("currentDate") Date currentDate);
 
     List<Jobs> findJobByTitleContaining(String title);
+    List<Jobs> findByFollowJobs(List<FollowJob> followJobs);
 }

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Services.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class ConfigSercurity {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         request -> request
-                                .requestMatchers("/general/**", "/swagger-ui/index.html", "/v3/api-docs/**","/**").permitAll()
+                                .requestMatchers("/general/**", "/swagger-ui/index.html", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/**").permitAll() 
                                 // .requestMatchers("/admin/**").hasAnyAuthority(Role.ADMIN.name())
                                 // .requestMatchers("/candidate/**").hasAnyAuthority(Role.CANDIDATE.name())
                                 // .requestMatchers("/employer/**").hasAnyAuthority(Role.EMPLOYER.name())

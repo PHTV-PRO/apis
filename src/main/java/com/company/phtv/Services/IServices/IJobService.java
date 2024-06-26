@@ -19,11 +19,11 @@ public interface IJobService {
 
     List<JobDTO> getJobsNew();
 
-    List<JobDTO> getJobsSave(String id);
+    List<JobDTO> getJobsSave();
 
-    List<JobDTO> getJobsViewed(String id);
+    List<JobDTO> getJobsViewed();
 
-    List<JobDTO> getJobApplicationByAccount(int id);
+    List<JobDTO> getJobApplicationByAccount();
 
     JobDTO CreatejobApplication(RequestApplication requestApplication);
 
