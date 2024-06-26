@@ -32,10 +32,14 @@ public class JobMapping {
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
                         jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
                         jobs.getCompany().getEnable(), jobs.getCompany().getContract(), null, null));
-        jobDTO.setLocation(
-                new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null, null));
-        jobDTO.setJobType(
-                new JobTypeDTO(jobs.getJobType().getId(), jobs.getJobType().getName()));
+        if (jobs.getLocation() != null) {
+            jobDTO.setLocation(
+                    new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null, null));
+        }
+        if (jobs.getJobType() != null) {
+            jobDTO.setJobType(
+                    new JobTypeDTO(jobs.getJobType().getId(), jobs.getJobType().getName()));
+        }
         return jobDTO;
     }
 
