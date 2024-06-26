@@ -12,7 +12,7 @@ public class LocationMapping {
         locationDTO.setId(l.getId());
         locationDTO.setName(l.getName());
         locationDTO.setCityProvince(CityProvinceMapping.cityProvinceDTO(l.getCity_provence()));
-        locationDTO.setCompany(CompanyMapping.CompanyDTO(l.getCompany()));
+        // locationDTO.setCompany(CompanyMapping.CompanyDTO(l.getCompany()));
         return locationDTO;
     }
 

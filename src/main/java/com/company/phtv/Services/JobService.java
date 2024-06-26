@@ -3,6 +3,8 @@ package com.company.phtv.Services;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.JobTypeMapping;
+import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Request.RequestApplication;
 import com.company.phtv.Models.Request.RequestIntermediaryJob;
 import com.company.phtv.Models.Request.RequestJob;
@@ -118,6 +120,8 @@ public class JobService implements IJobService {
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
                 jobDTOS.add(JobMapping.getJob(jobs.get(i)));
+                jobDTOS.get(i).setLocation(LocationMapping.LocationDTO(jobs.get(i).getLocation()));
+                jobDTOS.get(i).setJobType(JobTypeMapping.jobTypeDTO(jobs.get(i).getJobType()));
             }
         }
         return jobDTOS;
@@ -131,6 +135,8 @@ public class JobService implements IJobService {
             if (followJobs.get(i).getDeleted_at() == null
                     && (followJobs.get(i).getJobs().getEnd_date()).after(Date.from(Instant.now()))) {
                 jobDTOS.add(JobMapping.getJob(followJobs.get(i).getJobs()));
+                jobDTOS.get(i).setLocation(LocationMapping.LocationDTO(followJobs.get(i).getJobs().getLocation()));
+                jobDTOS.get(i).setJobType(JobTypeMapping.jobTypeDTO(followJobs.get(i).getJobs().getJobType()));
             }
         }
         return jobDTOS;
@@ -154,6 +160,8 @@ public class JobService implements IJobService {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
             if (!checkJobDeleted) {
                 jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
+                jobDTOS.get(i).setLocation(LocationMapping.LocationDTO(viewedJobs.get(i).getJobs().getLocation()));
+                jobDTOS.get(i).setJobType(JobTypeMapping.jobTypeDTO(viewedJobs.get(i).getJobs().getJobType()));
             }
         }
         return jobDTOS;
@@ -193,7 +201,10 @@ public class JobService implements IJobService {
         List<Application> application = _applicationRepo.findByAccount(account);
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
-            jobDTOs.add(JobMapping.getJob(a.getJobs()));
+            JobDTO jobDTO = JobMapping.getJob(a.getJobs());
+            jobDTO.setLocation(LocationMapping.LocationDTO(a.getJobs().getLocation()));
+            jobDTO.setJobType(JobTypeMapping.jobTypeDTO(a.getJobs().getJobType()));
+            jobDTOs.add(jobDTO);
         }
         return jobDTOs;
     }
