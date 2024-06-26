@@ -28,6 +28,7 @@ public class CompanyDTO {
     private  int contract;
 
     private AccountDTO account;
+//    private  List<LocationDTO> locations;
     private List<JobDTO> jobs;
 
 }

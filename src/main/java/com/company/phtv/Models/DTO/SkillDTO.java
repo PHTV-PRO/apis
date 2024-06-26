@@ -12,4 +12,5 @@ import lombok.Setter;
 public class SkillDTO {
     private int id;
     private  String name;
+    private IndustryDTO industry;
 }

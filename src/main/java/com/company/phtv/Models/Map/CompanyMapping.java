@@ -1,6 +1,7 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Request.RequestCompany;
@@ -22,7 +23,9 @@ public class CompanyMapping {
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setEnable(c.getEnable());
         companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
+
         return companyDTO;
+
     }
 
     public static Company Company(RequestCompany c) {
