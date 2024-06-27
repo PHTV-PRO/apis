@@ -1,7 +1,10 @@
 package com.company.phtv.Models.DTO;
 
 import java.util.Date;
+import java.util.List;
 
+import com.company.phtv.Models.Entity.Skill;
+import com.company.phtv.Models.Entity.SkillJob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +34,6 @@ public class JobDTO {
     private CompanyDTO company;
     private LocationDTO location;
     private JobTypeDTO jobType;
+
+    private List<SkillDTO> skills;
 }

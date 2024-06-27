@@ -1,8 +1,11 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.JobDTO;
+import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.LocationMapping;
+import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestApplication;
 import com.company.phtv.Models.Request.RequestIntermediaryJob;
 import com.company.phtv.Models.Request.RequestJob;
@@ -63,8 +66,18 @@ public class JobService implements IJobService {
         List<Jobs> jobs = _jobRepo.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
+            JobDTO jobDTO = new JobDTO();
             if (jobs.get(i).getDeleted_at() == null) {
-                jobDTOS.add(JobMapping.getJob(jobs.get(i)));
+                List<SkillDTO> skillDTOs = new ArrayList<>();
+                for (SkillJob s : jobs.get(i).getSkillJobs()) {
+                    if (s.getDeleted_at() == null) {
+                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
+                    }
+                }
+                jobDTO = JobMapping.getJob(jobs.get(i));
+                jobDTO.setSkills(skillDTOs);
+                jobDTOS.add(jobDTO);
+
             }
         }
         return jobDTOS;
