@@ -73,7 +73,7 @@ public class AccountService implements IAccountService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestAccount.UploadFile, account.getImage());
-                account.setImage(check.get("public_id").toString());
+                account.setImage(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -103,7 +103,7 @@ public class AccountService implements IAccountService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(r.UploadFile, getAccount.getImage());
-                getAccount.setImage(check.get("public_id").toString());
+                getAccount.setImage(Variable.PATH_IMAGE +check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
