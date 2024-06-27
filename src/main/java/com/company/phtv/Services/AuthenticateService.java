@@ -35,22 +35,22 @@ public class AuthenticateService implements IAuthenticateService {
     public TokenUser login(RequestLogin requestLogin) {
         boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
         if (!checkEmail) {
-            throw Variable.emailInvalid;
+            throw Variable.EMAIL_INVALID;
         }
         boolean checkPassword = Regex.regexPassword(requestLogin.getPassword());
         if (!checkPassword) {
-            throw Variable.passwordInvalid;
+            throw Variable.PASSWORD_INVALID;
         }
         var user = _userRepo.findByEmail(requestLogin.getEmail());
         if (user == null) {
-            throw Variable.emailOrPasswordIncorrect;
+            throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
         try {
             _authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestLogin.getEmail(),
                             requestLogin.getPassword()));
         } catch (Exception e) {
-            throw Variable.emailOrPasswordIncorrect;
+            throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
 
         var token = _jwtservice.generateToken(user);
@@ -61,15 +61,15 @@ public class AuthenticateService implements IAuthenticateService {
     public Account register(RequestLogin requestLogin) {
         boolean checkEmail = Regex.regexEmail(requestLogin.getEmail());
         if (!checkEmail) {
-            throw Variable.emailInvalid;
+            throw Variable.EMAIL_INVALID;
         }
         boolean checkPassword = Regex.regexPassword(requestLogin.getPassword());
         if (!checkPassword) {
-            throw Variable.passwordInvalid;
+            throw Variable.PASSWORD_INVALID;
         }
         Account account = _userRepo.getAccountByEmail(requestLogin.getEmail());
         if (account != null) {
-            throw Variable.EmailExisted;
+            throw Variable.EMAIL_EXISTING;
         }
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
@@ -82,12 +82,12 @@ public class AuthenticateService implements IAuthenticateService {
     public AccountDTO checkToken(String token) {
         String email = _jwtservice.extractEmail(token);
         if (email == null || email.trim().equals("")) {
-            throw Variable.tokenError;
+            throw Variable.TOKEN_ERROR;
         }
         Account account = _userRepo.getAccountByEmail(email);
         if (account != null && account.getDeleted_at() == null) {
             return AccountMapping.accountDTO(account);
         }
-        throw Variable.notFound;
+        throw Variable.NOT_FOUND;
     }
 }

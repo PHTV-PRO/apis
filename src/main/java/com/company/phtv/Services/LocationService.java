@@ -46,12 +46,12 @@ public class LocationService implements ILocationService {
         Company cm = _companyRepo.findById(requestLocation.getCompany_id()).get();
         boolean checkCityProvenceNotFound = c == null || c.getDeleted_at() != null;
         if (checkCityProvenceNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         location.setCity_provence(c);
         boolean checkCompanyNotFound = cm == null || cm.getDeleted_at() != null;
         if (checkCompanyNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         location.setCompany(cm);
         _locationRepo.save(location);
@@ -63,7 +63,7 @@ public class LocationService implements ILocationService {
         Location getLocation = _locationRepo.findIdLocation(id);
         boolean checkLocationNotFound = (getLocation != null && getLocation.getDeleted_at() == null) ? false : true;
         if (checkLocationNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Location location = LocationMapping.LocationPut(requestLocation, getLocation);
         if (requestLocation.getCity_provence_id() != 0) {
@@ -83,7 +83,7 @@ public class LocationService implements ILocationService {
         Location location = _locationRepo.findIdLocation(id);
         boolean checkLocationNotFound = (location != null && location.getDeleted_at() == null) ? false : true;
         if (checkLocationNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         LocationDTO locationDTO = LocationMapping.LocationDTO(location);
         return locationDTO;
@@ -94,7 +94,7 @@ public class LocationService implements ILocationService {
         Location location = _locationRepo.findIdLocation(id);
         boolean checkLocationNotFound = (location != null && location.getDeleted_at() == null) ? false : true;
         if (checkLocationNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         location.setDeleted_at(new Date());
         _locationRepo.save(location);

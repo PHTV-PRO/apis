@@ -44,7 +44,7 @@ public class IndustryService implements IIndustryService {
         Industry getIndustry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (getIndustry != null && getIndustry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Industry industry = IndustryMapping.IndustryPut(requestIndustry, getIndustry);
         industry.setId(id);
@@ -57,7 +57,7 @@ public class IndustryService implements IIndustryService {
         Industry industry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         industry.setDeleted_at(new Date());
         _industryRepo.save(industry);
@@ -69,7 +69,7 @@ public class IndustryService implements IIndustryService {
         Industry industry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         IndustryDTO industryDTO = IndustryMapping.industryDTO(industry);
         return industryDTO;

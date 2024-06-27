@@ -63,7 +63,7 @@ public class CandidateJobController {
             if (success) {
                 return _baseControllers.success(null);
             }
-            throw Variable.Fail;
+            throw Variable.FAIL;
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -89,7 +89,7 @@ public class CandidateJobController {
             if (success) {
                 return _baseControllers.success(null);
             }
-            throw Variable.Fail;
+            throw Variable.FAIL;
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

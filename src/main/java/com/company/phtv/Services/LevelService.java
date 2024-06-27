@@ -44,7 +44,7 @@ public class LevelService implements ILevelService {
         Level getLevel = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (getLevel != null && getLevel.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Level level = LevelMapping.levelPut(requestLevel, getLevel);
         level.setId(id);
@@ -57,7 +57,7 @@ public class LevelService implements ILevelService {
         Level level = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (level != null && level.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         level.setDeleted_at(new Date());
         _levelRepo.save(level);
@@ -69,7 +69,7 @@ public class LevelService implements ILevelService {
         Level level = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (level != null && level.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         LevelDTO levelDTO = LevelMapping.levelDTO(level);
         return levelDTO;

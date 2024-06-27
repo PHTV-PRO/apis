@@ -1,9 +1,7 @@
 package com.company.phtv.Models.Map;
 
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.*;
-import com.company.phtv.Models.Request.RequestLocation;
 import com.company.phtv.Models.Request.RequestSkill;
 
 public class SkillMapping {

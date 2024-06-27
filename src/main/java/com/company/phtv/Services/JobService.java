@@ -66,7 +66,7 @@ public class JobService implements IJobService {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         JobDTO jobDTO = JobMapping.getJob(job);
         return jobDTO;
@@ -137,7 +137,7 @@ public class JobService implements IJobService {
         Jobs getJob = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Jobs job = JobMapping.jobPut(requestJob, getJob);
         if (requestJob.getCompany_id() != 0) {
@@ -162,7 +162,7 @@ public class JobService implements IJobService {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         job.setDeleted_at(new Date());
         _jobRepo.save(job);
@@ -194,13 +194,13 @@ public class JobService implements IJobService {
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
         CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
         if (account == null || job == null || Cv == null) {
-            throw Variable.ActionFail;
+            throw Variable.ACTION_FAIL;
         }
         for (int i = 0; i < account.getApplications().size(); i++) {
             boolean checkApplicated = account.getApplications().get(i).getAccount() == account
                     && account.getApplications().get(i).getJobs() == job;
             if (checkApplicated) {
-                throw Variable.ActionFail;
+                throw Variable.ACTION_FAIL;
             }
         }
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));

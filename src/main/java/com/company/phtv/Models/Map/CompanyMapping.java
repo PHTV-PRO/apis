@@ -1,7 +1,6 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Request.RequestCompany;

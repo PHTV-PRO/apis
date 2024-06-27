@@ -1,10 +1,7 @@
 package com.company.phtv.Services;
 
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.*;
-import com.company.phtv.Models.Map.IndustryMapping;
-import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestSkill;
 import com.company.phtv.Repository.*;
@@ -41,7 +38,7 @@ public class SkillService implements ISkillService {
         Industry i = _industryRepo.findById(requestSkill.getIndustry_id()).get();
         boolean checkIndustryNotFound = i == null || i.getDeleted_at() != null;
         if (checkIndustryNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         skill.setIndustry(i);
 //        boolean checkCompanyNotFound = cm == null || cm.getDeleted_at() != null;
@@ -58,7 +55,7 @@ public class SkillService implements ISkillService {
         Skill getSkill = _skillRepo.findIdSkill(id);
         boolean checkSkillNotFound = (getSkill != null && getSkill.getDeleted_at() == null) ? false : true;
         if (checkSkillNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Skill skill = SkillMapping.SkillPut(requestSkill, getSkill);
         if (requestSkill.getIndustry_id() != 0) {
@@ -78,7 +75,7 @@ public class SkillService implements ISkillService {
         Skill skill = _skillRepo.findIdSkill(id);
         boolean checkSkillNotFound = (skill != null && skill.getDeleted_at() == null) ? false : true;
         if (checkSkillNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         SkillDTO skillDTO = SkillMapping.getSkill(skill);
         return skillDTO;
@@ -89,7 +86,7 @@ public class SkillService implements ISkillService {
         Skill skill = _skillRepo.findIdSkill(id);
         boolean checkLSkillNotFound = (skill != null && skill.getDeleted_at() == null) ? false : true;
         if (checkLSkillNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         skill.setDeleted_at(new Date());
         _skillRepo.save(skill);

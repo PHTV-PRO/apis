@@ -1,8 +1,6 @@
 package com.company.phtv.Services.IServices;
 
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
-import com.company.phtv.Models.Request.RequestLocation;
 import com.company.phtv.Models.Request.RequestSkill;
 
 import java.util.List;

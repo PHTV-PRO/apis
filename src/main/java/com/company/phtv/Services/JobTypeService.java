@@ -44,7 +44,7 @@ public class JobTypeService implements IJobTypeService {
         JobType getJobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (getJobType != null && getJobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         JobType jobType = JobTypeMapping.JobTypePut(requestJobType, getJobType);
         jobType.setId(id);
@@ -57,7 +57,7 @@ public class JobTypeService implements IJobTypeService {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         jobType.setDeleted_at(new Date());
         _jobTypeRepo.save(jobType);
@@ -69,7 +69,7 @@ public class JobTypeService implements IJobTypeService {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         JobTypeDTO jobTypeDTO = JobTypeMapping.jobTypeDTO(jobType);
         return jobTypeDTO;

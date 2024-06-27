@@ -45,12 +45,12 @@ public class CompanyService implements ICompanyService {
         Company company = CompanyMapping.Company(requestCompany);
         Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
         if (a == null || a.getDeleted_at()!=null ) {
-            throw Variable.AccountNotFound;
+            throw Variable.ACCOUNT_NOT_FOUND;
         }
         for (Company c : a.getCompanies()) {
             // check list company of account is deleted
             if (c.getDeleted_at() != null) {
-                throw Variable.CompanyOfAccountIsExist;
+                throw Variable.COMPANY_ACCOUNT_EXISTING;
             }
         }
         company.setAccount(a);
@@ -63,7 +63,7 @@ public class CompanyService implements ICompanyService {
         Company getCompany = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (getCompany != null && getCompany.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
         if (requestCompany.getAccount_id() != 0) {
@@ -79,7 +79,7 @@ public class CompanyService implements ICompanyService {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
         return companyDTO;
@@ -90,7 +90,7 @@ public class CompanyService implements ICompanyService {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         company.setDeleted_at(new Date());
         _companyRepo.save(company);

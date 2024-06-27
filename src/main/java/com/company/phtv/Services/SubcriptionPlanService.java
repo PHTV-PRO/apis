@@ -47,7 +47,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
                         ? false
                         : true;
         if (checkSubcriptionPlanNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         SubcriptionPlan subcriptionPlan = SubcriptionPlanMapping.SubcriptionPlanPut(requestSubcriptionPlan,
                 getSubcriptionPlan);
@@ -63,7 +63,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
                 ? false
                 : true;
         if (checkSubcriptionPlanNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         subcriptionPlan.setDeleted_at(new Date());
         _subcriptionPlanRepo.save(subcriptionPlan);
@@ -77,7 +77,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
                 ? false
                 : true;
         if (checkSubcriptionPlanNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         SubcriptionPlanDTO subcriptionPlanDTO = SubcriptionPlanMapping.subcriptionPlanDTO(subcriptionPlan);
         return subcriptionPlanDTO;

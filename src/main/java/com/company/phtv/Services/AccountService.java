@@ -60,11 +60,11 @@ public class AccountService implements IAccountService {
     public AccountDTO create(RequestAccount requestAccount) {
         boolean checkEmail = Regex.regexEmail(requestAccount.getEmail());
         if (!checkEmail) {
-            throw Variable.emailInvalid;
+            throw Variable.EMAIL_INVALID;
         }
         boolean checkPassword = Regex.regexPassword(requestAccount.getPassword());
         if (!checkPassword) {
-            throw Variable.passwordInvalid;
+            throw Variable.PASSWORD_INVALID;
         }
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
         Account account = AccountMapping.account(requestAccount);
@@ -75,7 +75,7 @@ public class AccountService implements IAccountService {
                 Map check = _cloudinaryService.uploadImage(requestAccount.UploadFile, account.getImage());
                 account.setImage(check.get("public_id").toString());
             } catch (IOException e) {
-                throw Variable.AddImageFail;
+                throw Variable.ADD_IMAGE_FAIL;
             }
         }
         _accountRepo.save(account);
@@ -86,16 +86,16 @@ public class AccountService implements IAccountService {
     public AccountDTO put(int id, RequestAccount r) {
         boolean checkEmailValid = Regex.regexEmail(r.getEmail());
         if (!checkEmailValid) {
-            throw Variable.emailInvalid;
+            throw Variable.EMAIL_INVALID;
         }
         boolean checkPasswordValid = Regex.regexPassword(r.getPassword());
         if (!checkPasswordValid) {
-            throw Variable.passwordInvalid;
+            throw Variable.PASSWORD_INVALID;
         }
         Account getAccount = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         r.setPassword(_passwordEncoder.encode(r.getPassword()));
         if (r.UploadFile != null) {
@@ -105,7 +105,7 @@ public class AccountService implements IAccountService {
                 Map check = _cloudinaryService.uploadImage(r.UploadFile, getAccount.getImage());
                 getAccount.setImage(check.get("public_id").toString());
             } catch (IOException e) {
-                throw Variable.AddImageFail;
+                throw Variable.ADD_IMAGE_FAIL;
             }
         }
         Account account = AccountMapping.AccountPut(r, getAccount);
@@ -119,7 +119,7 @@ public class AccountService implements IAccountService {
         Account account = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         account.setDeleted_at(new Date());
         _accountRepo.save(account);
@@ -131,7 +131,7 @@ public class AccountService implements IAccountService {
         Account account = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         AccountDTO accountDTO = AccountMapping.accountDTO(account);
         // accountDTO.setCompany(acc);
@@ -144,7 +144,7 @@ public class AccountService implements IAccountService {
         AccountDTO accountDTO = new AccountDTO();
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         Company company = _companyRepo.findOneCompanyWithAccount(account);
         boolean checkCompanyExisting = company != null;

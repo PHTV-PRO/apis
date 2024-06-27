@@ -45,7 +45,7 @@ public class CityProvinceService implements ICityProviceService {
         boolean checkCityProvinceNotFound = (getCityProvince != null && getCityProvince.getDeleted_at() == null) ? false
                 : true;
         if (checkCityProvinceNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         CityProvince cityProvince = CityProvinceMapping.CityProvincePut(RequestCityProvince, getCityProvince);
         cityProvince.setId(id);
@@ -59,7 +59,7 @@ public class CityProvinceService implements ICityProviceService {
         boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
                 : true;
         if (checkCityProvinceNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         cityProvince.setDeleted_at(new Date());
         _cityProvinceRepo.save(cityProvince);
@@ -72,7 +72,7 @@ public class CityProvinceService implements ICityProviceService {
         boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
                 : true;
         if (checkCityProvinceNotFound) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         CityProvinceDTO cityProvinceDTO = CityProvinceMapping.cityProvinceDTO(cityProvince);
         return cityProvinceDTO;

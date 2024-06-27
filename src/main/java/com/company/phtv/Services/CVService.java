@@ -37,7 +37,7 @@ public class CVService implements ICVService {
         Account account = _accountRepo.findIdAccount(requestCV.getAccount_id());
         boolean checkAccountNotFound = account == null || account.getDeleted_at() != null;
         if (checkAccountNotFound) {
-            throw Variable.AccountNotFound;
+            throw Variable.ACCOUNT_NOT_FOUND;
         }
         if (requestCV.getUpload_file() != null) {
             try {
@@ -48,10 +48,10 @@ public class CVService implements ICVService {
                 CV.setAccount(account);
                 return new CVDTO();
             } catch (IOException e) {
-                throw Variable.ActionFail;
+                throw Variable.ACTION_FAIL;
             }
         }
-        throw Variable.ActionFail;
+        throw Variable.ACTION_FAIL;
 
     }
 
@@ -66,7 +66,7 @@ public class CVService implements ICVService {
         CurriculumVitae CV = _cvRepo.findById(id).get();
         boolean checkExisting = CV == null || CV.getDeleted_at() != null;
         if (checkExisting) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         CV.setDeleted_at(new Date());
         _cvRepo.save(CV);
@@ -78,7 +78,7 @@ public class CVService implements ICVService {
         CurriculumVitae CV = _cvRepo.findById(id).get();
         boolean checkExisting = CV == null || CV.getDeleted_at() != null;
         if (checkExisting) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         return CVMapping.CVDTO(CV);
     }
@@ -88,7 +88,7 @@ public class CVService implements ICVService {
         Account account = _accountRepo.findIdAccount(id);
         List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
         if (CVs == null) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         List<CVDTO> cvdto = new ArrayList<>();
         for (CurriculumVitae CV : CVs) {
@@ -97,7 +97,7 @@ public class CVService implements ICVService {
             }
         }
         if (cvdto.size() < 1) {
-            throw Variable.notFound;
+            throw Variable.NOT_FOUND;
         }
         return cvdto;
     }
