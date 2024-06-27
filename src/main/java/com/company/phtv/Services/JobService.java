@@ -49,6 +49,15 @@ public class JobService implements IJobService {
     @Autowired
     JWTService _jwtservice;
 
+    public Account getAccountByAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Account) auth.getPrincipal();
+    }
+
+    public Account getAccount() {
+        return _accountRepo.findIdAccount(getAccountByAuth().getId());
+    }
+
     @Override
     public List<JobDTO> getAll() {
         List<Jobs> jobs = _jobRepo.findAll();
@@ -170,7 +179,7 @@ public class JobService implements IJobService {
     }
 
     public Boolean postJobsSave(RequestIntermediaryJob requestIntermediaryJob) {
-        Account account = _accountRepo.getAccountById(Integer.parseInt(requestIntermediaryJob.account_id));
+        Account account = getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
         if (account == null || job == null) {
             return false;
@@ -180,7 +189,7 @@ public class JobService implements IJobService {
     }
 
     public Boolean postJobsViewed(RequestIntermediaryJob requestIntermediaryJob) {
-        Account account = _accountRepo.getAccountById(Integer.parseInt(requestIntermediaryJob.account_id));
+        Account account = getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
         if (account == null || job == null) {
             return false;
@@ -190,7 +199,7 @@ public class JobService implements IJobService {
     }
 
     public JobDTO CreatejobApplication(RequestApplication requestApplication) {
-        Account account = _accountRepo.getAccountById(Integer.parseInt(requestApplication.getAccount_id()));
+        Account account = getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
         CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
         if (account == null || job == null || Cv == null) {
@@ -205,11 +214,6 @@ public class JobService implements IJobService {
         }
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
         return new JobDTO();
-    }
-
-    public Account getAccountByAuth() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Account) auth.getPrincipal();
     }
 
 }

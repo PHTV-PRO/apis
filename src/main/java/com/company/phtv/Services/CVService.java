@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Map.CVMapping;
-import com.company.phtv.Models.Request.RequestCV;
-import com.company.phtv.Models.Request.RequestIndustry;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CVRepo;
 import com.company.phtv.Services.IServices.ICVService;
@@ -31,19 +32,28 @@ public class CVService implements ICVService {
     @Autowired
     CloudinaryService _cloudinaryService;
 
+    public Account getAccountByAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Account) auth.getPrincipal();
+    }
+
+    public Account getAccount() {
+        return _accountRepo.findIdAccount(getAccountByAuth().getId());
+    }
+
     @Override
-    public CVDTO create(RequestCV requestCV) {
+    public CVDTO create(MultipartFile file) {
         CurriculumVitae CV = new CurriculumVitae();
-        Account account = _accountRepo.findIdAccount(requestCV.getAccount_id());
+        Account account = getAccount();
         boolean checkAccountNotFound = account == null || account.getDeleted_at() != null;
         if (checkAccountNotFound) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
-        if (requestCV.getUpload_file() != null) {
+        if (file != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadCV(requestCV.getUpload_file(), requestCV.toString());
+                Map check = _cloudinaryService.uploadCV(file, file.toString());
                 CV.setFile_name(check.get("public_id").toString());
                 CV.setAccount(account);
                 return new CVDTO();
@@ -53,12 +63,6 @@ public class CVService implements ICVService {
         }
         throw Variable.ACTION_FAIL;
 
-    }
-
-    @Override
-    public CVDTO put(int id, RequestIndustry requestIndustry) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'put'");
     }
 
     @Override
@@ -84,8 +88,8 @@ public class CVService implements ICVService {
     }
 
     @Override
-    public List<CVDTO> getByAccount(int id) {
-        Account account = _accountRepo.findIdAccount(id);
+    public List<CVDTO> getByAccount() {
+        Account account = getAccount();
         List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
         if (CVs == null) {
             throw Variable.NOT_FOUND;

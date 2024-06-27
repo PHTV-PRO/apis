@@ -12,8 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RequestApplication {
     @Nullable
-    public String account_id;
-    @Nullable
     public String job_id;
     @Nullable
     public String cv_id;

@@ -12,7 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RequestIntermediaryJob {
     @Nullable
-    public String account_id;
-    @Nullable
     public String job_id;
 }

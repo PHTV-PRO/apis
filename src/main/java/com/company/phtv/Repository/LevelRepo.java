@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface LevelRepo extends JpaRepository<Level,Integer> {
-    @Query("select l from Level l Where id = ?1 ORDER BY v.created_at DESC")
+    @Query("select l from Level l Where id = ?1 ORDER BY l.created_at DESC")
     Level findIdByLevel(int id);
 }

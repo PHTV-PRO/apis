@@ -15,7 +15,7 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
     @Query("select c from Company c Where  c.id = ?1")
     Company findCompanyById(int id);
 
-    @Query("select c from  Company c  where c.account = :account and c.deleted_at IS NULL ")
+    @Query("select c from  Company c  where c.account = :account and c.deleted_at IS NULL  ORDER BY c.created_at DESC")
     Company findOneCompanyWithAccount(@Param("account") Account account);
 
     List<Company> findCompanyByNameContaining(String name);
