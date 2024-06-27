@@ -31,10 +31,11 @@ public class JobMapping {
                         jobs.getCompany().getSize_max(), jobs.getCompany().getSkill(),
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
                         jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
-                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), null, null));
+                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), null, null, null));
         if (jobs.getLocation() != null) {
             jobDTO.setLocation(
-                    new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null, null));
+                    new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null,
+                            CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
         }
         if (jobs.getJobType() != null) {
             jobDTO.setJobType(

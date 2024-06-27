@@ -1,10 +1,13 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Map.CompanyMapping;
+import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
@@ -44,7 +47,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
         Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
-        if (a == null || a.getDeleted_at()!=null ) {
+        if (a == null || a.getDeleted_at() != null) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
         for (Company c : a.getCompanies()) {
@@ -82,6 +85,11 @@ public class CompanyService implements ICompanyService {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+        List<LocationDTO> locationDTO = new ArrayList<>();
+        for (Location l : company.getLocations()) {
+            locationDTO.add(LocationMapping.LocationDTO(l));
+        }
+        companyDTO.setLocations(locationDTO);
         return companyDTO;
     }
 

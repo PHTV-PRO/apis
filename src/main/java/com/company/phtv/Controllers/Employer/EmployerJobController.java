@@ -20,7 +20,7 @@ public class EmployerJobController {
     BaseController<JobDTO> _baseController = new BaseController<JobDTO>();
     BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
-    @GetMapping()
+    // @GetMapping()
     // public ResponseEntity<?> get() {
     //     try {
     //         return _baseControllers.success(_jobService.getAll());
