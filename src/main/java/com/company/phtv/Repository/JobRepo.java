@@ -12,7 +12,7 @@ import com.company.phtv.Models.Entity.FollowJob;
 
 
 public interface JobRepo extends JpaRepository<Jobs,Integer> {
-    @Query("select j from Jobs j Where  id = ?1")
+    @Query("select j from Jobs j Where  id = ?1 ORDER BY v.created_at DESC")
     Jobs findJobId(int id);
     @Query("SELECT j FROM Jobs j WHERE j.start_date < :currentDate ORDER BY j.start_date DESC")
     List<Jobs> findAllByStartDateBefore(@Param("currentDate") Date currentDate);
