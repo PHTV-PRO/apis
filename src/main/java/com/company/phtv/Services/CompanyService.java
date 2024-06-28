@@ -33,14 +33,12 @@ public class CompanyService implements ICompanyService {
     @Autowired
     AccountRepo _accountRepo;
 
-    public Account getAccountByAuth() {
+    public Account getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Account) auth.getPrincipal();
+        Account account = (Account) auth.getPrincipal();
+        return _accountRepo.findIdAccount(account.getId());
     }
 
-    public Account getAccount() {
-        return _accountRepo.findIdAccount(getAccountByAuth().getId());
-    }
 
     @Override
     public List<CompanyDTO> getAll() {
