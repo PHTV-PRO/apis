@@ -15,6 +15,8 @@ import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +31,16 @@ public class CompanyService implements ICompanyService {
     @Autowired
     CompanyRepo _companyRepo;
     @Autowired
-    AccountRepo _AccountRepo;
+    AccountRepo _accountRepo;
+
+    public Account getAccountByAuth() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (Account) auth.getPrincipal();
+    }
+
+    public Account getAccount() {
+        return _accountRepo.findIdAccount(getAccountByAuth().getId());
+    }
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -46,7 +57,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
-        Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
+        Account a = _accountRepo.findById(requestCompany.getAccount_id()).get();
         if (a == null || a.getDeleted_at() != null) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
@@ -70,7 +81,7 @@ public class CompanyService implements ICompanyService {
         }
         Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
         if (requestCompany.getAccount_id() != 0) {
-            company.setAccount(_AccountRepo.getAccountById(requestCompany.getAccount_id()));
+            company.setAccount(_accountRepo.getAccountById(requestCompany.getAccount_id()));
         }
         company.setId(id);
         _companyRepo.save(company);
@@ -161,5 +172,20 @@ public class CompanyService implements ICompanyService {
         }
         return companyDTOS;
 
+    }
+
+    public CompanyDTO geCompanyByAccount() {
+        Company company = _companyRepo.findOneCompanyWithAccount(getAccount());
+        boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
+        if (checkCompanyNotFound) {
+            throw Variable.NOT_FOUND;
+        }
+        CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+        List<LocationDTO> locationDTO = new ArrayList<>();
+        for (Location l : company.getLocations()) {
+            locationDTO.add(LocationMapping.LocationDTO(l));
+        }
+        companyDTO.setLocations(locationDTO);
+        return companyDTO;
     }
 }
