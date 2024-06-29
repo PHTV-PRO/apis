@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Getter
@@ -30,13 +31,14 @@ public class RequestCompany {
     public  String link_website;
     @Nullable
     public  String nationnality;
-    @Nullable
-    public  String logo_image;
-    @Nullable
-    public  String background_image;
+//    @Nullable
+//    public  String logo_image;
     @Nullable
     public  int enable;
-
+    @Nullable
+    public MultipartFile UploadFileBackground;
+    @Nullable
+    public MultipartFile UploadFileLogo;
     @Nullable
     public int account_id;
 }

@@ -6,6 +6,7 @@ import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,8 @@ public class AdminCompanyController {
     //     }
     // }
 
-    @PostMapping()
+    @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> post(@ModelAttribute RequestCompany requestCompany) {
         try {
             return _baseController.success(_companyService.create(requestCompany));
@@ -73,7 +75,8 @@ public class AdminCompanyController {
     //     }
     // }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+            ,produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestCompany company) {
         try {
             return _baseController.success(_companyService.put(id, company));

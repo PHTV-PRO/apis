@@ -39,8 +39,8 @@ public class CompanyMapping {
         company.setSkill(c.getSkill());
         company.setLink_website(c.getLink_website());
         company.setNationnality(c.getNationnality());
-        company.setLogo_image(c.getLogo_image());
-        company.setBackground_image(c.getBackground_image());
+//        company.setLogo_image(c.getLogo_image());
+//        company.setBackground_image(c.getBackground_image());
         company.setEnable(c.getEnable());
         return company;
     }
@@ -73,11 +73,11 @@ public class CompanyMapping {
         if (rc.getNationnality() != null) {
             c.setNationnality(rc.getNationnality());
         }
-        if (rc.getLogo_image() != null) {
-            c.setLogo_image(rc.getLogo_image());
+        if (c.getLogo_image() != null) {
+            c.setLogo_image(c.getLogo_image());
         }
-        if (rc.getBackground_image() != null) {
-            c.setBackground_image(rc.getBackground_image());
+        if (c.getBackground_image() != null) {
+            c.setBackground_image(c.getBackground_image());
         }
         if (rc.getEnable() != 0) {
             c.setEnable(rc.getEnable());

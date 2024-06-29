@@ -46,9 +46,6 @@ public class AccountMapping {
         if (a.getImage() != null) {
             a.setImage(a.getImage());
         }
-//        if (re.getRole() != null) {
-//            a.setRole(re.getRole());
-//        }
         return a;
     }
 }

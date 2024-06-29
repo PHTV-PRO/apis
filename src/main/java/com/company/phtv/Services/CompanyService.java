@@ -17,6 +17,7 @@ import com.company.phtv.Utils.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,8 @@ public class CompanyService implements ICompanyService {
     CompanyRepo _companyRepo;
     @Autowired
     AccountRepo _AccountRepo;
+    @Autowired
+    CloudinaryService _cloudinaryService;
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -57,6 +60,26 @@ public class CompanyService implements ICompanyService {
             }
         }
         company.setAccount(a);
+        if (requestCompany.UploadFileBackground != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground, company.getBackground_image());
+                company.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        if (requestCompany.UploadFileLogo != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileLogo, company.getLogo_image());
+                company.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
@@ -67,6 +90,26 @@ public class CompanyService implements ICompanyService {
         boolean checkCompanyNotFound = (getCompany != null && getCompany.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound) {
             throw Variable.NOT_FOUND;
+        }
+        if (requestCompany.UploadFileBackground != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground, getCompany.getBackground_image());
+                getCompany.setBackground_image(Variable.PATH_IMAGE +check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        if (requestCompany.UploadFileLogo != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileLogo, getCompany.getLogo_image());
+                getCompany.setLogo_image(Variable.PATH_IMAGE +check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
         }
         Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
         if (requestCompany.getAccount_id() != 0) {
