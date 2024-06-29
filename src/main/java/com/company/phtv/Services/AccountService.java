@@ -17,8 +17,6 @@ import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,13 +43,6 @@ public class AccountService implements IAccountService {
     public AccountService(PasswordEncoder _passwordEncoder) {
         this._passwordEncoder = _passwordEncoder;
     }
-
-       public Account getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
-    }
-
 
     @Override
     public List<AccountDTO> getAll() {
@@ -148,8 +139,8 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTO getAccountCompanyJob() {
-        Account account = getAccount();
+    public AccountDTO getAccountCompanyJob(int id) {
+        Account account = _accountRepo.findIdAccount(id);
         AccountDTO accountDTO = new AccountDTO();
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {

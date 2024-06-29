@@ -4,6 +4,7 @@ import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestApplication;
 import com.company.phtv.Models.Request.RequestIntermediaryJob;
@@ -51,10 +52,13 @@ public class JobService implements IJobService {
     @Autowired
     JWTService _jwtservice;
 
-    public Account getAccount() {
+    public Account getAccountByAuth() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
+        return (Account) auth.getPrincipal();
+    }
+
+    public Account getAccount() {
+        return _accountRepo.findIdAccount(getAccountByAuth().getId());
     }
 
     @Override
@@ -104,7 +108,7 @@ public class JobService implements IJobService {
     public List<JobDTO> getJobsSave() {
 
         List<JobDTO> jobDTOS = new ArrayList<>();
-        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(getAccount());
+        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(getAccountByAuth());
         for (int i = 0; i < followJobs.size(); i++) {
             if (followJobs.get(i).getDeleted_at() == null
                     && (followJobs.get(i).getJobs().getEnd_date()).after(Date.from(Instant.now()))) {
@@ -115,7 +119,7 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsViewed() {
-        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(getAccount());
+        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(getAccountByAuth());
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < viewedJobs.size(); i++) {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
@@ -128,7 +132,7 @@ public class JobService implements IJobService {
 
     @Override
     public List<JobDTO> getJobApplicationByAccount() {
-        List<Application> application = _applicationRepo.findByAccount(getAccount());
+        List<Application> application = _applicationRepo.findByAccount(getAccountByAuth());
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());

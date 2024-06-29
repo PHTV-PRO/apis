@@ -41,17 +41,6 @@ public class EmployerCompanyController {
         }
     }
 
-    @GetMapping("/account")
-    public ResponseEntity<?> getByAccount() {
-        try {
-            return _baseController.success(_companyService.geCompanyByAccount());
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
