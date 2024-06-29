@@ -62,6 +62,8 @@ public class Seeding implements CommandLineRunner {
 
     @Autowired
     SkillJobRepo _SkillJobRepo;
+    @Autowired
+    SkillCompanyRepo _skillCompanyRepo;
 
     @Autowired
     SubcriptionPlanRepo _SubcriptionPlanRepo;
@@ -96,6 +98,7 @@ public class Seeding implements CommandLineRunner {
         LoadViewedJobData();
         LoadApplicationData();
         LoadSkillJobData();
+        LoadSkillCompanyData();
 
     }
 
@@ -275,6 +278,15 @@ public class Seeding implements CommandLineRunner {
             List<SkillJob> list = new SkillJobData(_JobRepo, _SkillRepo).Data();
             for (SkillJob s : list) {
                 _SkillJobRepo.save(s);
+            }
+        }
+    }
+
+    private void LoadSkillCompanyData() {
+        if (_skillCompanyRepo.count() == 0) {
+            List<SkillCompany> list = new SkillCompanyData(_CompanyRepo, _SkillRepo).Data();
+            for (SkillCompany s : list) {
+                _skillCompanyRepo.save(s);
             }
         }
     }

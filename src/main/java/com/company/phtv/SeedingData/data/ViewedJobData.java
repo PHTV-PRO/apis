@@ -19,10 +19,10 @@ public class ViewedJobData {
     @SuppressWarnings("deprecation")
     public List<ViewedJob> Data() {
         List<ViewedJob> data = new ArrayList<>();
-        data.add(new ViewedJob(1, _JobRepo.getOne(1), _AccountRepo.getAccountById(1)));
-        data.add(new ViewedJob(2, _JobRepo.getOne(2), _AccountRepo.getAccountById(2)));
-        data.add(new ViewedJob(3, _JobRepo.getOne(3), _AccountRepo.getAccountById(3)));
-        data.add(new ViewedJob(4, _JobRepo.getOne(3), _AccountRepo.getAccountById(1)));
+        data.add(new ViewedJob(1, _JobRepo.getOne(1), _AccountRepo.getAccountById(5)));
+        data.add(new ViewedJob(2, _JobRepo.getOne(2), _AccountRepo.getAccountById(5)));
+        data.add(new ViewedJob(3, _JobRepo.getOne(3), _AccountRepo.getAccountById(5)));
+        data.add(new ViewedJob(4, _JobRepo.getOne(3), _AccountRepo.getAccountById(5)));
 
         return data;
     }

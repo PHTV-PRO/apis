@@ -15,7 +15,7 @@ public class CompanyMapping {
         companyDTO.setProfession(c.getProfession());
         companyDTO.setSize_min(c.getSize_min());
         companyDTO.setSize_max(c.getSize_max());
-        companyDTO.setSkill(c.getSkill());
+        // companyDTO.setSkill(c.getSkill());
         companyDTO.setLink_website(c.getLink_website());
         companyDTO.setNationnality(c.getNationnality());
         companyDTO.setLogo_image(c.getLogo_image());
@@ -36,7 +36,6 @@ public class CompanyMapping {
         company.setProfession(c.getProfession());
         company.setSize_min(c.getSize_min());
         company.setSize_max(c.getSize_max());
-        company.setSkill(c.getSkill());
         company.setLink_website(c.getLink_website());
         company.setNationnality(c.getNationnality());
 //        company.setLogo_image(c.getLogo_image());
@@ -63,9 +62,6 @@ public class CompanyMapping {
         }
         if (rc.getSize_max() != null) {
             c.setSize_max(rc.getSize_max());
-        }
-        if (rc.getSkill() != null) {
-            c.setSkill(rc.getSkill());
         }
         if (rc.getLink_website() != null) {
             c.setLink_website(rc.getLink_website());

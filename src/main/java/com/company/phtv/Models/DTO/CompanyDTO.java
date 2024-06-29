@@ -19,7 +19,7 @@ public class CompanyDTO {
     private String profession;
     private String size_min;
     private String size_max;
-    private String skill;
+    // private String skill;
     private String link_website;
     private String nationnality;
     private String logo_image;
@@ -30,5 +30,6 @@ public class CompanyDTO {
     private AccountDTO account;
     private List<LocationDTO> locations;
     private List<JobDTO> jobs;
+    private List<SkillDTO> skills;
 
 }

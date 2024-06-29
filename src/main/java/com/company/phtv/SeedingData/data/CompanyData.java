@@ -40,7 +40,6 @@ public class CompanyData {
                                 "Middle, Senior",
                                 "10000",
                                 "19000",
-                                "Oracle\n" + "Java\n" + "Full-Stack\n" + "Winform\n" + "Flutter",
                                 "https://jobs.lpbank.com.vn/vi",
                                 "Việt Nam",
                                 null,
@@ -61,9 +60,6 @@ public class CompanyData {
                                 "Nhân Viên",
                                 "25",
                                 "99",
-                                "Marketing / Truyền thông / Quảng cáo\n" +
-                                                "Mỹ thuật / Nghệ thuật / Điện ảnh\n" +
-                                                "Thiết kế đồ họa",
                                 "http://www.sprayway-tpr.com/vn/",
                                 "Việt Nam",
                                 null,
@@ -84,7 +80,6 @@ public class CompanyData {
                                 "Fresher, Intern, All Levels",
                                 null,
                                 null,
-                                "Oracle\n" + "Java\n" + "Full-Stack\n" + "Winform\n" + "Flutter",
                                 "https://www.likelion.edu.vn/",
                                 "South-Korea",
                                 null,

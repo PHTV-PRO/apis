@@ -2,13 +2,16 @@ package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
+import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
+import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.LocationMapping;
+import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
@@ -53,7 +56,15 @@ public class CompanyService implements ICompanyService {
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             if (companies.get(i).getDeleted_at() == null) {
-                companyDTOS.add(CompanyMapping.CompanyDTO(companies.get(i)));
+                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
+                List<SkillDTO> skillDTOs = new ArrayList<>();
+                for (SkillCompany s : companies.get(i).getSkillCompanies()) {
+                    if (s.getSkill().getDeleted_at() == null) {
+                        skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+                    }
+                }
+                companyDTO.setSkills(skillDTOs);
+                companyDTOS.add(companyDTO);
             }
         }
         return companyDTOS;
@@ -143,10 +154,18 @@ public class CompanyService implements ICompanyService {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+
         List<LocationDTO> locationDTO = new ArrayList<>();
         for (Location l : company.getLocations()) {
             locationDTO.add(LocationMapping.LocationDTO(l));
         }
+        List<SkillDTO> skillDTOs = new ArrayList<>();
+        for (SkillCompany s : company.getSkillCompanies()) {
+            if (s.getSkill().getDeleted_at() == null) {
+                skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+            }
+        }
+        companyDTO.setSkills(skillDTOs);
         companyDTO.setLocations(locationDTO);
         return companyDTO;
     }
@@ -167,11 +186,19 @@ public class CompanyService implements ICompanyService {
     public List<CompanyDTO> companyContractAll() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
-        for (int i = 0; i < companies.size(); i++) {
+        for (int i = 0; i < (companies.size() < 5 ? companies.size() : 5); i++) {
             boolean checkDeleted = companies.get(i).getDeleted_at() != null;
             boolean checkContract = companies.get(i).getContract() == 1;
             if (!checkDeleted && checkContract) {
-                companyDTOS.add(CompanyMapping.CompanyDTO(companies.get(i)));
+                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
+                List<SkillDTO> skillDTOs = new ArrayList<>();
+                for (SkillCompany s : companies.get(i).getSkillCompanies()) {
+                    if (s.getSkill().getDeleted_at() == null) {
+                        skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+                    }
+                }
+                companyDTO.setSkills(skillDTOs);
+                companyDTOS.add(companyDTO);
             }
         }
         return companyDTOS;
@@ -215,7 +242,18 @@ public class CompanyService implements ICompanyService {
         }
 
         for (Company cpn : companies) {
-            companyDTOS.add(CompanyMapping.CompanyDTO(cpn));
+            if (cpn.getDeleted_at() == null) {
+                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(cpn);
+                List<SkillDTO> skillDTOs = new ArrayList<>();
+                for (SkillCompany s : cpn.getSkillCompanies()) {
+                    if (s.getSkill().getDeleted_at() == null) {
+                        skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+                    }
+                }
+                companyDTO.setSkills(skillDTOs);
+                companyDTOS.add(companyDTO);
+            }
+
         }
         return companyDTOS;
 

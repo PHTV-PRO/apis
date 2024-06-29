@@ -25,8 +25,6 @@ public class Industry extends BaseModel {
     @OneToMany(mappedBy = "industry", cascade = CascadeType.ALL)
     private Set<Skill> skills;
 
-    @OneToMany(mappedBy = "industry", cascade = CascadeType.ALL)
-    private Set<IndustryCompany> industryCompanies;
 
     public Industry(int id,String name) {
         this.id = id;

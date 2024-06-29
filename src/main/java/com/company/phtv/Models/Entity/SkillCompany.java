@@ -13,16 +13,16 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "industry_company")
-public class IndustryCompany extends BaseModel {
+@Table(name = "skill_company")
+public class SkillCompany extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
-    @JoinColumn(name = "industry_id")
-    private Industry industry;
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference

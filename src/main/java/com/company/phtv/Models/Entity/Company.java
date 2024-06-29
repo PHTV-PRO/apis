@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+
 @Entity
 @Getter
 @Setter
@@ -31,8 +32,8 @@ public class Company extends BaseModel {
     private String size_min;
     @Column(name = "size_max")
     private String size_max;
-    @Column(name = "skill")
-    private String skill;
+    // @Column(name = "skill")
+    // private String skill;
     @Column(name = "link_website")
     private String link_website;
     @Column(name = "nationnality")
@@ -68,12 +69,15 @@ public class Company extends BaseModel {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<SkillCompany> skillCompanies;
+
     public Company(int id) {
         this.id = id;
     }
 
     public Company(int id, String name, String introduction, String benefit, String profession, String size_min,
-            String size_max, String skill, String link_website, String nationnality, String logo_image,
+            String size_max,  String link_website, String nationnality, String logo_image,
             String background_image, int enable, int contract, Account account) {
         this.id = id;
         this.name = name;
@@ -82,7 +86,7 @@ public class Company extends BaseModel {
         this.profession = profession;
         this.size_min = size_min;
         this.size_max = size_max;
-        this.skill = skill;
+        // this.skill = skill;
         this.link_website = link_website;
         this.nationnality = nationnality;
         this.logo_image = logo_image;
