@@ -4,13 +4,16 @@ import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Request.RequestCompany;
+import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
+import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Variable;
 
@@ -32,13 +35,14 @@ public class CompanyService implements ICompanyService {
     CompanyRepo _companyRepo;
     @Autowired
     AccountRepo _accountRepo;
+    @Autowired
+    FollowCompanyRepo _followCompanyRepo;
 
     public Account getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account account = (Account) auth.getPrincipal();
         return _accountRepo.findIdAccount(account.getId());
     }
-
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -89,14 +93,16 @@ public class CompanyService implements ICompanyService {
     @Override
     public CompanyDTO getById(int id) {
         Company company = _companyRepo.findCompanyById(id);
-        boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        boolean checkCompanyNotFound = company == null || company.getDeleted_at() != null ? true : false;
+        if (checkCompanyNotFound || company == null) {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
         List<LocationDTO> locationDTO = new ArrayList<>();
         for (Location l : company.getLocations()) {
-            locationDTO.add(LocationMapping.LocationDTO(l));
+            if (l.getDeleted_at() == null) {
+                locationDTO.add(LocationMapping.LocationDTO(l));
+            }
         }
         companyDTO.setLocations(locationDTO);
         return companyDTO;
@@ -106,7 +112,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO delete(int id) {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        if (checkCompanyNotFound || company == null) {
             throw Variable.NOT_FOUND;
         }
         company.setDeleted_at(new Date());
@@ -175,7 +181,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO geCompanyByAccount() {
         Company company = _companyRepo.findOneCompanyWithAccount(getAccount());
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        if (checkCompanyNotFound || company == null) {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
@@ -185,5 +191,15 @@ public class CompanyService implements ICompanyService {
         }
         companyDTO.setLocations(locationDTO);
         return companyDTO;
+    }
+
+    public CompanyDTO followCompany(RequestFollowCompany requestCompany) {
+        Account account = getAccount();
+        Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
+        if (account == null || company == null) {
+            throw Variable.ACTION_FAIL;
+        }
+        _followCompanyRepo.save(new FollowCompany(0, company, account));
+        return new CompanyDTO();
     }
 }
