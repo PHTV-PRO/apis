@@ -4,17 +4,22 @@ import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Request.RequestCompany;
+import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
+import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,9 +35,17 @@ public class CompanyService implements ICompanyService {
     @Autowired
     CompanyRepo _companyRepo;
     @Autowired
-    AccountRepo _AccountRepo;
+    AccountRepo _accountRepo;
     @Autowired
     CloudinaryService _cloudinaryService;
+    @Autowired
+    FollowCompanyRepo _followCompanyRepo;
+
+    public Account getAccount() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account account = (Account) auth.getPrincipal();
+        return _accountRepo.findIdAccount(account.getId());
+    }
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -49,7 +62,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public CompanyDTO create(RequestCompany requestCompany) {
         Company company = CompanyMapping.Company(requestCompany);
-        Account a = _AccountRepo.findById(requestCompany.getAccount_id()).get();
+        Account a = _accountRepo.findById(requestCompany.getAccount_id()).get();
         if (a == null || a.getDeleted_at() != null) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
@@ -64,7 +77,8 @@ public class CompanyService implements ICompanyService {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground, company.getBackground_image());
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground,
+                        company.getBackground_image());
                 company.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
@@ -95,8 +109,9 @@ public class CompanyService implements ICompanyService {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground, getCompany.getBackground_image());
-                getCompany.setBackground_image(Variable.PATH_IMAGE +check.get("public_id").toString());
+                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground,
+                        getCompany.getBackground_image());
+                getCompany.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -106,14 +121,14 @@ public class CompanyService implements ICompanyService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileLogo, getCompany.getLogo_image());
-                getCompany.setLogo_image(Variable.PATH_IMAGE +check.get("public_id").toString());
+                getCompany.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
         Company company = CompanyMapping.CompanyPut(requestCompany, getCompany);
         if (requestCompany.getAccount_id() != 0) {
-            company.setAccount(_AccountRepo.getAccountById(requestCompany.getAccount_id()));
+            company.setAccount(_accountRepo.getAccountById(requestCompany.getAccount_id()));
         }
         company.setId(id);
         _companyRepo.save(company);
@@ -204,5 +219,15 @@ public class CompanyService implements ICompanyService {
         }
         return companyDTOS;
 
+    }
+
+    public CompanyDTO followCompany(RequestFollowCompany requestCompany) {
+        Account account = getAccount();
+        Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
+        if (account == null || company == null) {
+            throw Variable.ACTION_FAIL;
+        }
+        _followCompanyRepo.save(new FollowCompany(0, company, account));
+        return new CompanyDTO();
     }
 }

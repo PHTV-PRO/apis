@@ -32,13 +32,11 @@ public class CVService implements ICVService {
     @Autowired
     CloudinaryService _cloudinaryService;
 
-    public Account getAccountByAuth() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return (Account) auth.getPrincipal();
-    }
 
     public Account getAccount() {
-        return _accountRepo.findIdAccount(getAccountByAuth().getId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account account = (Account) auth.getPrincipal();
+        return _accountRepo.findIdAccount(account.getId());
     }
 
     @Override

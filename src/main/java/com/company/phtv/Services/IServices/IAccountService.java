@@ -15,6 +15,6 @@ public interface IAccountService {
     AccountDTO delete(int id);
 
     AccountDTO getById(int id);
-    AccountDTO getAccountCompanyJob(int id);
+    AccountDTO getAccountCompanyJob();
 
 }
