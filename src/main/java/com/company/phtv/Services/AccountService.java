@@ -46,7 +46,7 @@ public class AccountService implements IAccountService {
         this._passwordEncoder = _passwordEncoder;
     }
 
- public Account getAccount() {
+    public Account getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Account account = (Account) auth.getPrincipal();
         return _accountRepo.findIdAccount(account.getId());
@@ -111,7 +111,7 @@ public class AccountService implements IAccountService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(r.UploadFile, getAccount.getImage());
-                getAccount.setImage(Variable.PATH_IMAGE +check.get("public_id").toString());
+                getAccount.setImage(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -150,6 +150,7 @@ public class AccountService implements IAccountService {
     public AccountDTO getAccountCompanyJob() {
         Account account = getAccount();
         AccountDTO accountDTO = new AccountDTO();
+        accountDTO = AccountMapping.accountDTO(account);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
             throw Variable.NOT_FOUND;
@@ -165,7 +166,6 @@ public class AccountService implements IAccountService {
                 }
                 companyDTO.setJobs(jobDTOs);
             }
-            accountDTO = AccountMapping.accountDTO(account);
             accountDTO.setCompany(companyDTO);
         }
         return accountDTO;
