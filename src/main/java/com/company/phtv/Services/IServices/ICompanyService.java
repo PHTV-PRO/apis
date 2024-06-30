@@ -2,6 +2,7 @@ package com.company.phtv.Services.IServices;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.Request.RequestCompany;
+import com.company.phtv.Models.Request.RequestSearchCompany;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface ICompanyService {
     CompanyDTO delete(int id);
 
     List<CompanyDTO> companyContractAll();
+    List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany);
 
 }

@@ -2,6 +2,7 @@ package com.company.phtv.Controllers;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.Request.RequestSearchCompany;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,6 @@ public class CompanyController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
-
-    // @PostMapping()
-    // public ResponseEntity<?> post(@ModelAttribute RequestCompany requestCompany) {
-    //     try {
-    //         return _baseController.success(_companyService.create(requestCompany));
-    //     } catch (HttpException e) {
-    //         return _baseController.error(null, e.StatusCode, e.message);
-    //     } catch (Exception e) {
-    //         return _baseController.error(null, 500, e.getMessage());
-    //     }
-    // }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable int id) {
         try {
@@ -50,17 +39,6 @@ public class CompanyController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
-
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> delete(@PathVariable int id) {
-    //     try {
-    //         return _baseController.success(_companyService.delete(id));
-    //     } catch (HttpException e) {
-    //         return _baseController.error(null, e.StatusCode, e.message);
-    //     } catch (Exception e) {
-    //         return _baseController.error(null, 500, e.getMessage());
-    //     }
-    // }
     @GetMapping("/contract")
     public ResponseEntity<?> companyContract() {
         try {
@@ -82,15 +60,16 @@ public class CompanyController {
         }
     }
 
-    // @PutMapping("/{id}")
-    // public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestCompany company) {
-    //     try {
-    //         return _baseController.success(_companyService.put(id, company));
-    //     } catch (HttpException e) {
-    //         return _baseController.error(null, e.StatusCode, e.message);
-    //     } catch (Exception e) {
-    //         return _baseController.error(null, 500, e.getMessage());
-    //     }
-    // }
+    @PostMapping("/search")
+    public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestSearchCompany requestSearchCompany) {
+        try {
+            return _baseControllers.success(_companyService.CompanyByProvenceAndIndustry(requestSearchCompany));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
 
 }
