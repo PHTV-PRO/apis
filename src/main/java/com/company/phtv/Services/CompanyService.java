@@ -1,6 +1,7 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
@@ -10,6 +11,7 @@ import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Map.CompanyMapping;
+import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestCompany;
@@ -165,8 +167,13 @@ public class CompanyService implements ICompanyService {
                 skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
             }
         }
+        List<JobDTO> jobDTOS = new ArrayList<>();
+        for(Jobs j : company.getJobs()){
+            jobDTOS.add(JobMapping.getJob(j));
+        }
         companyDTO.setSkills(skillDTOs);
         companyDTO.setLocations(locationDTO);
+        companyDTO.setJobs(jobDTOS);
         return companyDTO;
     }
 

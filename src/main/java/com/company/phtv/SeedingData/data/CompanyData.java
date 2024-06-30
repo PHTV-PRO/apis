@@ -56,7 +56,7 @@ public class CompanyData {
                                                 +
                                                 "• Vui lòng truy các trang web của chúng tôi để biết thêm chi tiết:\n" +
                                                 "www.spraywayvietnam.com; www.sprayway-tpr.com",
-                                null,
+                                "K có",
                                 "Nhân Viên",
                                 "25",
                                 "99",
