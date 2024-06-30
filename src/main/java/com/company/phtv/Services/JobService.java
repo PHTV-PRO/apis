@@ -60,8 +60,8 @@ public class JobService implements IJobService {
 
 
     @Override
-    public List<JobDTO> getAll() {
-        List<Jobs> jobs = _jobRepo.findAll();
+    public List<JobDTO> getAll(Long lotId, Long indId) {
+        List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             JobDTO jobDTO = new JobDTO();

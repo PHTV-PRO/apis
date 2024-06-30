@@ -7,7 +7,7 @@ import com.company.phtv.Models.Request.RequestJob;
 import java.util.List;
 
 public interface IJobService {
-    List<JobDTO> getAll();
+    List<JobDTO> getAll(Long lotId, Long indId);
 
     JobDTO create(RequestJob requestJob);
 
