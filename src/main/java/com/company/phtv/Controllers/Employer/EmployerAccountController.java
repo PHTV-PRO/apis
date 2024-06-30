@@ -19,7 +19,7 @@ public class EmployerAccountController {
     BaseController<List<AccountDTO>> _baseControllers = new BaseController<List<AccountDTO>>();
 
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> get() {
         try {
             return _baseController.success(_accountService.getAccountCompanyJob());
