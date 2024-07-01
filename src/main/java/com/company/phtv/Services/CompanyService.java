@@ -24,11 +24,13 @@ import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -273,7 +275,8 @@ public class CompanyService implements ICompanyService {
             CASE = 3;
         }
         if (requestSearchCompany.industry_id == 0 && requestSearchCompany.province_city_id == 0) {
-            return companyDTOMapping(getCompanies);
+            List<CompanyDTO> companyDTOs = companyDTOMapping(getCompanies);
+            return companyDTOs;
         }
         switch (CASE) {
             case 1:
@@ -358,6 +361,15 @@ public class CompanyService implements ICompanyService {
                 }
                 companyDTO.setLocations(locationDTOs);
                 companyDTO.setSkills(skillDTOs);
+                int count = 0;
+                for (Jobs j : companies.get(i).getJobs()) {
+                    boolean checkJobNotDeleted =j.getDeleted_at() == null;
+                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now())) && j.getEnd_date().after(Date.from(Instant.now()));
+                    if (checkJobNotDeleted&& checkDateJob ) {
+                        count++;
+                    }
+                }
+                companyDTO.setOpening_jobs(count);
                 companyDTOS.add(companyDTO);
             }
         }
