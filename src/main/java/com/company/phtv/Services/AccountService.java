@@ -1,12 +1,15 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Map.AccountMapping;
+import com.company.phtv.Models.Map.CVMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Request.RequestAccount;
@@ -100,6 +103,7 @@ public class AccountService implements IAccountService {
         }
         Account getAccount = _accountRepo.findIdAccount(id);
         boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
+
         if (checkAccountNotFound) {
             throw Variable.NOT_FOUND;
         }
@@ -142,6 +146,42 @@ public class AccountService implements IAccountService {
         AccountDTO accountDTO = AccountMapping.accountDTO(account);
         // accountDTO.setCompany(acc);
         return accountDTO;
+    }
+
+    @Override
+    public AccountDTO updateProfileByAccount(RequestAccount r) {
+        Account getAccount = _currentAccount.getAccount();
+        if (getAccount == null) {
+            throw Variable.NOT_FOUND;
+        }
+        boolean checkEmailValid = Regex.regexEmail(r.getEmail());
+        if (!checkEmailValid) {
+            throw Variable.EMAIL_INVALID;
+        }
+        boolean checkPasswordValid = Regex.regexPassword(r.getPassword());
+        if (!checkPasswordValid) {
+            throw Variable.PASSWORD_INVALID;
+        }
+        boolean checkAccountNotFound = (getAccount != null && getAccount.getDeleted_at() == null) ? false : true;
+
+        if (checkAccountNotFound) {
+            throw Variable.NOT_FOUND;
+        }
+        r.setPassword(_passwordEncoder.encode(r.getPassword()));
+        if (r.UploadFile != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(r.UploadFile, getAccount.getImage());
+                getAccount.setImage(Variable.PATH_IMAGE + check.get("public_id").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        Account account = AccountMapping.AccountPut(r, getAccount);
+//        account.setId(id);
+        _accountRepo.save(account);
+        return (AccountDTO) AccountMapping.accountDTO(account);
     }
 
     @Override

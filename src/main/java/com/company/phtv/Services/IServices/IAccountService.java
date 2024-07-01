@@ -12,6 +12,7 @@ public interface IAccountService {
 
     AccountDTO put(int id, RequestAccount r);
 
+    AccountDTO updateProfileByAccount( RequestAccount r);
     AccountDTO delete(int id);
 
     AccountDTO getById(int id);
