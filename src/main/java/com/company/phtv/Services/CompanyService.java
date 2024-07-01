@@ -21,6 +21,7 @@ import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,8 @@ public class CompanyService implements ICompanyService {
     @Autowired
     FollowCompanyRepo _followCompanyRepo;
 
-    public Account getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
-    }
+    @Autowired
+    CurrentAccount _currentAccount;
 
     @Override
     public List<CompanyDTO> getAll() {
@@ -163,13 +161,21 @@ public class CompanyService implements ICompanyService {
             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
         }
         List<JobDTO> jobDTOS = new ArrayList<>();
+        int count = 0;
+
         for (Jobs j : company.getJobs()) {
             boolean checkJobDeleted = j.getDeleted_at() != null;
             if (checkJobDeleted) {
                 continue;
             }
+            boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
+                    && j.getEnd_date().after(Date.from(Instant.now()));
+            if (checkDateJob) {
+                count++;
+            }
             jobDTOS.add(JobMapping.getJob(j));
         }
+        companyDTO.setOpening_jobs(count);
         companyDTO.setSkills(skillDTOs);
         companyDTO.setLocations(locationDTO);
         companyDTO.setJobs(jobDTOS);
@@ -206,7 +212,18 @@ public class CompanyService implements ICompanyService {
                 }
                 companyDTO.setSkills(skillDTOs);
                 companyDTOS.add(companyDTO);
+                int count = 0;
+                for (Jobs j : companies.get(i).getJobs()) {
+                    boolean checkJobNotDeleted = j.getDeleted_at() == null;
+                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
+                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    if (checkJobNotDeleted && checkDateJob) {
+                        count++;
+                    }
+                }
+                companyDTO.setOpening_jobs(count);
             }
+
         }
         return companyDTOS;
     }
@@ -252,7 +269,7 @@ public class CompanyService implements ICompanyService {
     }
 
     public CompanyDTO followCompany(RequestFollowCompany requestCompany) {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
         if (account == null || company == null) {
             throw Variable.ACTION_FAIL;
@@ -363,9 +380,10 @@ public class CompanyService implements ICompanyService {
                 companyDTO.setSkills(skillDTOs);
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
-                    boolean checkJobNotDeleted =j.getDeleted_at() == null;
-                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now())) && j.getEnd_date().after(Date.from(Instant.now()));
-                    if (checkJobNotDeleted&& checkDateJob ) {
+                    boolean checkJobNotDeleted = j.getDeleted_at() == null;
+                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
+                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    if (checkJobNotDeleted && checkDateJob) {
                         count++;
                     }
                 }
