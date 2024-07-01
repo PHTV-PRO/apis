@@ -94,9 +94,6 @@ public class CVService implements ICVService {
                 cvdto.add(CVMapping.CVDTO(CV));
             }
         }
-        if (cvdto.size() < 1) {
-            throw Variable.NOT_FOUND;
-        }
         return cvdto;
     }
 

@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface CVRepo extends JpaRepository<CurriculumVitae,Integer> {
 
-    @Query("select j from CurriculumVitae j  ORDER BY j.created_at DESC")
+    @Query("select j from CurriculumVitae j  Where j.account =:account ORDER BY j.created_at DESC")
     List<CurriculumVitae> findByAccount(Account account);
 }
