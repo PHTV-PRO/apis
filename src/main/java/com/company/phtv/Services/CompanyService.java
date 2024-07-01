@@ -56,23 +56,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public List<CompanyDTO> getAll() {
         List<Company> companies = _companyRepo.findAll();
-        List<CompanyDTO> companyDTOS = new ArrayList<>();
-        for (int i = 0; i < companies.size(); i++) {
-            if (companies.get(i).getDeleted_at() != null) {
-                continue;
-            }
-            CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
-            List<SkillDTO> skillDTOs = new ArrayList<>();
-            for (SkillCompany s : companies.get(i).getSkillCompanies()) {
-                if (s.getSkill().getDeleted_at() == null) {
-                    continue;
-                }
-                skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
-            }
-            companyDTO.setSkills(skillDTOs);
-            companyDTOS.add(companyDTO);
-        }
-        return companyDTOS;
+        return companyDTOMapping(companies);
     }
 
     @Override
@@ -118,7 +102,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO put(int id, RequestCompany requestCompany) {
         Company getCompany = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (getCompany != null && getCompany.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        if (checkCompanyNotFound || getCompany == null) {
             throw Variable.NOT_FOUND;
         }
         if (requestCompany.UploadFileBackground != null) {
@@ -155,7 +139,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO getById(int id) {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        if (checkCompanyNotFound || company == null) {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
@@ -194,7 +178,7 @@ public class CompanyService implements ICompanyService {
     public CompanyDTO delete(int id) {
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
-        if (checkCompanyNotFound) {
+        if (checkCompanyNotFound || company == null) {
             throw Variable.NOT_FOUND;
         }
         company.setDeleted_at(new Date());
@@ -261,22 +245,7 @@ public class CompanyService implements ICompanyService {
                 return companyDTOS;
             }
         }
-
-        for (Company cpn : companies) {
-            if (cpn.getDeleted_at() == null) {
-                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(cpn);
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillCompany s : cpn.getSkillCompanies()) {
-                    if (s.getSkill().getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
-                    }
-                }
-                companyDTO.setSkills(skillDTOs);
-                companyDTOS.add(companyDTO);
-            }
-
-        }
-        return companyDTOS;
+        return companyDTOMapping(companies);
 
     }
 
@@ -381,6 +350,13 @@ public class CompanyService implements ICompanyService {
                         skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
                     }
                 }
+                List<LocationDTO> locationDTOs = new ArrayList<>();
+                for (Location l : companies.get(i).getLocations()) {
+                    if (l.getDeleted_at() == null) {
+                        locationDTOs.add(LocationMapping.LocationDTO(l));
+                    }
+                }
+                companyDTO.setLocations(locationDTOs);
                 companyDTO.setSkills(skillDTOs);
                 companyDTOS.add(companyDTO);
             }
