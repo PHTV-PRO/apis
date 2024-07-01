@@ -58,17 +58,19 @@ public class CompanyService implements ICompanyService {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
-            if (companies.get(i).getDeleted_at() == null) {
-                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillCompany s : companies.get(i).getSkillCompanies()) {
-                    if (s.getSkill().getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
-                    }
-                }
-                companyDTO.setSkills(skillDTOs);
-                companyDTOS.add(companyDTO);
+            if (companies.get(i).getDeleted_at() != null) {
+                continue;
             }
+            CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
+            List<SkillDTO> skillDTOs = new ArrayList<>();
+            for (SkillCompany s : companies.get(i).getSkillCompanies()) {
+                if (s.getSkill().getDeleted_at() == null) {
+                    continue;
+                }
+                skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+            }
+            companyDTO.setSkills(skillDTOs);
+            companyDTOS.add(companyDTO);
         }
         return companyDTOS;
     }
@@ -160,16 +162,26 @@ public class CompanyService implements ICompanyService {
 
         List<LocationDTO> locationDTO = new ArrayList<>();
         for (Location l : company.getLocations()) {
+            boolean checkLocationDeleted = l.getDeleted_at() != null;
+            if (checkLocationDeleted) {
+                continue;
+            }
             locationDTO.add(LocationMapping.LocationDTO(l));
         }
         List<SkillDTO> skillDTOs = new ArrayList<>();
         for (SkillCompany s : company.getSkillCompanies()) {
-            if (s.getSkill().getDeleted_at() == null) {
-                skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+            boolean checkSkillDeleted = s.getSkill().getDeleted_at() != null;
+            if (checkSkillDeleted) {
+                continue;
             }
+            skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
         }
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (Jobs j : company.getJobs()) {
+            boolean checkJobDeleted = j.getDeleted_at() != null;
+            if (checkJobDeleted) {
+                continue;
+            }
             jobDTOS.add(JobMapping.getJob(j));
         }
         companyDTO.setSkills(skillDTOs);
@@ -195,13 +207,14 @@ public class CompanyService implements ICompanyService {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < (companies.size() < 5 ? companies.size() : 5); i++) {
-            boolean checkDeleted = companies.get(i).getDeleted_at() != null;
+            boolean checkNotDeleted = companies.get(i).getDeleted_at() == null;
             boolean checkContract = companies.get(i).getContract() == 1;
-            if (!checkDeleted && checkContract) {
+            if (checkNotDeleted && checkContract) {
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillCompany s : companies.get(i).getSkillCompanies()) {
-                    if (s.getSkill().getDeleted_at() == null) {
+                    boolean checkSkillNotDeleted = s.getSkill().getDeleted_at() == null;
+                    if (checkSkillNotDeleted) {
                         skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
                     }
                 }
@@ -279,30 +292,59 @@ public class CompanyService implements ICompanyService {
 
     public List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany) {
         List<Company> getCompanies = _companyRepo.findCompanyByIndustryAndProvinceCity();
+        List<Company> companies = new ArrayList<>();
+        int CASE = 0;
+        if (requestSearchCompany.province_city_id != 0 && requestSearchCompany.industry_id == 0) {
+            CASE = 1;
+        }
+        if (requestSearchCompany.province_city_id == 0 && requestSearchCompany.industry_id != 0) {
+            CASE = 2;
+        }
         if (requestSearchCompany.industry_id != 0 && requestSearchCompany.province_city_id != 0) {
+            CASE = 3;
+        }
+        if (requestSearchCompany.industry_id == 0 && requestSearchCompany.province_city_id == 0) {
             return companyDTOMapping(getCompanies);
         }
-        List<Company> companies = new ArrayList<>();
-        for (int i = 0; i < getCompanies.size(); i++) {
-            if (getCompanies.get(i).getDeleted_at() == null) {
-                if (requestSearchCompany.province_city_id != 0 && requestSearchCompany.industry_id == 0) {
+        switch (CASE) {
+            case 1:
+                for (int i = 0; i < getCompanies.size(); i++) {
+                    if (getCompanies.get(i).getDeleted_at() != null) {
+                        continue;
+                    }
                     for (Location l : getCompanies.get(i).getLocations()) {
-                        boolean checkLocation = requestSearchCompany.province_city_id == l.getCity_provence().getId();
-                        if (checkLocation && l.getCity_provence().getDeleted_at() == null) {
+                        boolean checkLocationDeleted = l.getCity_provence().getDeleted_at() == null;
+                        boolean checkLocationTrue = requestSearchCompany.province_city_id == l.getCity_provence()
+                                .getId();
+                        if (checkLocationDeleted && checkLocationTrue) {
                             companies.add(getCompanies.get(i));
+                            break;
                         }
                     }
                 }
-                if (requestSearchCompany.province_city_id == 0 && requestSearchCompany.industry_id != 0) {
+                return companyDTOMapping(companies);
+            case 2:
+                for (int i = 0; i < getCompanies.size(); i++) {
+                    if (getCompanies.get(i).getDeleted_at() != null) {
+                        continue;
+                    }
                     for (SkillCompany s : getCompanies.get(i).getSkillCompanies()) {
-                        boolean checkLocation = requestSearchCompany.industry_id == s.getSkill().getIndustry().getId();
-                        if (checkLocation && s.getSkill().getDeleted_at() == null
-                                && s.getSkill().getIndustry().getDeleted_at() == null) {
+                        boolean checkIndustryTrue = requestSearchCompany.industry_id == s.getSkill().getIndustry()
+                                .getId();
+                        boolean checkIndustryNotDeleted = s.getSkill().getDeleted_at() == null
+                                && s.getSkill().getIndustry().getDeleted_at() == null;
+                        if (checkIndustryNotDeleted && checkIndustryTrue) {
                             companies.add(getCompanies.get(i));
+                            break;
                         }
                     }
                 }
-                if (requestSearchCompany.industry_id != 0 && requestSearchCompany.province_city_id != 0) {
+                return companyDTOMapping(companies);
+            case 3:
+                for (int i = 0; i < getCompanies.size(); i++) {
+                    if (getCompanies.get(i).getDeleted_at() != null) {
+                        continue;
+                    }
                     boolean checkIndustryConstainId = false;
                     for (Location l : getCompanies.get(i).getLocations()) {
                         boolean checkLocation = requestSearchCompany.province_city_id == l.getCity_provence()
@@ -317,13 +359,15 @@ public class CompanyService implements ICompanyService {
                                 && s.getSkill().getIndustry().getDeleted_at() == null
                                 && checkIndustryConstainId == true) {
                             companies.add(getCompanies.get(i));
+                            break;
                         }
                     }
                 }
-            }
-
+                return companyDTOMapping(companies);
+            default:
+                return companyDTOMapping(getCompanies);
         }
-        return companyDTOMapping(companies);
+
     }
 
     List<CompanyDTO> companyDTOMapping(List<Company> companies) {
