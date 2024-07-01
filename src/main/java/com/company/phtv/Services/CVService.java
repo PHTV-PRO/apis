@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,6 +17,7 @@ import com.company.phtv.Models.Map.CVMapping;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CVRepo;
 import com.company.phtv.Services.IServices.ICVService;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 @Service
@@ -32,17 +31,14 @@ public class CVService implements ICVService {
     @Autowired
     CloudinaryService _cloudinaryService;
 
+     @Autowired
+    CurrentAccount _currentAccount;
 
-    public Account getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
-    }
 
     @Override
     public CVDTO create(MultipartFile file) {
         CurriculumVitae CV = new CurriculumVitae();
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         boolean checkAccountNotFound = account == null || account.getDeleted_at() != null;
         if (checkAccountNotFound) {
             throw Variable.ACCOUNT_NOT_FOUND;
@@ -87,7 +83,7 @@ public class CVService implements ICVService {
 
     @Override
     public List<CVDTO> getByAccount() {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
         if (CVs == null) {
             throw Variable.NOT_FOUND;

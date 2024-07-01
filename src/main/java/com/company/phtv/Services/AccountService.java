@@ -13,12 +13,11 @@ import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Services.IServices.IAccountService;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,15 +41,14 @@ public class AccountService implements IAccountService {
     @Autowired
     CompanyRepo _companyRepo;
 
+     @Autowired
+    CurrentAccount _currentAccount;
+
+
     public AccountService(PasswordEncoder _passwordEncoder) {
         this._passwordEncoder = _passwordEncoder;
     }
 
-    public Account getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
-    }
 
     @Override
     public List<AccountDTO> getAll() {
@@ -148,7 +146,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTO getAccountCompanyJob() {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         AccountDTO accountDTO = new AccountDTO();
         accountDTO = AccountMapping.accountDTO(account);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;

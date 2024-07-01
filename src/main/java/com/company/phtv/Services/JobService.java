@@ -4,19 +4,17 @@ import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Models.Map.JobMapping;
-import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestApplication;
 import com.company.phtv.Models.Request.RequestIntermediaryJob;
 import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Repository.*;
 import com.company.phtv.Services.IServices.IJobService;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -50,13 +48,10 @@ public class JobService implements IJobService {
     AuthenticationManager _authenticationManager;
 
     @Autowired
-    JWTService _jwtservice;
+    CurrentAccount _currentAccount;
 
-    public Account getAccount() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
-    }
+    @Autowired
+    JWTService _jwtservice;
 
 
     @Override
@@ -106,7 +101,7 @@ public class JobService implements IJobService {
     public List<JobDTO> getJobsSave() {
 
         List<JobDTO> jobDTOS = new ArrayList<>();
-        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(getAccount());
+        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(_currentAccount.getAccount());
         for (int i = 0; i < followJobs.size(); i++) {
             if (followJobs.get(i).getDeleted_at() == null
                     && (followJobs.get(i).getJobs().getEnd_date()).after(Date.from(Instant.now()))) {
@@ -117,7 +112,7 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsViewed() {
-        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(getAccount());
+        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount());
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < viewedJobs.size(); i++) {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
@@ -130,7 +125,7 @@ public class JobService implements IJobService {
 
     @Override
     public List<JobDTO> getJobApplicationByAccount() {
-        List<Application> application = _applicationRepo.findByAccount(getAccount());
+        List<Application> application = _applicationRepo.findByAccount(_currentAccount.getAccount());
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
@@ -190,7 +185,7 @@ public class JobService implements IJobService {
     }
 
     public Boolean postJobsSave(RequestIntermediaryJob requestIntermediaryJob) {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
         if (account == null || job == null) {
             return false;
@@ -200,7 +195,7 @@ public class JobService implements IJobService {
     }
 
     public Boolean postJobsViewed(RequestIntermediaryJob requestIntermediaryJob) {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.job_id));
         if (account == null || job == null) {
             return false;
@@ -210,7 +205,7 @@ public class JobService implements IJobService {
     }
 
     public JobDTO CreatejobApplication(RequestApplication requestApplication) {
-        Account account = getAccount();
+        Account account = _currentAccount.getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
         CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
         if (account == null || job == null || Cv == null) {
