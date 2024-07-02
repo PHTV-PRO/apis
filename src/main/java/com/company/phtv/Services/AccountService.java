@@ -167,7 +167,8 @@ public class AccountService implements IAccountService {
         if (checkAccountNotFound) {
             throw Variable.NOT_FOUND;
         }
-        r.setPassword(_passwordEncoder.encode(r.getPassword()));
+
+
         if (r.UploadFile != null) {
             try {
                 // create image in cloudinary
@@ -178,6 +179,7 @@ public class AccountService implements IAccountService {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
+        getAccount.setPassword(_passwordEncoder.encode(r.getPassword()));
         Account account = AccountMapping.AccountPut(r, getAccount);
 //        account.setId(id);
         _accountRepo.save(account);
