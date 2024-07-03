@@ -40,13 +40,13 @@ public class AdminService implements IAdminService {
         List<AccountDTO> accountDTOs = new ArrayList<>();
         if (accounts != null) {
             int accountSize = accounts.size();
-            // Fetch a maximum of 3 accounts
-            if (accountSize <= 3) {
+            // Fetch a maximum of 2 accounts
+            if (accountSize <= 2) {
                 for (Account account : accounts) {
                     accountDTOs.add(AccountMapping.accountDTO(account));
                 }
-            } else if (accountSize > 3) {
-                for (int i = 0; i < 3; i++) {
+            } else if (accountSize > 2) {
+                for (int i = 0; i < 2; i++) {
                     accountDTOs.add(AccountMapping.accountDTO(accounts.get(i)));
                 }
             }
@@ -57,13 +57,13 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             int companiesize = companies.size();
-            // Fetch a maximum of 3 companies
-            if (companiesize <= 3) {
+            // Fetch a maximum of 2 companies
+            if (companiesize <= 2) {
                 for (Company company : companies) {
                     companyDTOs.add(CompanyMapping.CompanyDTO(company));
                 }
-            } else if (companiesize > 3) {
-                for (int i = 0; i < 3; i++) {
+            } else if (companiesize > 2) {
+                for (int i = 0; i < 2; i++) {
                     companyDTOs.add(CompanyMapping.CompanyDTO(companies.get(i)));
                 }
             }
@@ -74,13 +74,13 @@ public class AdminService implements IAdminService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             int jobsize = jobs.size();
-            // Fetch a maximum of 3 jobs
-            if (jobsize <= 3) {
+            // Fetch a maximum of 2 jobs
+            if (jobsize <= 2) {
                 for (Jobs job : jobs) {
                     jobDTOs.add(JobMapping.getJob(job));
                 }
-            } else if (jobsize > 3) {
-                for (int i = 0; i < 3; i++) {
+            } else if (jobsize > 2) {
+                for (int i = 0; i < 2; i++) {
                     jobDTOs.add(JobMapping.getJob(jobs.get(i)));
                 }
             }

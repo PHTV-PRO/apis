@@ -12,7 +12,7 @@ import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,7 +22,7 @@ public class AdminController {
     @Autowired
     AdminService _adminService;
     @GetMapping("/search/{search}")
-    public ResponseEntity<?> getMethodName(@RequestParam String search) {
+    public ResponseEntity<?> getMethodName(@PathVariable String search) {
         try {
             return _baseControllers.success(_adminService.searchByName(search));
         } catch (HttpException e) {
