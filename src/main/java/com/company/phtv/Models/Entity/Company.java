@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.w3c.dom.Text;
 
+import java.nio.CharBuffer;
 import java.util.List;
 
 
@@ -22,11 +24,11 @@ public class Company extends BaseModel {
     private int id;
     @Column(name = "name", nullable = false)
     private String name = "";
-    @Column(name = "introduction", length = 2000)
+    @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction;
-    @Column(name = "benefit", columnDefinition = "text")
+    @Column(name = "benefit", columnDefinition = "TEXT")
     private String benefit;
-    @Column(name = "profession", length = 1000)
+    @Column(name = "profession", columnDefinition = "TEXT")
     private String profession;
     @Column(name = "size_min")
     private String size_min;

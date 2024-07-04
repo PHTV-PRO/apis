@@ -25,8 +25,8 @@ public class RequestCompany {
     public  String size_min;
     @Nullable
     public  String size_max;
-    @Nullable
-    public  String skill;
+//    @Nullable
+//    public  String skill;
     @Nullable
     public  String link_website;
     @Nullable

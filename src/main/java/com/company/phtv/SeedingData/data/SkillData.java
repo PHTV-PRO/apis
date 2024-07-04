@@ -58,6 +58,20 @@ public class SkillData {
                                 _IndustryRepo.getOne(3)));
                 data.add(new Skill(21, "Database",
                                 _IndustryRepo.getOne(3)));
+                data.add(new Skill(22, "Kotlin",
+                        _IndustryRepo.getOne(12)));
+                data.add(new Skill(23, "Android",
+                        _IndustryRepo.getOne(12)));
+                data.add(new Skill(24, "English",
+                        _IndustryRepo.getOne(17)));
+                data.add(new Skill(25, "Technology Support",
+                        _IndustryRepo.getOne(17)));
+                data.add(new Skill(26, "IT Support",
+                        _IndustryRepo.getOne(14)));
+                data.add(new Skill(27, "IT Operations",
+                        _IndustryRepo.getOne(14)));
+                data.add(new Skill(28, "Triển Khai Phần Mền",
+                        _IndustryRepo.getOne(14)));
                 return data;
         }
 }

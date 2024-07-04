@@ -21,17 +21,17 @@ public class Jobs extends BaseModel{
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "title", length = 1000,nullable = false)
+    @Column(name = "title", columnDefinition = "TEXT", nullable = false)
     private String title="";
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @Column(name = "reponsibility", length = 1000)
+    @Column(name = "reponsibility", columnDefinition = "TEXT")
     private String reponsibility;
-    @Column(name = "skill_required", length = 1000)
+    @Column(name = "skill_required",columnDefinition = "TEXT")
     private String skill_required;
-    @Column(name = "benefit", length = 1000)
+    @Column(name = "benefit", columnDefinition = "TEXT")
     private String benefit;
-    @Column(name = "interview_steps", length = 1000)
+    @Column(name = "interview_steps",columnDefinition = "TEXT")
     private String interview_steps;
     @Column(name = "amount")
     private int amount;

@@ -30,6 +30,8 @@ public class CandidateCompanyController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
+
     // @GetMapping()
     // public ResponseEntity<?> get() {
     //     try {

@@ -15,10 +15,12 @@ public class CurriculumVitaeData {
 
     public List<CurriculumVitae> Data() {
         List<CurriculumVitae> data = new ArrayList<>();
-        data.add(new CurriculumVitae(1, "tranbao.exel", _AccountRepo.getAccountById(1)));
-        data.add(new CurriculumVitae(2, "anhmai.exel", _AccountRepo.getAccountById(2)));
-        data.add(new CurriculumVitae(3, "leanhxuan.exel", _AccountRepo.getAccountById(3)));
-
+        data.add(new CurriculumVitae(1, "leminhman.exel", _AccountRepo.getAccountById(5)));
+        data.add(new CurriculumVitae(2, "leminhminh.exel", _AccountRepo.getAccountById(6)));
+        data.add(new CurriculumVitae(3, "trandainghia.exel", _AccountRepo.getAccountById(7)));
+        data.add(new CurriculumVitae(4, "nguyenngoctram.exel", _AccountRepo.getAccountById(8)));
+        data.add(new CurriculumVitae(5, "lediemmy.exel", _AccountRepo.getAccountById(9)));
+        data.add(new CurriculumVitae(6, "lethanhdat.exel", _AccountRepo.getAccountById(10)));
         return data;
     }
 }

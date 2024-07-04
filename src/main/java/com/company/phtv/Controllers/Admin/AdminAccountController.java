@@ -54,7 +54,7 @@ public class AdminAccountController {
         }
     }
 
-    @PutMapping(value = "/{id}" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    @PutMapping(value = "/{id}" ,  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
             ,produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
@@ -65,6 +65,8 @@ public class AdminAccountController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {

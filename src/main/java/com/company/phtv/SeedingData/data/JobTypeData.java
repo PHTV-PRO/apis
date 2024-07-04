@@ -11,6 +11,7 @@ public class JobTypeData {
         data.add(new JobType(1,"In Office"));
         data.add(new JobType(2,"Hybird"));
         data.add(new JobType(3,"Remote"));
+        data.add(new JobType(4,"Oversea"));
         return data;
     }
 }
