@@ -2,7 +2,6 @@ package com.company.phtv.SeedingData.data;
 
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Repository.AccountRepo;
-import jakarta.persistence.Lob;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +41,7 @@ public class CompanyData {
                                                 "12 ngày phép năm\n" +
                                                 "Làm việc từ 08h00 đến 17h00, từ Thứ 2 đến Thứ 6 hàng tuần. Từ 08h00 đến 12h00 sáng Thứ 7",
                                 "Middle, Senior",
-                                "10000",
-                                "19000",
+                                "1900-2000",
                                 "https://jobs.lpbank.com.vn/vi",
                                 "Việt Nam",
                                 null,
@@ -62,8 +60,7 @@ public class CompanyData {
                                                 "www.spraywayvietnam.com; www.sprayway-tpr.com",
                                 "Không có",
                                 "Nhân Viên",
-                                "25",
-                                "99",
+                                "99-1000",
                                 "http://www.sprayway-tpr.com/vn/",
                                 "Việt Nam",
                                 null,
@@ -82,8 +79,7 @@ public class CompanyData {
                                                 "Kết nối việc làm tại các công ty Start-up tại Hàn Quốc\n" +
                                                 "Được hỗ trợ xin VISA E-7 trong khuôn khổ dự án",
                                 "Fresher, Intern, All Levels",
-                                null,
-                                null,
+                                "10-50",
                                 "https://www.likelion.edu.vn/",
                                 "South-Korea",
                                 null,
@@ -109,8 +105,7 @@ public class CompanyData {
                                 "Nghỉ phép năm theo quy định của Nhà nước\n" +
                                 "Thời gian làm việc: Thứ 2 - Thứ 6 từ 08 giờ tới 17 giờ",
                         "Chuyên viên nghiên cứu công nghệ - Mã vị trí CN04 (Số lượng: 02)",
-                        "1",
-                        "1000",
+                        "10-30",
                         "https://tuyendung.bidv.com.vn/",
                         "Viet Nam",
                         null,
@@ -146,8 +141,7 @@ public class CompanyData {
                                 "Cơ hội tiếp cận với những doanh nghiệp, dự án lớn, những xu hướng công nghệ/nền tảng mới nhất, thỏa sức sáng tạo phát triển bản thân\n" +
                                 "Thời gian làm việc: 08h - 17h từ Thứ 2 đến Thứ 6 hàng tuần (Nghỉ Thứ 7, CN)",
                         "Chuyên viên Phân tích nghiệp vụ",
-                        "100",
-                        "499",
+                        "0-40",
                         "https://it.mobifone.vn/tuyen-dung/",
                         "Vietnam",
                         null,
@@ -166,8 +160,7 @@ public class CompanyData {
                                 "Development journey come along with growing benefits\n" +
                                 "Receive attractive benefits (meal allowance, 13th month salary, performance bonus, healthcare insurance,...)",
                         "DevOps Engineer (All Levels)",
-                        "25",
-                        "99",
+                        "25-100",
                         "topdev.vn",
                         "Vietnam",
                         null,
@@ -187,8 +180,7 @@ public class CompanyData {
                                 "A week trip to Korea in order to recognize all your good performance and effort\n" +
                                 "Work-life balance 42,5-hr per week from Mon to Fri.",
                         "Software Quality Assurance Executive",
-                        "5000",
-                        "9.999",
+                        "50-100",
                         "http://mafc.com.vn",
                         "South-Korea",
                         null,
@@ -214,8 +206,7 @@ public class CompanyData {
                                 "Training & development opportunities\n" +
                                 "Laptop and PC for everyone",
                         "Senior Android Developer",
-                        "25",
-                        "99",
+                        "99-200",
                         "https://www.megazone.com/\n",
                         "South-Korea\n" +
                                 "Vietnam\n",
@@ -251,8 +242,7 @@ public class CompanyData {
                         "30% allowance on gross salary + PVI insurance + 500,000 VND food allowance for employees working night shift\n" +
                         "Annual Health Checkup",
                         "Dynamics 365 Support Technician (Open for freshers)",
-                        "100",
-                        "499",
+                        "100-500",
                         "https://itechwxrecruiting.jobday.vn",
                         "United States",
                         null,
@@ -269,8 +259,7 @@ public class CompanyData {
                                 "Lương : Theo quy định Công ty.\n" +
                                 "Thu nhập ngoài lương khoảng 20-25%",
                         "Nhân Viên Vận Hành Ứng Dụng",
-                        "1",
-                        "1000",
+                        "1000-1200",
                         "https://traphaco.com.vn/",
                         "Vietnam",
                         null,

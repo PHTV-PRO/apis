@@ -27,8 +27,8 @@ public class JobMapping {
         jobDTO.setCompany(
                 new CompanyDTO(jobs.getCompany().getId(), jobs.getCompany().getName(),
                         jobs.getCompany().getIntroduction(), jobs.getCompany().getBenefit(),
-                        jobs.getCompany().getProfession(), jobs.getCompany().getSize_min(),
-                        jobs.getCompany().getSize_max(),
+                        jobs.getCompany().getProfession(),
+                        jobs.getCompany().getSize(),
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
                         jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
                         jobs.getCompany().getEnable(), jobs.getCompany().getContract(), 0,null, null, null,null));

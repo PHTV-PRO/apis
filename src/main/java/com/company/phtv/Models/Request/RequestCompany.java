@@ -22,17 +22,11 @@ public class RequestCompany {
     @Nullable
     public  String profession;
     @Nullable
-    public  String size_min;
-    @Nullable
-    public  String size_max;
-//    @Nullable
-//    public  String skill;
+    public  String size;
     @Nullable
     public  String link_website;
     @Nullable
     public  String nationnality;
-//    @Nullable
-//    public  String logo_image;
     @Nullable
     public  int enable;
     @Nullable

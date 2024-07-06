@@ -34,7 +34,7 @@ public class AdminService implements IAdminService {
     JobRepo _jobRepo;
 
     @Override
-    public SearchAll searchByName(String name) {
+    public SearchAll searchByNameForAdmin(String name) {
         SearchAll searchAll = new SearchAll();
         List<Account> accounts = _accountRepo.findAccountByNameContaining(name);
         List<AccountDTO> accountDTOs = new ArrayList<>();
@@ -87,6 +87,29 @@ public class AdminService implements IAdminService {
             searchAll.setJobs(jobDTOs);
         }
 
+        return searchAll;
+    }
+
+    @Override
+    public SearchAll searchByNameForAll(String name) {
+        SearchAll searchAll = new SearchAll();
+        List<Company> companies = _companyRepo.findCompanyByNameContaining(name);
+        List<CompanyDTO> companyDTOs = new ArrayList<>();
+        if (companies != null) {
+            for (Company company : companies) {
+                companyDTOs.add(CompanyMapping.CompanyDTO(company));
+            }
+            searchAll.setCompanies(companyDTOs);
+        }
+
+        List<Jobs> jobs = _jobRepo.findJobByTitleContaining(name);
+        List<JobDTO> jobDTOs = new ArrayList<>();
+        if (jobs != null) {
+            for (Jobs job : jobs) {
+                jobDTOs.add(JobMapping.getJob(job));
+            }
+            searchAll.setJobs(jobDTOs);
+        }
         return searchAll;
     }
 

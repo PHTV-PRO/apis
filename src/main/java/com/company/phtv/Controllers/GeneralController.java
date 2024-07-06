@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers.Admin;
+package com.company.phtv.Controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/general")
+public class GeneralController {
     BaseController<SearchAll> _baseControllers = new BaseController<SearchAll>();
 
     @Autowired
@@ -24,7 +24,7 @@ public class AdminController {
     @GetMapping("/search/{search}")
     public ResponseEntity<?> getMethodName(@PathVariable String search) {
         try {
-            return _baseControllers.success(_adminService.searchByNameForAdmin(search));
+            return _baseControllers.success(_adminService.searchByNameForAll(search));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
