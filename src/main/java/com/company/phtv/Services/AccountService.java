@@ -202,6 +202,10 @@ public class AccountService implements IAccountService {
             if (company.getJobs().size() > 0) {
                 List<JobDTO> jobDTOs = new ArrayList<>();
                 for (Jobs job : company.getJobs()) {
+                    boolean checkJobDeleted = job.getDeleted_at() != null;
+                    if (checkJobDeleted) {
+                        continue;
+                    }
                     jobDTOs.add(JobMapping.getJob(job));
                 }
                 companyDTO.setJobs(jobDTOs);
