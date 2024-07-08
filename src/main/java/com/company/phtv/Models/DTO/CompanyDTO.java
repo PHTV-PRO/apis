@@ -18,7 +18,7 @@ public class CompanyDTO {
     private String benefit;
     private String profession;
     private String size;
-    // private String skill;
+        // private String skill;
     private String link_website;
     private String nationnality;
     private String logo_image;
