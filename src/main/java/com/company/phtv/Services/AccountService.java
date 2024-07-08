@@ -1,17 +1,16 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
-import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Map.AccountMapping;
-import com.company.phtv.Models.Map.CVMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
@@ -25,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -207,6 +207,13 @@ public class AccountService implements IAccountService {
                         continue;
                     }
                     jobDTOs.add(JobMapping.getJob(job));
+                }
+                for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
+                    boolean checkSubcritionplan = sub.getDeleted_at() == null && (sub.getStart_date().before(Date.from(Instant.now()))
+                    && sub.getEnd_date().after(Date.from(Instant.now())));
+                    if (checkSubcritionplan) {
+                        companyDTO.setSubcriptionPlan(SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    }
                 }
                 companyDTO.setJobs(jobDTOs);
             }

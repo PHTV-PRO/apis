@@ -1,16 +1,23 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
+import com.company.phtv.Models.DTO.SubcriptionPlanForEmployer;
+import com.company.phtv.Models.Entity.Account;
+import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.SubcriptionPlan;
+import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
+import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.SubcriptionPlanRepo;
 import com.company.phtv.Services.IServices.ISubcriptionPlanService;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +26,12 @@ import java.util.List;
 public class SubcriptionPlanService implements ISubcriptionPlanService {
     @Autowired
     SubcriptionPlanRepo _subcriptionPlanRepo;
+
+    @Autowired
+    CompanyRepo _companyRepo;
+
+    @Autowired
+    CurrentAccount _currentAccount;
 
     @Override
     public List<SubcriptionPlanDTO> getAll() {
@@ -81,6 +94,37 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         }
         SubcriptionPlanDTO subcriptionPlanDTO = SubcriptionPlanMapping.subcriptionPlanDTO(subcriptionPlan);
         return subcriptionPlanDTO;
+    }
+
+    public SubcriptionPlanForEmployer getByAccountAuto() {
+        Account account = _currentAccount.getAccount();
+        boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
+        if (account == null || checkAccountNotFound) {
+            throw Variable.NOT_FOUND;
+        }
+        Company company = null;
+        for (Company c : account.getCompanies()) {
+            if (c.getDeleted_at() == null) {
+                company = c;
+            }
+        }
+        SubcriptionPlanForEmployer subcriptionPlan = new SubcriptionPlanForEmployer();
+        if (company != null && company.getDeleted_at() == null) {
+            List<SubcriptionPlanDTO> sbp = new ArrayList<>();
+            for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
+                boolean checkSubcritionplan = sub.getDeleted_at() == null
+                        && (sub.getStart_date().before(Date.from(Instant.now()))
+                                && sub.getEnd_date().after(Date.from(Instant.now())));
+                if (checkSubcritionplan) {
+                    subcriptionPlan.setSubcriptionPlanDTO(
+                            SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                } else {
+                    sbp.add(SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                }
+            }
+            subcriptionPlan.setSubcriptionPlanDTOs(sbp);
+        }
+        return subcriptionPlan;
     }
 
 }

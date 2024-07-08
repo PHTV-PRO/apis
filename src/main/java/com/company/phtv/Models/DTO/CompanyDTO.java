@@ -29,6 +29,8 @@ public class CompanyDTO {
     private int opening_jobs;
 
     private AccountDTO account;
+    private SubcriptionPlanDTO subcriptionPlan;
+
     private List<LocationDTO> locations;
     private List<JobDTO> jobs;
     private List<SkillDTO> skills;
