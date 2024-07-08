@@ -35,7 +35,7 @@ public class Jobs extends BaseModel{
     private String interview_steps;
     @Column(name = "amount")
     private int amount;
-    @Column(name = "experience_required")
+    @Column(name = "experience_required",columnDefinition = "TEXT")
     private String experience_required;
     @Column(name = "salary_max")
     private String salary_max;
