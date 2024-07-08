@@ -11,6 +11,7 @@ public class SubcriptionPlanMapping {
         subcriptionPlanDTO.setName(s.getName());
         subcriptionPlanDTO.setPrice(s.getPrice());
         subcriptionPlanDTO.setExpiry(s.getExpiry());
+//        subcriptionPlanDTO.setSubcriptionPlanCompanies(s.getSubcritionPlanCompanies());
         return subcriptionPlanDTO;
     }
 
