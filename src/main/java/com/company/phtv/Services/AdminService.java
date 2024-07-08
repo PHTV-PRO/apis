@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
+import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.JobRepo;
@@ -97,7 +101,26 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             for (Company company : companies) {
-                companyDTOs.add(CompanyMapping.CompanyDTO(company));
+                boolean checkCompanyNotDeleted = company.getDeleted_at()== null;
+                if(checkCompanyNotDeleted){
+                    CompanyDTO companyDTO =CompanyMapping.CompanyDTO(company);
+                    List<JobDTO> jobs = new ArrayList<>();
+                    for (Jobs j : company.getJobs()) {
+                        if(j.getDeleted_at()==null){
+                            jobs.add(JobMapping.getJob(j));
+                        }
+                    }
+                    companyDTO.setJobs(jobs);
+                    List<LocationDTO> lDtos = new ArrayList<>();
+                    for (Location l : company.getLocations()) {
+                        if(l.getDeleted_at() == null ){
+                            lDtos.add(LocationMapping.LocationDTO(l));
+                        }
+                    }
+                    companyDTO.setLocations(lDtos);
+                    companyDTOs.add(companyDTO);
+
+                }
             }
             searchAll.setCompanies(companyDTOs);
         }
@@ -110,6 +133,7 @@ public class AdminService implements IAdminService {
             }
             searchAll.setJobs(jobDTOs);
         }
+        searchAll.setQuantity(searchAll.getCompanies().size()+searchAll.getJobs().size());
         return searchAll;
     }
 
