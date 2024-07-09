@@ -19,6 +19,8 @@ public class SkillService implements ISkillService {
     SkillRepo _skillRepo;
     @Autowired
     IndustryRepo _industryRepo;
+    @Autowired
+    CompanyRepo _companyRepo;
 
     @Override
     public List<SkillDTO> getAll() {
@@ -91,5 +93,16 @@ public class SkillService implements ISkillService {
         skill.setDeleted_at(new Date());
         _skillRepo.save(skill);
         return null;
+    }
+
+    public List<SkillDTO> getAllByCompany(int id) {
+        Company company = _companyRepo.getCompanyById(id);
+        List<SkillDTO> skillDTOS = new ArrayList<>();
+        // for (int i = 0; i < skills.size(); i++) {
+        //     if (skills.get(i).getDeleted_at() == null) {
+        //         skillDTOS.add(SkillMapping.getSkill(skills.get(i)));
+        //     }
+        // }
+        return skillDTOS;
     }
 }

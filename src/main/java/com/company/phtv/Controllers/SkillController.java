@@ -43,4 +43,15 @@ public class SkillController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
+    @GetMapping("/company/{id}")
+    public ResponseEntity<?> getSkillByCompany(@PathVariable int id) {
+        try {
+            return _baseControllers.success(_skillService.getAllByCompany(id));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
 }
