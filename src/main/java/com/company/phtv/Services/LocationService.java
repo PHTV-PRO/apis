@@ -44,6 +44,11 @@ public class LocationService implements ILocationService {
         Location location = LocationMapping.LocationPost(requestLocation);
         CityProvince c = _cityProvinceRepo.findById(requestLocation.getCity_provence_id()).get();
         Company cm = _companyRepo.findById(requestLocation.getCompany_id()).get();
+        for (Location l : cm.getLocations()) {
+            if(l.getDeleted_at() == null){
+                throw Variable.ACTION_FAIL;
+            }
+        }
         boolean checkCityProvenceNotFound = c == null || c.getDeleted_at() != null;
         if (checkCityProvenceNotFound) {
             throw Variable.NOT_FOUND;
