@@ -50,6 +50,7 @@ public class CVService implements ICVService {
                 Map check = _cloudinaryService.uploadCV(file, file.toString());
                 CV.setFile_name(check.get("public_id").toString());
                 CV.setAccount(account);
+                _cvRepo.save(CV);
                 return new CVDTO();
             } catch (IOException e) {
                 throw Variable.ACTION_FAIL;
