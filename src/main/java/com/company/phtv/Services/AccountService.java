@@ -2,6 +2,7 @@ package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.CompanyForEmployerDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
@@ -44,14 +45,12 @@ public class AccountService implements IAccountService {
     @Autowired
     CompanyRepo _companyRepo;
 
-     @Autowired
+    @Autowired
     CurrentAccount _currentAccount;
-
 
     public AccountService(PasswordEncoder _passwordEncoder) {
         this._passwordEncoder = _passwordEncoder;
     }
-
 
     @Override
     public List<AccountDTO> getAll() {
@@ -168,7 +167,6 @@ public class AccountService implements IAccountService {
             throw Variable.NOT_FOUND;
         }
 
-
         if (r.UploadFile != null) {
             try {
                 // create image in cloudinary
@@ -181,7 +179,7 @@ public class AccountService implements IAccountService {
         }
         getAccount.setPassword(_passwordEncoder.encode(r.getPassword()));
         Account account = AccountMapping.AccountPut(r, getAccount);
-//        account.setId(id);
+        // account.setId(id);
         _accountRepo.save(account);
         return (AccountDTO) AccountMapping.accountDTO(account);
     }
@@ -198,26 +196,42 @@ public class AccountService implements IAccountService {
         Company company = _companyRepo.findOneCompanyWithAccount(account);
         boolean checkCompanyExisting = company != null;
         if (checkCompanyExisting) {
-            CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+            CompanyForEmployerDTO companyDTO = CompanyMapping.CompanyForEmployerDTO(company);
             if (company.getJobs().size() > 0) {
-                List<JobDTO> jobDTOs = new ArrayList<>();
+                List<JobDTO> jobDTOsNotOpen = new ArrayList<>();
+                List<JobDTO> jobDTOsOpening = new ArrayList<>();
+                List<JobDTO> jobDTOsOpened = new ArrayList<>();
+
                 for (Jobs job : company.getJobs()) {
                     boolean checkJobDeleted = job.getDeleted_at() != null;
                     if (checkJobDeleted) {
                         continue;
                     }
-                    jobDTOs.add(JobMapping.getJob(job));
-                }
-                for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
-                    boolean checkSubcritionplan = sub.getDeleted_at() == null && (sub.getStart_date().before(Date.from(Instant.now()))
-                    && sub.getEnd_date().after(Date.from(Instant.now())));
-                    if (checkSubcritionplan) {
-                        companyDTO.setSubcriptionPlan(SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    if (job.getStart_date().after(Date.from(Instant.now()))) {
+                        jobDTOsNotOpen.add(JobMapping.getJob(job));
+                    }
+                    else if (job.getEnd_date().before(Date.from(Instant.now()))) {
+                        jobDTOsOpened.add(JobMapping.getJob(job));
+                    }
+                    else{
+                        jobDTOsOpening.add(JobMapping.getJob(job));
                     }
                 }
-                companyDTO.setJobs(jobDTOs);
+                for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
+                    boolean checkSubcritionplan = sub.getDeleted_at() == null
+                            && (sub.getStart_date().before(Date.from(Instant.now()))
+                                    && sub.getEnd_date().after(Date.from(Instant.now())));
+                    if (checkSubcritionplan) {
+                        companyDTO.setSubcriptionPlan(
+                                SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    }
+                }
+                companyDTO.setJobsNotOpen(jobDTOsNotOpen);
+                companyDTO.setJobsOpening(jobDTOsOpening);
+                companyDTO.setJobsOpened(jobDTOsOpened);
+
             }
-            accountDTO.setCompany(companyDTO);
+            accountDTO.setCompanyForEmployer(companyDTO);
         }
         return accountDTO;
     }

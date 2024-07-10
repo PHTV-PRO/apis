@@ -1,6 +1,7 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.DTO.CompanyForEmployerDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Request.RequestCompany;
@@ -21,6 +22,24 @@ public class CompanyMapping {
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setEnable(c.getEnable());
         companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
+
+        return companyDTO;
+
+    }
+    public static CompanyForEmployerDTO CompanyForEmployerDTO(Company c) {
+        CompanyForEmployerDTO companyDTO = new CompanyForEmployerDTO();
+        companyDTO.setId(c.getId());
+        companyDTO.setName(c.getName());
+        companyDTO.setIntroduction(c.getIntroduction());
+        companyDTO.setBenefit(c.getBenefit());
+        companyDTO.setProfession(c.getProfession());
+        companyDTO.setSize(c.getSize());
+        // companyDTO.setSkill(c.getSkill());
+        companyDTO.setLink_website(c.getLink_website());
+        companyDTO.setNationnality(c.getNationnality());
+        companyDTO.setLogo_image(c.getLogo_image());
+        companyDTO.setBackground_image(c.getBackground_image());
+        companyDTO.setEnable(c.getEnable());
 
         return companyDTO;
 

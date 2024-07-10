@@ -21,5 +21,7 @@ public class AccountDTO {
     private Role role;
 
     private  CompanyDTO company;
+    private  CompanyForEmployerDTO companyForEmployer;
+
 
 }
