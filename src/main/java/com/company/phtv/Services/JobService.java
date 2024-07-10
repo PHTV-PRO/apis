@@ -164,8 +164,13 @@ public class JobService implements IJobService {
         job.setSkillJobs(null);
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
-        Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
-        job.setLocation(l);
+        Location location = new Location();
+        for (Location l : c.getLocations()) {
+            if (l.getDeleted_at() == null) {
+                location = l;
+            }
+        }
+        job.setLocation(location);
         JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
         job.setJobType(jt);
         _jobRepo.save(job);

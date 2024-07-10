@@ -37,7 +37,7 @@ public class RequestJob {
     @Nullable
     public  String end_date;
     @Nullable
-    public  boolean is_active;
+    public  String is_active;
     @Nullable
     public  int gender;
 

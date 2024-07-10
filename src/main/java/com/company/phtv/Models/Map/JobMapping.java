@@ -31,7 +31,8 @@ public class JobMapping {
                         jobs.getCompany().getSize(),
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
                         jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
-                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), 0,null,null, null, null,null));
+                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), 0, null, null, null, null,
+                        null));
         if (jobs.getLocation() != null) {
             jobDTO.setLocation(
                     new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null,
@@ -59,7 +60,11 @@ public class JobMapping {
         jobs.setSalary_min(j.getSalary_min());
         jobs.setStart_date(new Date(j.getStart_date()));
         jobs.setEnd_date(new Date(j.getEnd_date()));
-        jobs.set_active(j.is_active());
+        if (j.getIs_active() == "true") {
+            jobs.set_active(true);
+        } else {
+            jobs.set_active(false);
+        }
         jobs.setGender(j.getGender());
         return jobs;
     }
@@ -102,8 +107,10 @@ public class JobMapping {
         if (rj.getEnd_date() != null) {
             j.setEnd_date(new Date(rj.getEnd_date()));
         }
-        if (rj.is_active != false) {
-            j.set_active(rj.is_active());
+        if (rj.is_active != "false") {
+            j.set_active(false);
+        } else {
+            j.set_active(true);
         }
         if (rj.getGender() != 0) {
             j.setGender(rj.getGender());
