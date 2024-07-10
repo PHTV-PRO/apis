@@ -65,7 +65,7 @@ public class AdminJobController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id, @RequestBody RequestJob requestJob) {
+    public ResponseEntity<?> put(@PathVariable int id, @ModelAttribute RequestJob requestJob) {
         try {
             return _baseController.success(_jobService.put(id, requestJob));
         } catch (HttpException e) {

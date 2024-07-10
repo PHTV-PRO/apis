@@ -77,6 +77,7 @@ public class AdminCompanyController {
 
     @PutMapping(value = "/{id}" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
             ,produces = {MediaType.APPLICATION_JSON_VALUE})
+
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestCompany company) {
         try {
             return _baseController.success(_companyService.put(id, company));
