@@ -42,6 +42,8 @@ public class RequestJob {
     public  int gender;
 
     @Nullable
+    public String skill_id;
+    @Nullable
     public int company_id;
     @Nullable
     public int location_id;

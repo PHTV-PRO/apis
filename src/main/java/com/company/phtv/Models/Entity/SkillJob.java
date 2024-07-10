@@ -31,5 +31,10 @@ public class SkillJob extends BaseModel {
     @JoinColumn(name = "job_id")
     private Jobs jobs;
 
+    public SkillJob(Skill skill, Jobs job){
+        this.skills = skill;
+        this.jobs = job;
+    }
+
 
 }

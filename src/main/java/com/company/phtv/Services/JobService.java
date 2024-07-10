@@ -37,6 +37,10 @@ public class JobService implements IJobService {
     @Autowired
     ViewedJobRepo _ViewedJobRepo;
     @Autowired
+    SkillRepo _skillRepo;
+    @Autowired
+    SkillJobRepo _skillJobRepo;
+    @Autowired
     AccountRepo _accountRepo;
     @Autowired
     CVRepo _cvRepo;
@@ -52,7 +56,6 @@ public class JobService implements IJobService {
 
     @Autowired
     JWTService _jwtservice;
-
 
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
@@ -136,7 +139,15 @@ public class JobService implements IJobService {
 
     @Override
     public JobDTO create(RequestJob requestJob) {
+
         Jobs job = JobMapping.jobCreate(requestJob);
+        String[] numbers = requestJob.getSkill_id().split(",");
+        for (String i : numbers) {
+            Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
+            SkillJob skillJob = new SkillJob(s, job);
+            _skillJobRepo.save(skillJob);
+        }
+        job.setSkillJobs(null);
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         job.setCompany(c);
         Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
