@@ -44,6 +44,8 @@ public class RequestJob {
     @Nullable
     public String skill_id;
     @Nullable
+    public String level_id;
+    @Nullable
     public int company_id;
     @Nullable
     public int location_id;

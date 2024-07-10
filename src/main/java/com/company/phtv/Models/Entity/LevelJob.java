@@ -32,4 +32,8 @@ public class LevelJob extends BaseModel{
         this.level = level;
         this.jobs = jobs;
     }
+    public LevelJob( Level level, Jobs jobs) {
+        this.level = level;
+        this.jobs = jobs;
+    }
 }

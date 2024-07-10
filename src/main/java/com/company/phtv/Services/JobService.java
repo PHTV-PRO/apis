@@ -41,6 +41,10 @@ public class JobService implements IJobService {
     @Autowired
     SkillJobRepo _skillJobRepo;
     @Autowired
+    LevelRepo _levelRepo;
+    @Autowired
+    LevelJobRepo _levelJobRepo;
+    @Autowired
     AccountRepo _accountRepo;
     @Autowired
     CVRepo _cvRepo;
@@ -141,11 +145,21 @@ public class JobService implements IJobService {
     public JobDTO create(RequestJob requestJob) {
 
         Jobs job = JobMapping.jobCreate(requestJob);
-        String[] numbers = requestJob.getSkill_id().split(",");
-        for (String i : numbers) {
-            Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
-            SkillJob skillJob = new SkillJob(s, job);
-            _skillJobRepo.save(skillJob);
+        if (requestJob.getSkill_id() != "") {
+            String[] skillId = requestJob.getSkill_id().split(",");
+            for (String i : skillId) {
+                Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
+                SkillJob skillJob = new SkillJob(s, job);
+                _skillJobRepo.save(skillJob);
+            }
+        }
+        if (requestJob.getLevel_id() != "") {
+            String[] levelId = requestJob.getLevel_id().split(",");
+            for (String i : levelId) {
+                Level l = _levelRepo.findById(Integer.parseInt(i)).get();
+                LevelJob levelJob = new LevelJob(l, job);
+                _levelJobRepo.save(levelJob);
+            }
         }
         job.setSkillJobs(null);
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
