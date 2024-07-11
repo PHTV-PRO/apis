@@ -13,8 +13,6 @@ import com.company.phtv.Services.IServices.IJobService;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
-import jakarta.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
@@ -65,6 +63,7 @@ public class JobService implements IJobService {
 
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
+        Account account = _currentAccount.getAccount();
         List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
@@ -78,6 +77,16 @@ public class JobService implements IJobService {
                 }
                 jobDTO = JobMapping.getJob(jobs.get(i));
                 jobDTO.setSkills(skillDTOs);
+                if (account != null) {
+                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
+                    if (applied) {
+                        jobDTO.setApplied(1);
+                    }
+                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
+                    if (saved) {
+                        jobDTO.setSaved(1);
+                    }
+                }
                 jobDTOS.add(jobDTO);
 
             }
@@ -87,12 +96,24 @@ public class JobService implements IJobService {
 
     @Override
     public JobDTO getById(int id) {
+        Account account = _currentAccount.getAccount();
+
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
         }
         JobDTO jobDTO = JobMapping.getJob(job);
+        if (account == null) {
+            boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
+            if (applied) {
+                jobDTO.setApplied(1);
+            }
+            boolean saved = _followJobRepo.findByAccountAndJobs(account, job) != null;
+            if (saved) {
+                jobDTO.setSaved(1);
+            }
+        }
         return jobDTO;
     }
 
@@ -102,16 +123,15 @@ public class JobService implements IJobService {
             List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
             List<JobDTO> jobDTOS = new ArrayList<>();
             for (int i = 0; i < jobs.size(); i++) {
-                if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
+                if (jobs.get(i).getDeleted_at() == null
+                        && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
                     JobDTO job = JobMapping.getJob(jobs.get(i));
-                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i))!=null;
-                    if(applied){
+                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
+                    if (applied) {
                         job.setApplied(1);
                     }
-                    jobDTOS.add(job);
-
-                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i))!=null;
-                    if(saved){
+                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
+                    if (saved) {
                         job.setSaved(1);
                     }
                     jobDTOS.add(job);
@@ -133,25 +153,50 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsSave() {
-
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            throw Variable.ACTION_FAIL;
+        }
         List<JobDTO> jobDTOS = new ArrayList<>();
-        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(_currentAccount.getAccount());
-        for (int i = 0; i < followJobs.size(); i++) {
-            if (followJobs.get(i).getDeleted_at() == null
-                    && (followJobs.get(i).getJobs().getEnd_date()).after(Date.from(Instant.now()))) {
-                jobDTOS.add(JobMapping.getJob(followJobs.get(i).getJobs()));
+        List<FollowJob> followJobs = _followJobRepo.findJobByAccount(account);
+        int sizeJob = followJobs.size() > 6 ? 6 : followJobs.size();
+        for (int i = 0; i < sizeJob; i++) {
+            if (followJobs.get(i).getDeleted_at() == null) {
+                JobDTO jobDTO = JobMapping.getJob(followJobs.get(i).getJobs());
+                boolean applied = _applicationRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
+                if (applied) {
+                    jobDTO.setApplied(1);
+                }
+                boolean saved = _followJobRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
+                if (saved) {
+                    jobDTO.setSaved(1);
+                }
+                jobDTOS.add(jobDTO);
             }
         }
         return jobDTOS;
     }
 
     public List<JobDTO> getJobsViewed() {
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            throw Variable.ACTION_FAIL;
+        }
         List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount());
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < viewedJobs.size(); i++) {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
             if (!checkJobDeleted) {
-                jobDTOS.add(JobMapping.getJob(viewedJobs.get(i).getJobs()));
+                JobDTO jobDTO = JobMapping.getJob(viewedJobs.get(i).getJobs());
+                boolean applied = _applicationRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
+                if (applied) {
+                    jobDTO.setApplied(1);
+                }
+                boolean saved = _followJobRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
+                if (saved) {
+                    jobDTO.setSaved(1);
+                }
+                jobDTOS.add(jobDTO);
             }
         }
         return jobDTOS;
@@ -159,10 +204,22 @@ public class JobService implements IJobService {
 
     @Override
     public List<JobDTO> getJobApplicationByAccount() {
-        List<Application> application = _applicationRepo.findByAccount(_currentAccount.getAccount());
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            throw Variable.ACTION_FAIL;
+        }
+        List<Application> application = _applicationRepo.findByAccount(account);
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
+            boolean applied = _applicationRepo.findByAccountAndJobs(account, a.getJobs()) != null;
+            if (applied) {
+                jobDTO.setApplied(1);
+            }
+            boolean saved = _followJobRepo.findByAccountAndJobs(account, a.getJobs()) != null;
+            if (saved) {
+                jobDTO.setSaved(1);
+            }
             jobDTOs.add(jobDTO);
         }
         return jobDTOs;
@@ -248,7 +305,7 @@ public class JobService implements IJobService {
             return false;
         }
         FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
-        if(followJob!=null){
+        if (followJob != null) {
             return false;
         }
         _followJobRepo.save(new FollowJob(0, job, account));
@@ -286,16 +343,16 @@ public class JobService implements IJobService {
     public boolean deleteJobsSave(RequestIntermediaryJob requestIntermediaryJob) {
         Account account = _currentAccount.getAccount();
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.getJob_id()));
-        if(account == null && job ==null){
+        if (account == null && job == null) {
             return false;
         }
         FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
-        if(followJob==null){
+        if (followJob == null) {
             return false;
         }
-         _followJobRepo.deleteById(followJob.getId());
+        _followJobRepo.deleteById(followJob.getId());
         return true;
-        
+
     }
 
 }

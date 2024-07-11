@@ -23,12 +23,12 @@ public class CurriculumVitae extends BaseModel {
     @Column(name = "file_name")
     private String file_name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "curriculumVitae", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "curriculumVitae")
     private List<Application> applications;
 
     public CurriculumVitae(int id) {
