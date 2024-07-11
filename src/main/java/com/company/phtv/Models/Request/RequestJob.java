@@ -47,8 +47,8 @@ public class RequestJob {
     public String level_id;
     @Nullable
     public int company_id;
-    @Nullable
-    public int location_id;
+    // @Nullable
+    // public int location_id;
     @Nullable
     public int job_type_id;
 }

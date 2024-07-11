@@ -272,18 +272,21 @@ public class JobService implements IJobService {
         if (requestJob.getCompany_id() != 0) {
             Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
             job.setCompany(c);
+            for (Location l : c.getLocations()) {
+                if (l.getDeleted_at() == null) {
+                    job.setLocation(l);
+                }
+            }
+
+            if (requestJob.getJob_type_id() != 0) {
+                JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
+                job.setJobType(jt);
+            }
+            job.setId(id);
+            _jobRepo.save(job);
         }
-        if (requestJob.getLocation_id() != 0) {
-            Location l = _locationRepo.findIdLocation(requestJob.getLocation_id());
-            job.setLocation(l);
-        }
-        if (requestJob.getJob_type_id() != 0) {
-            JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
-            job.setJobType(jt);
-        }
-        job.setId(id);
-        _jobRepo.save(job);
         return (JobDTO) JobMapping.getJob(job);
+
     }
 
     @Override
