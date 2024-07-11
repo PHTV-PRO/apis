@@ -70,6 +70,20 @@ public class CandidateJobController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+    @DeleteMapping("/save")
+    public ResponseEntity<?> deleteJobSave(@RequestBody RequestIntermediaryJob requestIntermediaryJob) {
+        try {
+            boolean success = _jobService.deleteJobsSave(requestIntermediaryJob);
+            if (success) {
+                return _baseControllers.success(null);
+            }
+            throw Variable.FAIL;
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
 
     @GetMapping("/viewed")
     public ResponseEntity<?> getJobsViewd() {

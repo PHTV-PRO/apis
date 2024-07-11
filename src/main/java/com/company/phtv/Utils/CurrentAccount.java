@@ -18,7 +18,10 @@ public class CurrentAccount {
 
     public Account getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = (Account) auth.getPrincipal();
-        return _accountRepo.findIdAccount(account.getId());
+        if (auth.getPrincipal() != "anonymousUser") {
+            Account account = (Account) auth.getPrincipal();
+            return _accountRepo.findIdAccount(account.getId());
+        }
+        return null;
     }
 }

@@ -43,4 +43,16 @@ public class CandidateCVController {
         }
     }
 
+    @DeleteMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> delete(@RequestParam("file") int id) {
+        try {
+            return _baseController.success(_cvService.delete(id));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
 }

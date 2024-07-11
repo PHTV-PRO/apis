@@ -13,6 +13,8 @@ import com.company.phtv.Services.IServices.IJobService;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
@@ -95,12 +97,37 @@ public class JobService implements IJobService {
     }
 
     public List<JobDTO> getJobsNew() {
+        Account account = _currentAccount.getAccount();
+        if (account != null) {
+            List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
+            List<JobDTO> jobDTOS = new ArrayList<>();
+            for (int i = 0; i < jobs.size(); i++) {
+                if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
+                    JobDTO job = JobMapping.getJob(jobs.get(i));
+                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i))!=null;
+                    if(applied){
+                        job.setApplied(1);
+                    }
+                    jobDTOS.add(job);
+
+                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i))!=null;
+                    if(saved){
+                        job.setSaved(1);
+                    }
+                    jobDTOS.add(job);
+                }
+            }
+            return jobDTOS;
+        }
+
         List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
-                jobDTOS.add(JobMapping.getJob(jobs.get(i)));
+                JobDTO job = JobMapping.getJob(jobs.get(i));
+                jobDTOS.add(job);
             }
+
         }
         return jobDTOS;
     }
@@ -220,6 +247,10 @@ public class JobService implements IJobService {
         if (account == null || job == null) {
             return false;
         }
+        FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
+        if(followJob!=null){
+            return false;
+        }
         _followJobRepo.save(new FollowJob(0, job, account));
         return true;
     }
@@ -250,6 +281,21 @@ public class JobService implements IJobService {
         }
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
         return new JobDTO();
+    }
+
+    public boolean deleteJobsSave(RequestIntermediaryJob requestIntermediaryJob) {
+        Account account = _currentAccount.getAccount();
+        Jobs job = _jobRepo.findJobId(Integer.parseInt(requestIntermediaryJob.getJob_id()));
+        if(account == null && job ==null){
+            return false;
+        }
+        FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
+        if(followJob==null){
+            return false;
+        }
+         _followJobRepo.deleteById(followJob.getId());
+        return true;
+        
     }
 
 }

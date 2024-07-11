@@ -1,6 +1,7 @@
 package com.company.phtv.Services;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,9 +32,8 @@ public class CVService implements ICVService {
     @Autowired
     CloudinaryService _cloudinaryService;
 
-     @Autowired
+    @Autowired
     CurrentAccount _currentAccount;
-
 
     @Override
     public CVDTO create(MultipartFile file) {
@@ -67,9 +67,14 @@ public class CVService implements ICVService {
         if (checkExisting) {
             throw Variable.NOT_FOUND;
         }
+        if (CV.getApplications().size() > 0) {
+            CV.setDeleted_at(Date.from(Instant.now()));
+            _cvRepo.save(CV);
+            return null;
+        }
         CV.setDeleted_at(new Date());
-        _cvRepo.save(CV);
-        return new CVDTO();
+        _cvRepo.delete(CV);
+        return null;
     }
 
     @Override
@@ -97,7 +102,5 @@ public class CVService implements ICVService {
         }
         return cvdto;
     }
-
-
 
 }
