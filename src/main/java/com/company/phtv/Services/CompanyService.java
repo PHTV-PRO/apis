@@ -18,8 +18,10 @@ import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Models.Request.RequestSearchCompany;
 import com.company.phtv.Repository.AccountRepo;
+import com.company.phtv.Repository.ApplicationRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
+import com.company.phtv.Repository.FollowJobRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
@@ -46,6 +48,10 @@ public class CompanyService implements ICompanyService {
     CloudinaryService _cloudinaryService;
     @Autowired
     FollowCompanyRepo _followCompanyRepo;
+    @Autowired
+    ApplicationRepo _applicationRepo;
+    @Autowired
+    FollowJobRepo _followJobRepo;
 
     @Autowired
     CurrentAccount _currentAccount;
@@ -134,6 +140,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public CompanyDTO getById(int id) {
+        Account account = _currentAccount.getAccount();
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
         if (checkCompanyNotFound || company == null) {
@@ -170,7 +177,18 @@ public class CompanyService implements ICompanyService {
             if (checkDateJob) {
                 count++;
             }
-            jobDTOS.add(JobMapping.getJob(j));
+            JobDTO job = JobMapping.getJob(j);
+            if (account != null) {
+                boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
+                if (applied) {
+                    job.setApplied(1);
+                }
+                boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
+                if (saved) {
+                    job.setSaved(1);
+                }
+            }
+            jobDTOS.add(job);
         }
         companyDTO.setOpening_jobs(count);
         companyDTO.setSkills(skillDTOs);
