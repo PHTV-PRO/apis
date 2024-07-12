@@ -3,8 +3,6 @@ package com.company.phtv.Models.DTO;
 import java.util.Date;
 import java.util.List;
 
-import com.company.phtv.Models.Entity.Skill;
-import com.company.phtv.Models.Entity.SkillJob;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +28,8 @@ public class JobDTO {
     private  Date end_date;
     private  boolean is_active;
     private  int gender;
-    private  int applied =0;
-    private  int saved =0;
+    private  boolean is_apply =false;
+    private  boolean is_save =false;
 
     private CompanyDTO company;
     private LocationDTO location;

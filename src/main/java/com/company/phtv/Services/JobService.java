@@ -80,11 +80,11 @@ public class JobService implements IJobService {
                 if (account != null) {
                     boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
                     if (applied) {
-                        jobDTO.setApplied(1);
+                        jobDTO.set_apply(true);
                     }
                     boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
                     if (saved) {
-                        jobDTO.setSaved(1);
+                        jobDTO.set_save(true);
                     }
                 }
                 jobDTOS.add(jobDTO);
@@ -107,11 +107,11 @@ public class JobService implements IJobService {
         if (account == null) {
             boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
             if (applied) {
-                jobDTO.setApplied(1);
+                jobDTO.set_apply(true);
             }
             boolean saved = _followJobRepo.findByAccountAndJobs(account, job) != null;
             if (saved) {
-                jobDTO.setSaved(1);
+                jobDTO.set_save(true);
             }
         }
         return jobDTO;
@@ -128,11 +128,11 @@ public class JobService implements IJobService {
                     JobDTO job = JobMapping.getJob(jobs.get(i));
                     boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
                     if (applied) {
-                        job.setApplied(1);
+                        job.set_apply(true);
                     }
                     boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
                     if (saved) {
-                        job.setSaved(1);
+                        job.set_save(true);
                     }
                     jobDTOS.add(job);
                 }
@@ -165,11 +165,11 @@ public class JobService implements IJobService {
                 JobDTO jobDTO = JobMapping.getJob(followJobs.get(i).getJobs());
                 boolean applied = _applicationRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
                 if (applied) {
-                    jobDTO.setApplied(1);
+                    jobDTO.set_apply(true);
                 }
                 boolean saved = _followJobRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
                 if (saved) {
-                    jobDTO.setSaved(1);
+                    jobDTO.set_save(true);
                 }
                 jobDTOS.add(jobDTO);
             }
@@ -190,11 +190,11 @@ public class JobService implements IJobService {
                 JobDTO jobDTO = JobMapping.getJob(viewedJobs.get(i).getJobs());
                 boolean applied = _applicationRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
                 if (applied) {
-                    jobDTO.setApplied(1);
+                    jobDTO.set_apply(true);
                 }
                 boolean saved = _followJobRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
                 if (saved) {
-                    jobDTO.setSaved(1);
+                    jobDTO.set_save(true);
                 }
                 jobDTOS.add(jobDTO);
             }
@@ -214,11 +214,11 @@ public class JobService implements IJobService {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
             boolean applied = _applicationRepo.findByAccountAndJobs(account, a.getJobs()) != null;
             if (applied) {
-                jobDTO.setApplied(1);
+                jobDTO.set_apply(true);
             }
             boolean saved = _followJobRepo.findByAccountAndJobs(account, a.getJobs()) != null;
             if (saved) {
-                jobDTO.setSaved(1);
+                jobDTO.set_save(true);
             }
             jobDTOs.add(jobDTO);
         }

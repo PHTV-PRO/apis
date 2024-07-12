@@ -181,11 +181,11 @@ public class CompanyService implements ICompanyService {
             if (account != null) {
                 boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
                 if (applied) {
-                    job.setApplied(1);
+                    job.set_apply(true);
                 }
                 boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
                 if (saved) {
-                    job.setSaved(1);
+                    job.set_save(true);
                 }
             }
             jobDTOS.add(job);
