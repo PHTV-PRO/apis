@@ -181,11 +181,11 @@ public class CompanyService implements ICompanyService {
             if (account != null) {
                 boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
                 if (applied) {
-                    job.set_apply(true);
+                    job.setJob_is_apply(true);
                 }
                 boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
                 if (saved) {
-                    job.set_save(true);
+                    job.setJob_is_save(true);
                 }
             }
             jobDTOS.add(job);
@@ -246,38 +246,48 @@ public class CompanyService implements ICompanyService {
     public List<CompanyDTO> companyApplicationMost() {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
-        if (companies.size() > 5) {
-            HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
-            for (int i = 0; i < companies.size(); i++) {
-                int count = 0;
-                boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
-                if (!checkCompanyDeleted) {
-                    for (Jobs job : companies.get(i).getJobs()) {
-                        boolean checkJobDeleted = job.getDeleted_at() != null;
-                        if (!checkJobDeleted) {
-                            count += job.getApplications().size();
-                        }
-                    }
-                    if (count != 0) {
-                        companiesWithCounts.put(companies.get(i), count);
-                    }
-                }
+        if (companies.size() < 5) {
+            return companyDTOMapping(companies);
+        }
 
-            }
-            if (companiesWithCounts.size() > 5) {
-                PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
-                        (e1, e2) -> e2.getValue() - e1.getValue());
-                pq.addAll(companiesWithCounts.entrySet());
-                if (pq.size() > 5) {
-                    pq.poll();
+        HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
+        for (int i = 0; i < companies.size(); i++) {
+            int count = 0;
+            boolean checkCompanyDeleted = companies.get(i).getDeleted_at() != null;
+            if (!checkCompanyDeleted) {
+                for (Jobs job : companies.get(i).getJobs()) {
+                    boolean checkJobDeleted = job.getDeleted_at() != null;
+                    if (!checkJobDeleted) {
+                        count += job.getApplications().size();
+                    }
                 }
-                while (!pq.isEmpty() && companyDTOS.size() < 5) {
-                    Map.Entry<Company, Integer> entry = pq.poll();
-                    Company company = entry.getKey();
-                    companyDTOS.add(CompanyMapping.CompanyDTO(company));
+                if (count != 0) {
+                    companiesWithCounts.put(companies.get(i), count);
                 }
-                return companyDTOS;
             }
+
+        }
+        if (companiesWithCounts.size() > 5) {
+            PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+                    (e1, e2) -> e2.getValue() - e1.getValue());
+            pq.addAll(companiesWithCounts.entrySet());
+            if (pq.size() > 5) {
+                pq.poll();
+            }
+            while (!pq.isEmpty() && companyDTOS.size() < 5) {
+                Map.Entry<Company, Integer> entry = pq.poll();
+                Company company = entry.getKey();
+                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+                if (_currentAccount.getAccount() != null) {
+                    FollowCompany followCompany = _followCompanyRepo
+                            .findByAccountAndCompany(_currentAccount.getAccount(), company);
+                    if (followCompany != null) {
+                        companyDTO.setCompany_is_save(true);
+                    }
+                }
+                companyDTOS.add(companyDTO);
+            }
+            return companyDTOS;
         }
         return companyDTOMapping(companies);
 
@@ -288,6 +298,10 @@ public class CompanyService implements ICompanyService {
         Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
         if (account == null || company == null) {
             throw Variable.ACTION_FAIL;
+        }
+        FollowCompany followCompany = _followCompanyRepo.findByAccountAndCompany(account, company);
+        if (followCompany != null) {
+            throw Variable.COMPANY_CONFLIG;
         }
         _followCompanyRepo.save(new FollowCompany(0, company, account));
         return new CompanyDTO();
@@ -400,6 +414,13 @@ public class CompanyService implements ICompanyService {
                             && j.getEnd_date().after(Date.from(Instant.now()));
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
+                    }
+                }
+                if (_currentAccount.getAccount() != null) {
+                    FollowCompany followCompany = _followCompanyRepo
+                            .findByAccountAndCompany(_currentAccount.getAccount(), companies.get(i));
+                    if (followCompany != null) {
+                        companyDTO.setCompany_is_save(true);
                     }
                 }
                 companyDTO.setOpening_jobs(count);

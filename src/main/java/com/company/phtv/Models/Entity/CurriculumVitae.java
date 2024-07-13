@@ -23,6 +23,9 @@ public class CurriculumVitae extends BaseModel {
     @Column(name = "file_name")
     private String file_name;
 
+    @Column(name = "name")
+    private String name;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "account_id")
@@ -35,9 +38,10 @@ public class CurriculumVitae extends BaseModel {
         this.id = id;
     }
 
-    public CurriculumVitae(int id, String file_name, Account account) {
+    public CurriculumVitae(int id, String file_name, String name,Account account) {
         this.id = id;
         this.file_name = file_name;
+        this.name = name;
         this.account = account;
 
     }

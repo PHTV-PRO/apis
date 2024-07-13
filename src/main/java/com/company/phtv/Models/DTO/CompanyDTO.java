@@ -25,6 +25,8 @@ public class CompanyDTO {
     private String background_image;
     private int enable;
     private int contract;
+    private  boolean company_is_save =false;
+
 
     private int opening_jobs;
 

@@ -8,6 +8,8 @@ public class CVMapping {
         CVDTO cvdto = new CVDTO();
         cvdto.setId(c.getId());
         cvdto.setFile_name(c.getFile_name());
+        cvdto.setName(c.getName());
+        cvdto.setCreate_at(c.getCreated_at());
         return cvdto;
     }
 

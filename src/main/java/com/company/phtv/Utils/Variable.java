@@ -4,8 +4,9 @@ public interface Variable {
   public static HttpException NOT_FOUND = new HttpException(404, "not Found");
   public static HttpException TOKEN_ERROR = new HttpException(400, "understand token request from client");
   public static HttpException EMAIL_OR_PASSWORD_INCORRECT = new HttpException(400, "Email or Password incorrect!!");
-  public static HttpException EMAIL_EXISTING = new HttpException(400,
+  public static HttpException EMAIL_EXISTING = new HttpException(409,
       "Email existing in database. please change email!!");
+  public static HttpException COMPANY_CONFLIG = new HttpException(409, "Company is follow!!");
   public static HttpException EMAIL_INVALID = new HttpException(400, "Enter Email invalid. please change email!!");
   public static HttpException PASSWORD_INVALID = new HttpException(400, "Enter Password invalid!!");
   public static Exception FAIL = new HttpException(500, "Action Fail");

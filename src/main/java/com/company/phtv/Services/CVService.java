@@ -15,6 +15,7 @@ import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Map.CVMapping;
+import com.company.phtv.Models.Request.RequestCV;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CVRepo;
 import com.company.phtv.Services.IServices.ICVService;
@@ -36,20 +37,21 @@ public class CVService implements ICVService {
     CurrentAccount _currentAccount;
 
     @Override
-    public CVDTO create(MultipartFile file) {
+    public CVDTO create(RequestCV requestCV) {
         CurriculumVitae CV = new CurriculumVitae();
         Account account = _currentAccount.getAccount();
         boolean checkAccountNotFound = account == null || account.getDeleted_at() != null;
         if (checkAccountNotFound) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
-        if (file != null) {
+        if (requestCV.getFile() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadCV(file, file.toString());
+                Map check = _cloudinaryService.uploadCV(requestCV.getFile(), requestCV.getFile().toString());
                 CV.setFile_name(check.get("public_id").toString());
                 CV.setAccount(account);
+                CV.setName(requestCV.getName());
                 _cvRepo.save(CV);
                 return new CVDTO();
             } catch (IOException e) {

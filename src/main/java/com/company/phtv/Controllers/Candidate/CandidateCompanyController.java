@@ -21,7 +21,7 @@ public class CandidateCompanyController {
     BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
 
       @PostMapping("")
-    public ResponseEntity<?> post(@ModelAttribute RequestFollowCompany requestCompany) {
+    public ResponseEntity<?> post(@RequestBody RequestFollowCompany requestCompany) {
         try {
             return _baseController.success(_companyService.followCompany(requestCompany));
         } catch (HttpException e) {

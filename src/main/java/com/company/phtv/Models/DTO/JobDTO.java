@@ -28,8 +28,8 @@ public class JobDTO {
     private  Date end_date;
     private  boolean is_active;
     private  int gender;
-    private  boolean is_apply =false;
-    private  boolean is_save =false;
+    private  boolean job_is_apply =false;
+    private  boolean job_is_save =false;
 
     private CompanyDTO company;
     private LocationDTO location;
