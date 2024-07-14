@@ -52,5 +52,15 @@ public class JobController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+    @GetMapping("/hot")
+    public ResponseEntity<?> getJobsHot() {
+        try {
+            return _baseControllers.success(_jobService.getJobsHot());
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
 
 }

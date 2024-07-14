@@ -17,7 +17,7 @@ public interface JobRepo extends JpaRepository<Jobs,Integer> {
     List<Jobs> getAllJob(@Param("lotId") Long lotId, @Param("indId") Long indId);
     @Query("select j from Jobs j Where  j.id = ?1 ORDER BY j.created_at DESC")
     Jobs findJobId(int id);
-    @Query("SELECT j FROM Jobs j WHERE j.start_date < :currentDate ORDER BY j.start_date DESC")
+    @Query("SELECT j FROM Jobs j WHERE j.start_date < :currentDate and j.end_date > :currentDate ORDER BY j.start_date DESC")
     List<Jobs> findAllByStartDateBefore(@Param("currentDate") Date currentDate);
 
     List<Jobs> findJobByTitleContaining(String title);

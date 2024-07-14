@@ -14,6 +14,7 @@ import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class JobService implements IJobService {
@@ -150,6 +154,49 @@ public class JobService implements IJobService {
 
         }
         return jobDTOS;
+    }
+
+    public List<JobDTO> getJobsHot() {
+        List<JobDTO> jobDTOs = new ArrayList<>();
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
+            List<Jobs> job = (List<Jobs>) jobs.stream().limit(5).collect(Collectors.toList());
+            for (Jobs j : job) {
+                JobDTO jobDTO = JobMapping.getJob(j);
+                jobDTOs.add(jobDTO);
+            }
+            return jobDTOs;
+        }
+        ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).getFirst();
+        List<Skill> skills = new ArrayList<>();
+        for (SkillJob skillJob : viewedJobs.getJobs().getSkillJobs()) {
+            if (!skills.contains(skillJob.getSkills())) {
+                skills.add(skillJob.getSkills());
+            }
+        }
+        for (Skill s : skills) {
+            for (SkillJob sj : s.getSkillJobs()) {
+                Jobs j = sj.getJobs();
+                JobDTO jobDTO = JobMapping.getJob(j);
+                boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
+                if (applied) {
+                    jobDTO.setJob_is_apply(true);
+                }
+                boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
+                if (saved) {
+                    jobDTO.setJob_is_save(true);
+                }
+                boolean checkDate = (j.getStart_date()).before(Date.from(Instant.now()))
+                        && (j.getEnd_date()).after(Date.from(Instant.now()));
+                boolean checkSizeJob = jobDTOs.size() < 30;
+                if (checkDate && checkSizeJob) {
+                    jobDTOs.add(jobDTO);
+                }
+            }
+        }
+
+        return jobDTOs;
     }
 
     public List<JobDTO> getJobsSave() {
