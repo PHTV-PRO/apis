@@ -92,10 +92,10 @@ public class CVService implements ICVService {
     @Override
     public List<CVDTO> getByAccount() {
         Account account = _currentAccount.getAccount();
-        List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
-        if (CVs == null) {
-            throw Variable.NOT_FOUND;
+        if(account==null){
+            throw Variable.ACCOUNT_NOT_FOUND;
         }
+        List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
         List<CVDTO> cvdto = new ArrayList<>();
         for (CurriculumVitae CV : CVs) {
             if (CV.getDeleted_at() == null) {
