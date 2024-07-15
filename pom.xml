@@ -91,7 +91,15 @@
 			<artifactId>cloudinary-http44</artifactId>
 			<version>1.33.0</version>
 		</dependency>
-	</dependencies>
+
+		<!-- image-->
+	
+   <dependency>
+     <groupId>org.springframework</groupId>
+     <artifactId>spring-test</artifactId>
+     <version>5.1.9.RELEASE</version>
+   </dependency>
+ </dependencies>
 
 	<build>
 		<plugins>

@@ -7,6 +7,7 @@ import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
+import com.company.phtv.Models.Entity.ImageCompany;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.SkillCompany;
@@ -19,6 +20,7 @@ import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Models.Request.RequestSearchCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
+import com.company.phtv.Repository.CompanyImageRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
@@ -27,11 +29,16 @@ import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +59,8 @@ public class CompanyService implements ICompanyService {
     ApplicationRepo _applicationRepo;
     @Autowired
     FollowJobRepo _followJobRepo;
+    @Autowired
+    CompanyImageRepo _companyImageRepo;
 
     @Autowired
     CurrentAccount _currentAccount;
@@ -134,7 +143,39 @@ public class CompanyService implements ICompanyService {
             company.setAccount(_accountRepo.getAccountById(requestCompany.getAccount_id()));
         }
         company.setId(id);
+        String inputString = requestCompany.fileCompany;
+        String[] listImage = inputString.split(",data");
+        List<ImageCompany> imageCompanies = _companyImageRepo.findByCompany(company);
+        for (int i = 0; i < listImage.length; i++) {
+            MultipartFile file;
+            if (i != 0) {
+                listImage[i] = "data" + listImage[i];
+            }
+            file = convertBase64ToMultipart(listImage[i]);
+            Boolean checkExistImage = true;
+            for (ImageCompany imageC : imageCompanies) {
+                if (imageC.getImage() == Variable.PATH_IMAGE + file.getName()) {
+                    checkExistImage = false;
+                }
+            }
+            if (checkExistImage) {
+                try {
+                    // create image in cloudinary
+                    @SuppressWarnings("rawtypes")
+                    Map check = _cloudinaryService.uploadImage(file, getCompany.getLogo_image());
+                    ImageCompany ic = new ImageCompany();
+                    ic.setImage(Variable.PATH_IMAGE + check.get("public_id").toString());
+                    ic.setCompany(company);
+                    _companyImageRepo.save(ic);
+                } catch (IOException e) {
+                    throw Variable.ADD_IMAGE_FAIL;
+                }
+            }
+
+        }
+
         _companyRepo.save(company);
+
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 
@@ -429,4 +470,34 @@ public class CompanyService implements ICompanyService {
         }
         return companyDTOS;
     }
+
+    public File convertBase64ToImage(String base64String) {
+        String imageData = base64String.substring(base64String.indexOf(",") + 1);
+        byte[] decodedBytes = Base64.getDecoder().decode(imageData);
+
+        String imageFormat = base64String.substring(base64String.indexOf(":") + 1, base64String.indexOf(";"));
+        String fileName = "image." + (imageFormat != null ? imageFormat.split("/")[1] : "png");
+
+        File imageFile = new File(fileName);
+        try (FileOutputStream fos = new FileOutputStream(imageFile)) {
+            fos.write(decodedBytes);
+        } catch (Exception e) {
+
+        }
+
+        return imageFile;
+    }
+
+    public MultipartFile convertBase64ToMultipart(String base64String) {
+        String imageData = base64String.substring(base64String.indexOf(",") + 1);
+        byte[] decodedBytes = Base64.getDecoder().decode(imageData);
+
+        String imageFormat = base64String.substring(base64String.indexOf(":") + 1, base64String.indexOf(";"));
+        String fileName = "image." + (imageFormat != null ? imageFormat.split("/")[1] : "png");
+        String contentType = imageFormat != null ? "image/" + imageFormat.split("/")[1] : "application/octet-stream";
+
+        MultipartFile multipartFile = new MockMultipartFile(fileName, fileName, contentType, decodedBytes);
+        return multipartFile;
+    }
+
 }

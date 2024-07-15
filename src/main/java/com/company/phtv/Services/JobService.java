@@ -168,7 +168,7 @@ public class JobService implements IJobService {
             }
             return jobDTOs;
         }
-        ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).getFirst();
+        ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).get(0);
         List<Skill> skills = new ArrayList<>();
         for (SkillJob skillJob : viewedJobs.getJobs().getSkillJobs()) {
             if (!skills.contains(skillJob.getSkills())) {

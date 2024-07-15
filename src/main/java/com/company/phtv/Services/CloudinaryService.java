@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -20,6 +21,12 @@ public class CloudinaryService {
     @SuppressWarnings("rawtypes")
     public Map uploadImage(MultipartFile file, String folderName) throws IOException {
         return cloudinary.uploader().upload(file.getBytes(),
+                ObjectUtils.asMap(
+                        "Images", folderName));
+    }
+    @SuppressWarnings("rawtypes")
+    public Map uploadFileImage(File file, String folderName) throws IOException {
+        return cloudinary.uploader().upload(file.isFile(),
                 ObjectUtils.asMap(
                         "Images", folderName));
     }

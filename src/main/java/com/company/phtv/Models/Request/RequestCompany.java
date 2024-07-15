@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -33,6 +36,8 @@ public class RequestCompany {
     public MultipartFile UploadFileBackground;
     @Nullable
     public MultipartFile UploadFileLogo;
+    @Nullable
+    public String fileCompany;
     @Nullable
     public int account_id;
 }
