@@ -112,14 +112,16 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         if (company != null && company.getDeleted_at() == null) {
             List<SubcriptionPlanDTO> sbp = new ArrayList<>();
             for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
+                SubcriptionPlanDTO subcriptionPlanDTO =   SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan());
+                subcriptionPlanDTO.setEnd_date(sub.getEnd_date());
+                subcriptionPlanDTO.setStart_date(sub.getStart_date());
                 boolean checkSubcritionplan = sub.getDeleted_at() == null
                         && (sub.getStart_date().before(Date.from(Instant.now()))
                                 && sub.getEnd_date().after(Date.from(Instant.now())));
                 if (checkSubcritionplan) {
-                    subcriptionPlan.setSubcriptionPlanDTO(
-                            SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    subcriptionPlan.setSubcriptionPlanDTO(subcriptionPlanDTO);
                 } else {
-                    sbp.add(SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    sbp.add(subcriptionPlanDTO);
                 }
             }
             subcriptionPlan.setSubcriptionPlanDTOs(sbp);

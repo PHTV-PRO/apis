@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -16,6 +17,8 @@ public class SubcriptionPlanDTO {
     private  String name;
     private Float price;
     private int expiry;
+    private Date start_date;
+    private Date end_date;
 
     private List<SubcriptionPlanCompanyDTO> subcriptionPlanCompanies;
 }
