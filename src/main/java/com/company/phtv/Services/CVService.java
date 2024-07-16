@@ -53,7 +53,7 @@ public class CVService implements ICVService {
                 CV.setAccount(account);
                 CV.setName(requestCV.getName());
                 _cvRepo.save(CV);
-                return new CVDTO();
+                return null;
             } catch (IOException e) {
                 throw Variable.ACTION_FAIL;
             }
