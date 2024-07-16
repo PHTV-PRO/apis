@@ -23,6 +23,7 @@ public class CompanyForEmployerDTO {
     private String nationnality;
     private String logo_image;
     private String background_image;
+    private String list_image;
     private int enable;
     private int contract;
 

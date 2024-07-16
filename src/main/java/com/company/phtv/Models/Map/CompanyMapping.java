@@ -20,6 +20,7 @@ public class CompanyMapping {
         companyDTO.setNationnality(c.getNationnality());
         companyDTO.setLogo_image(c.getLogo_image());
         companyDTO.setBackground_image(c.getBackground_image());
+        companyDTO.setList_image(c.getList_image());
         companyDTO.setEnable(c.getEnable());
         companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
 
@@ -39,6 +40,7 @@ public class CompanyMapping {
         companyDTO.setNationnality(c.getNationnality());
         companyDTO.setLogo_image(c.getLogo_image());
         companyDTO.setBackground_image(c.getBackground_image());
+        companyDTO.setList_image(c.getList_image());
         companyDTO.setEnable(c.getEnable());
 
         return companyDTO;

@@ -46,6 +46,7 @@ public class CompanyData {
                                 "Việt Nam",
                                 null,
                                 null,
+                                null,
                                 0,
                                 0,
                                 _AccountRepo.getOne(1)));
@@ -65,6 +66,7 @@ public class CompanyData {
                                 "Việt Nam",
                                 null,
                                 null,
+                                null,
                                 0,
                                 0,
                                 _AccountRepo.getOne(2)));
@@ -82,6 +84,7 @@ public class CompanyData {
                                 "10-50",
                                 "https://www.likelion.edu.vn/",
                                 "South-Korea",
+                                null,
                                 null,
                                 null,
                                 0, 0,
@@ -108,6 +111,7 @@ public class CompanyData {
                         "10-30",
                         "https://tuyendung.bidv.com.vn/",
                         "Viet Nam",
+                        null,
                         null,
                         null,
                         0, 0,
@@ -146,6 +150,7 @@ public class CompanyData {
                         "Vietnam",
                         null,
                         null,
+                        null,
                         0, 0,
                         _AccountRepo.getOne(11)));
                 // Dịch Vụ Doanh Nghiệp
@@ -163,6 +168,7 @@ public class CompanyData {
                         "25-100",
                         "topdev.vn",
                         "Vietnam",
+                        null,
                         null,
                         null,
                         0, 0,
@@ -183,6 +189,7 @@ public class CompanyData {
                         "50-100",
                         "http://mafc.com.vn",
                         "South-Korea",
+                        null,
                         null,
                         null,
                         0, 0,
@@ -210,6 +217,7 @@ public class CompanyData {
                         "https://www.megazone.com/\n",
                         "South-Korea\n" +
                                 "Vietnam\n",
+                        null,
                         null,
                         null,
                         0, 0,
@@ -247,6 +255,7 @@ public class CompanyData {
                         "United States",
                         null,
                         null,
+                        null,
                         0, 0,
                         _AccountRepo.getOne(15)));
                 // Phần Cứng
@@ -262,6 +271,7 @@ public class CompanyData {
                         "1000-1200",
                         "https://traphaco.com.vn/",
                         "Vietnam",
+                        null,
                         null,
                         null,
                         0, 0,

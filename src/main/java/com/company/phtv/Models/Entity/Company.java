@@ -38,6 +38,8 @@ public class Company extends BaseModel {
     private String logo_image;
     @Column(name = "background_image")
     private String background_image;
+    @Column(name = "list_image")
+    private String list_image;
     @Column(name = "enable")
     private int enable;
     @Column(name = "contract")
@@ -74,7 +76,7 @@ public class Company extends BaseModel {
 
     public Company(int id, String name, String introduction, String benefit, String profession,
             String size,  String link_website, String nationnality, String logo_image,
-            String background_image, int enable, int contract, Account account) {
+            String background_image,String list_image, int enable, int contract, Account account) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
@@ -86,6 +88,7 @@ public class Company extends BaseModel {
         this.nationnality = nationnality;
         this.logo_image = logo_image;
         this.background_image = background_image;
+        this.list_image = list_image;
         this.enable = enable;
         this.contract = contract;
         this.account = account;
