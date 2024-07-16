@@ -33,6 +33,10 @@ public class RequestCompany {
     @Nullable
     public  int enable;
     @Nullable
+    public String skill_id;
+    @Nullable
+    public String level_id;
+    @Nullable
     public MultipartFile UploadFileBackground;
     @Nullable
     public MultipartFile UploadFileLogo;
