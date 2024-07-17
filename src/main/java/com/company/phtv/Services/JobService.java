@@ -16,7 +16,6 @@ import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,39 +64,16 @@ public class JobService implements IJobService {
     @Autowired
     JWTService _jwtservice;
 
+   
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
-        Account account = _currentAccount.getAccount();
         List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null) {
                 JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillJob s : jobs.get(i).getSkillJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                    }
-                }
-                jobDTO.setSkills(skillDTOs);
-
-                List<LevelDTO> levelDTOs = new ArrayList<>();
-                for (LevelJob s : jobs.get(i).getLevelJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                    }
-                }
-                jobDTO.setLevels(levelDTOs);
-                if (account != null) {
-                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
-                    if (applied) {
-                        jobDTO.setJob_is_apply(true);
-                    }
-                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
-                    if (saved) {
-                        jobDTO.setJob_is_save(true);
-                    }
-                }
+                jobDTO = setAppliedAndSaved(jobs.get(i),jobDTO);
+                jobDTO = setSkill_level(jobs.get(i), jobDTO);
                 jobDTOS.add(jobDTO);
 
             }
@@ -109,38 +83,14 @@ public class JobService implements IJobService {
 
     @Override
     public JobDTO getById(int id) {
-        Account account = _currentAccount.getAccount();
-
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null || job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
         }
         JobDTO jobDTO = JobMapping.getJob(job);
-        if (account == null) {
-            boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
-            if (applied) {
-                jobDTO.setJob_is_apply(true);
-            }
-            boolean saved = _followJobRepo.findByAccountAndJobs(account, job) != null;
-            if (saved) {
-                jobDTO.setJob_is_save(true);
-            }
-        }
-        List<SkillDTO> skillDTOs = new ArrayList<>();
-        for (SkillJob s : job.getSkillJobs()) {
-            if (s.getDeleted_at() == null) {
-                skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-            }
-        }
-        jobDTO.setSkills(skillDTOs);
-        List<LevelDTO> levelDTOs = new ArrayList<>();
-        for (LevelJob s : job.getLevelJobs()) {
-            if (s.getDeleted_at() == null) {
-                levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-            }
-        }
-        jobDTO.setLevels(levelDTOs);
+        jobDTO = setAppliedAndSaved(job,jobDTO);
+        jobDTO = setSkill_level(job, jobDTO);
         return jobDTO;
     }
 
@@ -152,30 +102,10 @@ public class JobService implements IJobService {
             for (int i = 0; i < jobs.size(); i++) {
                 if (jobs.get(i).getDeleted_at() == null
                         && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
-                    JobDTO job = JobMapping.getJob(jobs.get(i));
-                    boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
-                    if (applied) {
-                        job.setJob_is_apply(true);
-                    }
-                    boolean saved = _followJobRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
-                    if (saved) {
-                        job.setJob_is_save(true);
-                    }
-                    List<SkillDTO> skillDTOs = new ArrayList<>();
-                    for (SkillJob s : jobs.get(i).getSkillJobs()) {
-                        if (s.getDeleted_at() == null) {
-                            skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                        }
-                    }
-                    job.setSkills(skillDTOs);
-                    List<LevelDTO> levelDTOs = new ArrayList<>();
-                    for (LevelJob s : jobs.get(i).getLevelJobs()) {
-                        if (s.getDeleted_at() == null) {
-                            levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                        }
-                    }
-                    job.setLevels(levelDTOs);
-                    jobDTOS.add(job);
+                    JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
+                    jobDTO = setAppliedAndSaved(jobs.get(i),jobDTO);
+                    jobDTO = setSkill_level(jobs.get(i), jobDTO);
+                    jobDTOS.add(jobDTO);
 
                 }
             }
@@ -186,8 +116,9 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
-                JobDTO job = JobMapping.getJob(jobs.get(i));
-                jobDTOS.add(job);
+                JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
+                jobDTO = setSkill_level(jobs.get(i), jobDTO);
+                jobDTOS.add(jobDTO);
             }
 
         }
@@ -203,20 +134,7 @@ public class JobService implements IJobService {
             List<Jobs> job = (List<Jobs>) jobs.stream().limit(5).collect(Collectors.toList());
             for (Jobs j : job) {
                 JobDTO jobDTO = JobMapping.getJob(j);
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillJob s : j.getSkillJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                    }
-                }
-                jobDTO.setSkills(skillDTOs);
-                List<LevelDTO> levelDTOs = new ArrayList<>();
-                for (LevelJob s : j.getLevelJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                    }
-                }
-                jobDTO.setLevels(levelDTOs);
+                jobDTO = setSkill_level(j, jobDTO);
                 jobDTOs.add(jobDTO);
             }
             return jobDTOs;
@@ -240,14 +158,7 @@ public class JobService implements IJobService {
         for (Jobs j : listJob) {
             // map dto and check saved, aplication,
             JobDTO jobDTO = JobMapping.getJob(j);
-            boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
-            if (applied) {
-                jobDTO.setJob_is_apply(true);
-            }
-            boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
-            if (saved) {
-                jobDTO.setJob_is_save(true);
-            }
+            jobDTO = setAppliedAndSaved(j,jobDTO);
             boolean checkDate = (j.getStart_date()).before(Date.from(Instant.now()))
                     && (j.getEnd_date()).after(Date.from(Instant.now()));
             boolean checkSizeJob = jobDTOs.size() <= 30;
@@ -256,20 +167,7 @@ public class JobService implements IJobService {
             }
             if (checkDate && checkSizeJob) {
                 // add skill and level detail job
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillJob s : j.getSkillJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                    }
-                }
-                jobDTO.setSkills(skillDTOs);
-                List<LevelDTO> levelDTOs = new ArrayList<>();
-                for (LevelJob s : j.getLevelJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                    }
-                }
-                jobDTO.setLevels(levelDTOs);
+                jobDTO = setSkill_level(j, jobDTO);
                 jobDTOs.add(jobDTO);
             }
         }
@@ -288,27 +186,8 @@ public class JobService implements IJobService {
         for (int i = 0; i < sizeJob; i++) {
             if (followJobs.get(i).getDeleted_at() == null) {
                 JobDTO jobDTO = JobMapping.getJob(followJobs.get(i).getJobs());
-                boolean applied = _applicationRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
-                if (applied) {
-                    jobDTO.setJob_is_apply(true);
-                }
-                boolean saved = _followJobRepo.findByAccountAndJobs(account, followJobs.get(i).getJobs()) != null;
-                if (saved) {
-                    jobDTO.setJob_is_save(true);
-                }
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillJob s : followJobs.get(i).getJobs().getSkillJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                    }
-                }
-                jobDTO.setSkills(skillDTOs);
-                List<LevelDTO> levelDTOs = new ArrayList<>();
-                for (LevelJob s : followJobs.get(i).getJobs().getLevelJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                    }
-                }
+                jobDTO = setAppliedAndSaved(followJobs.get(i).getJobs(),jobDTO);
+                jobDTO = setSkill_level(followJobs.get(i).getJobs(), jobDTO);
                 jobDTOS.add(jobDTO);
             }
         }
@@ -326,27 +205,8 @@ public class JobService implements IJobService {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
             if (!checkJobDeleted) {
                 JobDTO jobDTO = JobMapping.getJob(viewedJobs.get(i).getJobs());
-                boolean applied = _applicationRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
-                if (applied) {
-                    jobDTO.setJob_is_apply(true);
-                }
-                boolean saved = _followJobRepo.findByAccountAndJobs(account, viewedJobs.get(i).getJobs()) != null;
-                if (saved) {
-                    jobDTO.setJob_is_save(true);
-                }
-                List<SkillDTO> skillDTOs = new ArrayList<>();
-                for (SkillJob s : viewedJobs.get(i).getJobs().getSkillJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                    }
-                }
-                jobDTO.setSkills(skillDTOs);
-                List<LevelDTO> levelDTOs = new ArrayList<>();
-                for (LevelJob s : viewedJobs.get(i).getJobs().getLevelJobs()) {
-                    if (s.getDeleted_at() == null) {
-                        levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                    }
-                }
+                jobDTO = setAppliedAndSaved(viewedJobs.get(i).getJobs(),jobDTO);
+                jobDTO = setSkill_level(viewedJobs.get(i).getJobs(), jobDTO);
                 jobDTOS.add(jobDTO);
             }
         }
@@ -363,27 +223,8 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
-            boolean applied = _applicationRepo.findByAccountAndJobs(account, a.getJobs()) != null;
-            if (applied) {
-                jobDTO.setJob_is_apply(true);
-            }
-            boolean saved = _followJobRepo.findByAccountAndJobs(account, a.getJobs()) != null;
-            if (saved) {
-                jobDTO.setJob_is_save(true);
-            }
-            List<SkillDTO> skillDTOs = new ArrayList<>();
-            for (SkillJob s : a.getJobs().getSkillJobs()) {
-                if (s.getDeleted_at() == null) {
-                    skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
-                }
-            }
-            jobDTO.setSkills(skillDTOs);
-            List<LevelDTO> levelDTOs = new ArrayList<>();
-            for (LevelJob s : a.getJobs().getLevelJobs()) {
-                if (s.getDeleted_at() == null) {
-                    levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
-                }
-            }
+            jobDTO = setAppliedAndSaved(a.getJobs(),jobDTO);
+            jobDTO = setSkill_level(a.getJobs(), jobDTO);
             jobDTOs.add(jobDTO);
         }
         return jobDTOs;
@@ -434,8 +275,8 @@ public class JobService implements IJobService {
                 for (String i : levelId) {
                     int idLevel = Integer.parseInt(i);
                     Level l = _levelRepo.findById(idLevel).get();
-                    boolean checkExist = _levelJobRepo.findByJobAndLevel(getJob,l) != null;
-                    if(checkExist){
+                    boolean checkExist = _levelJobRepo.findByJobAndLevel(getJob, l) != null;
+                    if (checkExist) {
                         continue;
                     }
                     LevelJob levelJob = new LevelJob(l, getJob);
@@ -449,8 +290,8 @@ public class JobService implements IJobService {
                 for (String i : skillId) {
                     int idLevel = Integer.parseInt(i);
                     Skill s = _skillRepo.findById(idLevel).get();
-                    boolean checkExist = _skillJobRepo.findByJobAndSkill(getJob,s) != null;
-                    if(checkExist){
+                    boolean checkExist = _skillJobRepo.findByJobAndSkill(getJob, s) != null;
+                    if (checkExist) {
                         continue;
                     }
                     SkillJob skillJob = new SkillJob(s, getJob);
@@ -552,5 +393,40 @@ public class JobService implements IJobService {
         return true;
 
     }
+
+    JobDTO setSkill_level(Jobs job, JobDTO jobDTO) {
+        //sai chung
+        List<SkillDTO> skillDTOs = new ArrayList<>();
+        for (SkillJob s : job.getSkillJobs()) {
+            if (s.getDeleted_at() == null) {
+                skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
+            }
+        }
+        jobDTO.setSkills(skillDTOs);
+        List<LevelDTO> levelDTOs = new ArrayList<>();
+        for (LevelJob s : job.getLevelJobs()) {
+            if (s.getDeleted_at() == null) {
+                levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
+            }
+        }
+        jobDTO.setLevels(levelDTOs);
+        return jobDTO;
+    }
+    JobDTO setAppliedAndSaved(Jobs job, JobDTO jobDTO) {
+        //sai chung
+        Account account = _currentAccount.getAccount();
+        if (account != null) {
+            boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
+            if (applied) {
+                jobDTO.setJob_is_apply(true);
+            }
+            boolean saved = _followJobRepo.findByAccountAndJobs(account, job) != null;
+            if (saved) {
+                jobDTO.setJob_is_save(true);
+            }
+        }
+        return jobDTO;
+    }
+
 
 }
