@@ -198,7 +198,7 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         Account account = _currentAccount.getAccount();
         if (account == null) {
-            //not sign in
+            // not sign in
             List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
             List<Jobs> job = (List<Jobs>) jobs.stream().limit(5).collect(Collectors.toList());
             for (Jobs j : job) {
@@ -224,7 +224,7 @@ public class JobService implements IJobService {
         ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).get(0);
         List<Skill> skills = new ArrayList<>();
         for (SkillJob skillJob : viewedJobs.getJobs().getSkillJobs()) {
-            //get list skill job nearest viewed
+            // get list skill job nearest viewed
             if (!skills.contains(skillJob.getSkills())) {
                 skills.add(skillJob.getSkills());
             }
@@ -232,13 +232,13 @@ public class JobService implements IJobService {
         List<Jobs> listJob = new ArrayList<>();
         for (Skill s : skills) {
             for (SkillJob sj : s.getSkillJobs()) {
-                //add job
+                // add job
                 Jobs j = sj.getJobs();
                 listJob.add(j);
             }
         }
         for (Jobs j : listJob) {
-            //map dto and check saved, aplication,
+            // map dto and check saved, aplication,
             JobDTO jobDTO = JobMapping.getJob(j);
             boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
             if (applied) {
@@ -428,22 +428,37 @@ public class JobService implements IJobService {
     @Override
     public JobDTO put(int id, RequestJob requestJob) {
         Jobs getJob = _jobRepo.findJobId(id);
-        if (requestJob.getSkill_id() != "") {
-            String[] skillId = requestJob.getSkill_id().split(",");
-            for (String i : skillId) {
-                Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
-                SkillJob skillJob = new SkillJob(s, getJob);
-                _skillJobRepo.save(skillJob);
+        if (requestJob.getLevel_id() != null) {
+            if (requestJob.getLevel_id() != "") {
+                String[] levelId = requestJob.getLevel_id().split(",");
+                for (String i : levelId) {
+                    int idLevel = Integer.parseInt(i);
+                    Level l = _levelRepo.findById(idLevel).get();
+                    boolean checkExist = _levelJobRepo.findByJobAndLevel(getJob,l) != null;
+                    if(checkExist){
+                        continue;
+                    }
+                    LevelJob levelJob = new LevelJob(l, getJob);
+                    _levelJobRepo.save(levelJob);
+                }
             }
         }
-        if (requestJob.getLevel_id() != "") {
-            String[] levelId = requestJob.getLevel_id().split(",");
-            for (String i : levelId) {
-                Level l = _levelRepo.findById(Integer.parseInt(i)).get();
-                LevelJob levelJob = new LevelJob(l, getJob);
-                _levelJobRepo.save(levelJob);
+        if (requestJob.getSkill_id() != null) {
+            if (requestJob.getSkill_id() != "") {
+                String[] skillId = requestJob.getSkill_id().split(",");
+                for (String i : skillId) {
+                    int idLevel = Integer.parseInt(i);
+                    Skill s = _skillRepo.findById(idLevel).get();
+                    boolean checkExist = _skillJobRepo.findByJobAndSkill(getJob,s) != null;
+                    if(checkExist){
+                        continue;
+                    }
+                    SkillJob skillJob = new SkillJob(s, getJob);
+                    _skillJobRepo.save(skillJob);
+                }
             }
         }
+
         boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
