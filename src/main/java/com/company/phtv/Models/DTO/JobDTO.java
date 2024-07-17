@@ -36,4 +36,5 @@ public class JobDTO {
     private JobTypeDTO jobType;
 
     private List<SkillDTO> skills;
+    private List<LevelDTO> levels;
 }
