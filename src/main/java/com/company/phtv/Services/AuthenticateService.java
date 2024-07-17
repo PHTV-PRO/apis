@@ -80,6 +80,22 @@ public class AuthenticateService implements IAuthenticateService {
 
     @Override
     public AccountDTO checkToken(String token) {
+        try {
+            String email = _jwtservice.extractEmail(token);
+            if (email == null || email.trim().equals("")) {
+                return null;
+            }
+            Account account = _userRepo.getAccountByEmail(email);
+            if (account != null && account.getDeleted_at() == null) {
+                return AccountMapping.accountDTO(account);
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public AccountDTO checkTokenWeb(String token) {
         String email = _jwtservice.extractEmail(token);
         if (email == null || email.trim().equals("")) {
             throw Variable.TOKEN_ERROR;

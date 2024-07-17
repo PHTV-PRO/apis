@@ -269,6 +269,11 @@ public class JobService implements IJobService {
     @Override
     public JobDTO put(int id, RequestJob requestJob) {
         Jobs getJob = _jobRepo.findJobId(id);
+        boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
+        if (checkJobNotFound) {
+            throw Variable.NOT_FOUND;
+        }
+        
         if (requestJob.getLevel_id() != null) {
             if (requestJob.getLevel_id() != "") {
                 String[] levelId = requestJob.getLevel_id().split(",");
@@ -300,10 +305,7 @@ public class JobService implements IJobService {
             }
         }
 
-        boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
-        if (checkJobNotFound) {
-            throw Variable.NOT_FOUND;
-        }
+        
         Jobs job = JobMapping.jobPut(requestJob, getJob);
         if (requestJob.getCompany_id() != 0) {
             Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());

@@ -37,11 +37,11 @@ public class RequestCompany {
     @Nullable
     public String level_id;
     @Nullable
-    public MultipartFile UploadFileBackground;
+    public MultipartFile background;
     @Nullable
-    public MultipartFile UploadFileLogo;
+    public MultipartFile logo;
     @Nullable
-    public String fileCompany;
+    public String list_image;
     @Nullable
     public int account_id;
 }

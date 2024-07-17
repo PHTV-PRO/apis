@@ -59,5 +59,15 @@ public class AuthenController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+    @PostMapping("/check_token_web")
+    public ResponseEntity<?> postTokenWeb(@RequestBody String token) {
+        try {
+            return _baseControllerInfo.success(_iauthenRepo.checkTokenWeb(token));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
 
 }

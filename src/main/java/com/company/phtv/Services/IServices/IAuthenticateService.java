@@ -11,6 +11,7 @@ public interface IAuthenticateService {
     Account register(RequestLogin requestLogin);
 
     AccountDTO checkToken(String token);
+    AccountDTO checkTokenWeb(String token);
 
 
 

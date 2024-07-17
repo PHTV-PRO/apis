@@ -79,28 +79,28 @@ public class CompanyService implements ICompanyService {
             }
         }
         company.setAccount(a);
-        if (requestCompany.UploadFileBackground != null) {
+        if (requestCompany.getBackground() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground,
+                Map check = _cloudinaryService.uploadImage(requestCompany.getBackground(),
                         company.getBackground_image());
                 company.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
-        if (requestCompany.UploadFileLogo != null) {
+        if (requestCompany.getLogo() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileLogo, company.getLogo_image());
+                Map check = _cloudinaryService.uploadImage(requestCompany.getLogo(), company.getLogo_image());
                 company.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
-        company.setList_image(requestCompany.getFileCompany());
+        company.setList_image(requestCompany.getList_image());
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
@@ -112,22 +112,22 @@ public class CompanyService implements ICompanyService {
         if (checkCompanyNotFound || getCompany == null) {
             throw Variable.NOT_FOUND;
         }
-        if (requestCompany.UploadFileBackground != null) {
+        if (requestCompany.getBackground() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileBackground,
+                Map check = _cloudinaryService.uploadImage(requestCompany.getBackground(),
                         getCompany.getBackground_image());
                 getCompany.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
-        if (requestCompany.UploadFileLogo != null) {
+        if (requestCompany.getLogo() != null) {
             try {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompany.UploadFileLogo, getCompany.getLogo_image());
+                Map check = _cloudinaryService.uploadImage(requestCompany.getLogo(), getCompany.getLogo_image());
                 getCompany.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
