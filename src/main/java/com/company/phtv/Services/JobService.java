@@ -73,14 +73,16 @@ public class JobService implements IJobService {
         List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
-            JobDTO jobDTO = new JobDTO();
             if (jobs.get(i).getDeleted_at() == null) {
+                JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillJob s : jobs.get(i).getSkillJobs()) {
                     if (s.getDeleted_at() == null) {
                         skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
                     }
                 }
+                jobDTO.setSkills(skillDTOs);
+
                 List<LevelDTO> levelDTOs = new ArrayList<>();
                 for (LevelJob s : jobs.get(i).getLevelJobs()) {
                     if (s.getDeleted_at() == null) {
@@ -88,8 +90,6 @@ public class JobService implements IJobService {
                     }
                 }
                 jobDTO.setLevels(levelDTOs);
-                jobDTO = JobMapping.getJob(jobs.get(i));
-                jobDTO.setSkills(skillDTOs);
                 if (account != null) {
                     boolean applied = _applicationRepo.findByAccountAndJobs(account, jobs.get(i)) != null;
                     if (applied) {
