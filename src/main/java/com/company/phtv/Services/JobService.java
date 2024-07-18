@@ -234,6 +234,19 @@ public class JobService implements IJobService {
     public JobDTO create(RequestJob requestJob) {
 
         Jobs job = JobMapping.jobCreate(requestJob);
+       
+        Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
+        job.setCompany(c);
+        Location location = new Location();
+        for (Location l : c.getLocations()) {
+            if (l.getDeleted_at() == null) {
+                location = l;
+            }
+        }
+        job.setLocation(location);
+        JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
+        job.setJobType(jt);
+        _jobRepo.save(job);
         if (requestJob.getSkill_id() != "") {
             String[] skillId = requestJob.getSkill_id().split(",");
             for (String i : skillId) {
@@ -250,19 +263,6 @@ public class JobService implements IJobService {
                 _levelJobRepo.save(levelJob);
             }
         }
-        job.setSkillJobs(null);
-        Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
-        job.setCompany(c);
-        Location location = new Location();
-        for (Location l : c.getLocations()) {
-            if (l.getDeleted_at() == null) {
-                location = l;
-            }
-        }
-        job.setLocation(location);
-        JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
-        job.setJobType(jt);
-        _jobRepo.save(job);
         return (JobDTO) JobMapping.getJob(job);
     }
 
