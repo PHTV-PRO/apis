@@ -97,6 +97,9 @@ public class CompanyMapping {
         if (rc.getAccount_id() != 0) {
             c.setAccount(new Account(0));
         }
+        if(rc.getList_image() !=null){
+            c.setList_image(c.getList_image());
+        }
         return c;
     }
 }

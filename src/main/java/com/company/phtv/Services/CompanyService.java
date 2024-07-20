@@ -137,6 +137,7 @@ public class CompanyService implements ICompanyService {
         if (requestCompany.getAccount_id() != 0) {
             company.setAccount(_accountRepo.getAccountById(requestCompany.getAccount_id()));
         }
+        company.setList_image(requestCompany.getList_image());
         company.setId(id);
         _companyRepo.save(company);
 

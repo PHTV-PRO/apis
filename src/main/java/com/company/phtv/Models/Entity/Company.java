@@ -38,7 +38,7 @@ public class Company extends BaseModel {
     private String logo_image;
     @Column(name = "background_image")
     private String background_image;
-    @Column(name = "list_image")
+    @Column(name = "list_image",columnDefinition = "TEXT")
     private String list_image;
     @Column(name = "enable")
     private int enable;

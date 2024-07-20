@@ -19,6 +19,8 @@ public class SubcriptionPlanCompanyData {
     public List<SubcriptionPlanCompany> Data(){
         List<SubcriptionPlanCompany> data = new ArrayList<>();
         data.add(new SubcriptionPlanCompany(1,new Date("30/6/2024"),new Date("31/7/2024"),_CompanyRepo.getOne(1),_SubcriptionPlanRepo.getOne(3)));
+
+
         data.add(new SubcriptionPlanCompany(2,new Date("2/6/2024"),new Date("2/6/2025"),_CompanyRepo.getOne(2),_SubcriptionPlanRepo.getOne(4)));
         data.add(new SubcriptionPlanCompany(3,new Date("2/6/2024"),new Date("12/8/2024"),_CompanyRepo.getOne(3),_SubcriptionPlanRepo.getOne(3)));
 
@@ -30,6 +32,9 @@ public class SubcriptionPlanCompanyData {
         data.add(new SubcriptionPlanCompany(9,new Date("30/6/2024"),new Date("31/7/2024"),_CompanyRepo.getOne(9),_SubcriptionPlanRepo.getOne(1)));
         data.add(new SubcriptionPlanCompany(10,new Date("30/6/2024"),new Date("31/7/2024"),_CompanyRepo.getOne(10),_SubcriptionPlanRepo.getOne(1)));
 
+
+        data.add(new SubcriptionPlanCompany(11,new Date("30/6/2024"),new Date("31/7/2024"),_CompanyRepo.getOne(1),_SubcriptionPlanRepo.getOne(1)));
+        data.add(new SubcriptionPlanCompany(12,new Date("30/6/2024"),new Date("31/7/2024"),_CompanyRepo.getOne(1),_SubcriptionPlanRepo.getOne(2)));
         return data;
     }
 }
