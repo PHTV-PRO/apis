@@ -395,11 +395,11 @@ public class JobService implements IJobService {
             boolean checkApplicated = account.getApplications().get(i).getAccount() == account
                     && account.getApplications().get(i).getJobs() == job;
             if (checkApplicated) {
-                throw Variable.ACTION_FAIL;
+                throw Variable.CONFLIG;
             }
         }
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
-        return new JobDTO();
+        return null;
     }
 
     public boolean deleteJobsSave(RequestIntermediaryJob requestIntermediaryJob) {

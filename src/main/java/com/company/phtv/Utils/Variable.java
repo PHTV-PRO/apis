@@ -21,6 +21,7 @@ public interface Variable {
   public static HttpException LIMIT_JOB = new HttpException(400, "Company not create more job!!");
   public static HttpException SUBCRIPTION_PLAN_NOT_FOUND = new HttpException(400, "Company not create job, because subcription plan not found!!");
 
+  public static HttpException CONFLIG = new HttpException(409, "Action Confliig data!!");
 
 
 }
