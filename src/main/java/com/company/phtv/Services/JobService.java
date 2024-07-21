@@ -235,7 +235,7 @@ public class JobService implements IJobService {
         Jobs job = JobMapping.jobCreate(requestJob);
 
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
-        boolean checkSubcritionplanExist= false;
+        boolean checkSubcritionplanExist = false;
         for (SubcriptionPlanCompany sp : c.getSubcritionPlanCompanies()) {
             if (sp.getDeleted_at() != null) {
                 continue;
@@ -244,15 +244,15 @@ public class JobService implements IJobService {
             if (!checkDate) {
                 continue;
             }
-            if(checkDate){
+            if (checkDate) {
                 checkSubcritionplanExist = true;
             }
-            boolean checkCountJob = sp.getSubscription_plan().getExpiry() <=c.getCount_job();
-            if(checkCountJob){
+            boolean checkCountJob = sp.getSubscription_plan().getExpiry() <= c.getCount_job();
+            if (checkCountJob) {
                 throw Variable.LIMIT_JOB;
             }
         }
-        if(checkSubcritionplanExist== false){
+        if (checkSubcritionplanExist == false) {
             throw Variable.SUBCRIPTION_PLAN_NOT_FOUND;
         }
 
@@ -283,7 +283,7 @@ public class JobService implements IJobService {
                 _levelJobRepo.save(levelJob);
             }
         }
-        c.setCount_job(c.getCount_job()+1);
+        c.setCount_job(c.getCount_job() + 1);
         _companyRepo.save(c);
         return (JobDTO) JobMapping.getJob(job);
     }
@@ -369,6 +369,7 @@ public class JobService implements IJobService {
         FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
         if (followJob != null) {
             _followJobRepo.delete(followJob);
+            return true;
         }
         _followJobRepo.save(new FollowJob(0, job, account));
         return true;
