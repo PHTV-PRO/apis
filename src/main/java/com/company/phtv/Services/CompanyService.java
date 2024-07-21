@@ -307,10 +307,12 @@ public class CompanyService implements ICompanyService {
         }
         FollowCompany followCompany = _followCompanyRepo.findByAccountAndCompany(account, company);
         if (followCompany != null) {
-            throw Variable.COMPANY_CONFLIG;
+            _followCompanyRepo.delete(followCompany);
+            return null;
         }
         _followCompanyRepo.save(new FollowCompany(0, company, account));
-        return new CompanyDTO();
+        return null;
+
     }
 
     public List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany) {

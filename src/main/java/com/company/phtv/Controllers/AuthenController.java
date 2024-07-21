@@ -12,6 +12,7 @@ import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Request.RequestLogin;
+import com.company.phtv.Models.Request.RequestToken;
 import com.company.phtv.Services.AuthenticateService;
 import com.company.phtv.Utils.HttpException;
 
@@ -50,9 +51,9 @@ public class AuthenController {
     }
 
     @PostMapping("/check_token")
-    public ResponseEntity<?> postToken(@RequestBody String token) {
+    public ResponseEntity<?> postToken(@RequestBody RequestToken requestToken) {
         try {
-            return _baseControllerInfo.success(_iauthenRepo.checkToken(token));
+            return _baseControllerInfo.success(_iauthenRepo.checkToken(requestToken.getToken()));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

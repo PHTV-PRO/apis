@@ -368,7 +368,7 @@ public class JobService implements IJobService {
         }
         FollowJob followJob = _followJobRepo.findByAccountAndJobs(account, job);
         if (followJob != null) {
-            return false;
+            _followJobRepo.delete(followJob);
         }
         _followJobRepo.save(new FollowJob(0, job, account));
         return true;
