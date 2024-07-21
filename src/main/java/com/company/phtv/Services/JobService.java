@@ -64,7 +64,6 @@ public class JobService implements IJobService {
     @Autowired
     JWTService _jwtservice;
 
-   
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
         List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
@@ -72,7 +71,7 @@ public class JobService implements IJobService {
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null) {
                 JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
-                jobDTO = setAppliedAndSaved(jobs.get(i),jobDTO);
+                jobDTO = setAppliedAndSaved(jobs.get(i), jobDTO);
                 jobDTO = setSkill_level(jobs.get(i), jobDTO);
                 jobDTOS.add(jobDTO);
 
@@ -89,7 +88,7 @@ public class JobService implements IJobService {
             throw Variable.NOT_FOUND;
         }
         JobDTO jobDTO = JobMapping.getJob(job);
-        jobDTO = setAppliedAndSaved(job,jobDTO);
+        jobDTO = setAppliedAndSaved(job, jobDTO);
         jobDTO = setSkill_level(job, jobDTO);
         return jobDTO;
     }
@@ -103,7 +102,7 @@ public class JobService implements IJobService {
                 if (jobs.get(i).getDeleted_at() == null
                         && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
                     JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
-                    jobDTO = setAppliedAndSaved(jobs.get(i),jobDTO);
+                    jobDTO = setAppliedAndSaved(jobs.get(i), jobDTO);
                     jobDTO = setSkill_level(jobs.get(i), jobDTO);
                     jobDTOS.add(jobDTO);
 
@@ -158,7 +157,7 @@ public class JobService implements IJobService {
         for (Jobs j : listJob) {
             // map dto and check saved, aplication,
             JobDTO jobDTO = JobMapping.getJob(j);
-            jobDTO = setAppliedAndSaved(j,jobDTO);
+            jobDTO = setAppliedAndSaved(j, jobDTO);
             boolean checkDate = (j.getStart_date()).before(Date.from(Instant.now()))
                     && (j.getEnd_date()).after(Date.from(Instant.now()));
             boolean checkSizeJob = jobDTOs.size() <= 30;
@@ -186,7 +185,7 @@ public class JobService implements IJobService {
         for (int i = 0; i < sizeJob; i++) {
             if (followJobs.get(i).getDeleted_at() == null) {
                 JobDTO jobDTO = JobMapping.getJob(followJobs.get(i).getJobs());
-                jobDTO = setAppliedAndSaved(followJobs.get(i).getJobs(),jobDTO);
+                jobDTO = setAppliedAndSaved(followJobs.get(i).getJobs(), jobDTO);
                 jobDTO = setSkill_level(followJobs.get(i).getJobs(), jobDTO);
                 jobDTOS.add(jobDTO);
             }
@@ -205,7 +204,7 @@ public class JobService implements IJobService {
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
             if (!checkJobDeleted) {
                 JobDTO jobDTO = JobMapping.getJob(viewedJobs.get(i).getJobs());
-                jobDTO = setAppliedAndSaved(viewedJobs.get(i).getJobs(),jobDTO);
+                jobDTO = setAppliedAndSaved(viewedJobs.get(i).getJobs(), jobDTO);
                 jobDTO = setSkill_level(viewedJobs.get(i).getJobs(), jobDTO);
                 jobDTOS.add(jobDTO);
             }
@@ -223,7 +222,7 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
-            jobDTO = setAppliedAndSaved(a.getJobs(),jobDTO);
+            jobDTO = setAppliedAndSaved(a.getJobs(), jobDTO);
             jobDTO = setSkill_level(a.getJobs(), jobDTO);
             jobDTOs.add(jobDTO);
         }
@@ -234,8 +233,29 @@ public class JobService implements IJobService {
     public JobDTO create(RequestJob requestJob) {
 
         Jobs job = JobMapping.jobCreate(requestJob);
-       
+
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
+        boolean checkSubcritionplanExist= false;
+        for (SubcriptionPlanCompany sp : c.getSubcritionPlanCompanies()) {
+            if (sp.getDeleted_at() != null) {
+                continue;
+            }
+            boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
+            if (!checkDate) {
+                continue;
+            }
+            if(checkDate){
+                checkSubcritionplanExist = true;
+            }
+            boolean checkCountJob = sp.getSubscription_plan().getExpiry() <=c.getCount_job();
+            if(checkCountJob){
+                throw Variable.LIMIT_JOB;
+            }
+        }
+        if(checkSubcritionplanExist== false){
+            throw Variable.SUBCRIPTION_PLAN_NOT_FOUND;
+        }
+
         job.setCompany(c);
         Location location = new Location();
         for (Location l : c.getLocations()) {
@@ -263,6 +283,8 @@ public class JobService implements IJobService {
                 _levelJobRepo.save(levelJob);
             }
         }
+        c.setCount_job(c.getCount_job()+1);
+        _companyRepo.save(c);
         return (JobDTO) JobMapping.getJob(job);
     }
 
@@ -273,7 +295,7 @@ public class JobService implements IJobService {
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
         }
-        
+
         if (requestJob.getLevel_id() != null) {
             if (requestJob.getLevel_id() != "") {
                 String[] levelId = requestJob.getLevel_id().split(",");
@@ -305,7 +327,6 @@ public class JobService implements IJobService {
             }
         }
 
-        
         Jobs job = JobMapping.jobPut(requestJob, getJob);
         if (requestJob.getCompany_id() != 0) {
             Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
@@ -397,7 +418,7 @@ public class JobService implements IJobService {
     }
 
     JobDTO setSkill_level(Jobs job, JobDTO jobDTO) {
-        //sai chung
+        // sai chung
         List<SkillDTO> skillDTOs = new ArrayList<>();
         for (SkillJob s : job.getSkillJobs()) {
             if (s.getDeleted_at() == null) {
@@ -414,8 +435,9 @@ public class JobService implements IJobService {
         jobDTO.setLevels(levelDTOs);
         return jobDTO;
     }
+
     JobDTO setAppliedAndSaved(Jobs job, JobDTO jobDTO) {
-        //sai chung
+        // sai chung
         Account account = _currentAccount.getAccount();
         if (account != null) {
             boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
@@ -429,6 +451,5 @@ public class JobService implements IJobService {
         }
         return jobDTO;
     }
-
 
 }

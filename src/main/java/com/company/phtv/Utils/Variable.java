@@ -17,4 +17,10 @@ public interface Variable {
   public static HttpException ACTION_FAIL = new HttpException(500, "Action Fail");
   public static String PATH_IMAGE = "https://res.cloudinary.com/dj7xlmndj/image/upload/v1719238271/";
 
+  public static HttpException SUBCRIPTION_PLAN_EXIST = new HttpException(409, "SubScription plan existing");
+  public static HttpException LIMIT_JOB = new HttpException(400, "Company not create more job!!");
+  public static HttpException SUBCRIPTION_PLAN_NOT_FOUND = new HttpException(400, "Company not create job, because subcription plan not found!!");
+
+
+
 }

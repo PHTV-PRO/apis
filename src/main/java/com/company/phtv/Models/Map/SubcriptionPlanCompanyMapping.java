@@ -1,8 +1,6 @@
 package com.company.phtv.Models.Map;
 
 import com.company.phtv.Models.DTO.SubcriptionPlanCompanyDTO;
-import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
-import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 
 public class SubcriptionPlanCompanyMapping {

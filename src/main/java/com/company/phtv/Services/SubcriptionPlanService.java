@@ -9,6 +9,7 @@ import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
 import com.company.phtv.Repository.CompanyRepo;
+import com.company.phtv.Repository.SubcriptionPlanCompanyRepo;
 import com.company.phtv.Repository.SubcriptionPlanRepo;
 import com.company.phtv.Services.IServices.ISubcriptionPlanService;
 import com.company.phtv.Utils.CurrentAccount;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -29,6 +32,9 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
 
     @Autowired
     CompanyRepo _companyRepo;
+
+    @Autowired
+    SubcriptionPlanCompanyRepo _SubcriptionPlanCompanyRepo;
 
     @Autowired
     CurrentAccount _currentAccount;
@@ -112,23 +118,60 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         if (company != null && company.getDeleted_at() == null) {
             List<SubcriptionPlanDTO> sbp = new ArrayList<>();
             for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
-                if( sub.getDeleted_at() == null){
-                    SubcriptionPlanDTO subcriptionPlanDTO =   SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan());
+                if (sub.getDeleted_at() == null) {
+                    SubcriptionPlanDTO subcriptionPlanDTO = SubcriptionPlanMapping
+                            .subcriptionPlanDTO(sub.getSubscription_plan());
                     subcriptionPlanDTO.setEnd_date(sub.getEnd_date());
                     subcriptionPlanDTO.setStart_date(sub.getStart_date());
                     boolean checkSubcritionplan = (sub.getStart_date().before(Date.from(Instant.now()))
-                                    && sub.getEnd_date().after(Date.from(Instant.now())));
+                            && sub.getEnd_date().after(Date.from(Instant.now())));
                     if (checkSubcritionplan) {
                         subcriptionPlan.setSubcriptionPlanDTO(subcriptionPlanDTO);
                     } else {
                         sbp.add(subcriptionPlanDTO);
                     }
                 }
-               
+
             }
             subcriptionPlan.setSubcriptionPlanDTOs(sbp);
         }
         return subcriptionPlan;
+    }
+
+    public void createForEmployer(int id_sub) {
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            throw Variable.ACTION_FAIL;
+        }
+        SubcriptionPlan subcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id_sub);
+        if (subcriptionPlan == null) {
+            throw Variable.ACTION_FAIL;
+        }
+        Company company = _companyRepo.findOneCompanyWithAccount(account);
+        for (SubcriptionPlanCompany sp : company.getSubcritionPlanCompanies()) {
+            if(sp.getDeleted_at() != null){
+                continue;
+            }
+            boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
+            if(checkDate){
+                throw Variable.SUBCRIPTION_PLAN_EXIST;
+            }
+        }
+        if (company != null) {
+            SubcriptionPlanCompany subcriptionPlanCompany = new SubcriptionPlanCompany();
+            subcriptionPlanCompany.setCompany(company);
+            subcriptionPlanCompany.setSubscription_plan(subcriptionPlan);
+            subcriptionPlanCompany.setStart_date(new Date());
+            Calendar calendar = new GregorianCalendar(/* remember about timezone! */);
+            calendar.setTime(subcriptionPlanCompany.getStart_date());
+            calendar.add(Calendar.DATE, subcriptionPlan.getExpiry());
+            Date date = calendar.getTime();
+            subcriptionPlanCompany.setEnd_date(date);
+            _SubcriptionPlanCompanyRepo.save(subcriptionPlanCompany);
+            company.setCount_job(0);
+            _companyRepo.save(company);
+        }
+
     }
 
 }

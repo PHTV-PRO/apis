@@ -15,6 +15,7 @@ import java.util.List;
 public class SubcriptionPlanDTO {
     private int id;
     private  String name;
+    private  String description;
     private Float price;
     private int expiry;
     private Date start_date;

@@ -21,6 +21,8 @@ public class SubcriptionPlan extends BaseModel {
     private int id;
     @Column(name = "name",nullable = false)
     private String name="";
+    @Column(name = "description")
+    private String description;
     @Column(name = "price")
     private Float price;
     @Column(name = "expiry")
@@ -33,9 +35,10 @@ public class SubcriptionPlan extends BaseModel {
         this.id = id;
     }
 
-    public SubcriptionPlan(int id, String name, Float price, int expiry) {
+    public SubcriptionPlan(int id, String name,String description, Float price, int expiry) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.expiry = expiry;
     }

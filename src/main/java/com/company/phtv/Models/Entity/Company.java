@@ -44,6 +44,9 @@ public class Company extends BaseModel {
     private int enable;
     @Column(name = "contract")
     private int contract;
+    
+    @Column(name = "count_job")
+    private int count_job = 0;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
