@@ -23,5 +23,9 @@ public interface Variable {
 
   public static HttpException CONFLIG = new HttpException(409, "Action Confliig data!!");
 
+  public static String MONTH= "MONTH";
+  public static String YEAR= "YEAR";
+  
+
 
 }
