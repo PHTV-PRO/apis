@@ -24,6 +24,7 @@ public class CompanyDTO {
     private String logo_image;
     private String background_image;
     private String list_image;
+    private List<String> list_image_mobile ;
     private int enable;
     private int contract;
     private  boolean company_is_save =false;

@@ -30,7 +30,7 @@ public class JobMapping {
                         jobs.getCompany().getProfession(),
                         jobs.getCompany().getSize(),
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
-                        jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),jobs.getCompany().getList_image(),
+                        jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),jobs.getCompany().getList_image(),null,
                         jobs.getCompany().getEnable(), jobs.getCompany().getContract(), false,0, null, null, null, null,
                         null));
         if (jobs.getLocation() != null) {

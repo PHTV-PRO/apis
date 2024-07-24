@@ -113,6 +113,9 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             for (Company company : companies) {
+                if (searchAll.getCompanies().size() >= 30) {
+                    break;
+                }
                 boolean checkCompanyNotDeleted = company.getDeleted_at() == null;
                 if (checkCompanyNotDeleted) {
                     CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
@@ -138,7 +141,6 @@ public class AdminService implements IAdminService {
                     companyDTO.setLocations(lDtos);
                     companyDTO.setSkills(skillDTOs);
                     companyDTOs.add(companyDTO);
-
                 }
             }
             searchAll.setCompanies(companyDTOs);
@@ -147,6 +149,9 @@ public class AdminService implements IAdminService {
         if (getOneSkill != null) {
 
             for (SkillCompany sc : getOneSkill.getSkillCompanies()) {
+                if (searchAll.getCompanies().size() >= 30) {
+                    break;
+                }
                 if (sc.getDeleted_at() != null) {
                     continue;
                 }
@@ -175,6 +180,9 @@ public class AdminService implements IAdminService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             for (Jobs job : jobs) {
+                if (searchAll.getJobs().size() >= 30) {
+                    break;
+                }
                 JobDTO jobDTO = JobMapping.getJob(job);
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillJob s : job.getSkillJobs()) {
@@ -194,6 +202,9 @@ public class AdminService implements IAdminService {
             }
             searchAll.setJobs(jobDTOs);
             for (SkillJob s : getOneSkill.getSkillJobs()) {
+                if (searchAll.getJobs().size() >= 30) {
+                    break;
+                }
                 if (s.getDeleted_at() != null) {
                     continue;
                 }
