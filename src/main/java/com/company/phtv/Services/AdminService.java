@@ -3,25 +3,35 @@ package com.company.phtv.Services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
+import com.company.phtv.Models.DTO.LevelDTO;
 import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SearchAll;
+import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.LevelJob;
 import com.company.phtv.Models.Entity.Location;
+import com.company.phtv.Models.Entity.Skill;
+import com.company.phtv.Models.Entity.SkillCompany;
+import com.company.phtv.Models.Entity.SkillJob;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
+import com.company.phtv.Models.Map.LevelMapping;
 import com.company.phtv.Models.Map.LocationMapping;
+import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.JobRepo;
+import com.company.phtv.Repository.SkillRepo;
 import com.company.phtv.Services.IServices.IAdminService;
 
 @Service
@@ -35,6 +45,9 @@ public class AdminService implements IAdminService {
 
     @Autowired
     JobRepo _jobRepo;
+
+    @Autowired
+    SkillRepo _skillRepo;
 
     @Override
     public SearchAll searchByNameForAdmin(String name) {
@@ -100,39 +113,119 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             for (Company company : companies) {
-                boolean checkCompanyNotDeleted = company.getDeleted_at()== null;
-                if(checkCompanyNotDeleted){
-                    CompanyDTO companyDTO =CompanyMapping.CompanyDTO(company);
+                boolean checkCompanyNotDeleted = company.getDeleted_at() == null;
+                if (checkCompanyNotDeleted) {
+                    CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
                     List<JobDTO> jobs = new ArrayList<>();
                     for (Jobs j : company.getJobs()) {
-                        if(j.getDeleted_at()==null){
+                        if (j.getDeleted_at() == null) {
                             jobs.add(JobMapping.getJob(j));
                         }
                     }
                     companyDTO.setJobs(jobs);
                     List<LocationDTO> lDtos = new ArrayList<>();
                     for (Location l : company.getLocations()) {
-                        if(l.getDeleted_at() == null ){
+                        if (l.getDeleted_at() == null) {
                             lDtos.add(LocationMapping.LocationDTO(l));
                         }
                     }
+                    List<SkillDTO> skillDTOs = new ArrayList<>();
+                    for (SkillCompany s : company.getSkillCompanies()) {
+                        if (s.getSkill().getDeleted_at() == null) {
+                            skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+                        }
+                    }
                     companyDTO.setLocations(lDtos);
+                    companyDTO.setSkills(skillDTOs);
                     companyDTOs.add(companyDTO);
 
                 }
             }
             searchAll.setCompanies(companyDTOs);
         }
+        Skill getOneSkill = _skillRepo.findSkillByNameContaining(name).get(0);
+        if (getOneSkill != null) {
+
+            for (SkillCompany sc : getOneSkill.getSkillCompanies()) {
+                if (sc.getDeleted_at() != null) {
+                    continue;
+                }
+                boolean checkExist = false;
+                for (CompanyDTO c : searchAll.getCompanies()) {
+                    if (c.getId() == sc.getCompany().getId()) {
+                        checkExist = true;
+                    }
+                }
+                if (checkExist == false) {
+                    CompanyDTO companyDTO = CompanyMapping.CompanyDTO(sc.getCompany());
+                    List<SkillDTO> skillDTOs = new ArrayList<>();
+                    for (SkillCompany s : sc.getCompany().getSkillCompanies()) {
+                        if (s.getSkill().getDeleted_at() == null) {
+                            skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
+                        }
+                    }
+                    companyDTO.setSkills(skillDTOs);
+                    searchAll.getCompanies().add(companyDTO);
+                }
+
+            }
+        }
 
         List<Jobs> jobs = _jobRepo.findJobByTitleContaining(name);
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             for (Jobs job : jobs) {
-                jobDTOs.add(JobMapping.getJob(job));
+                JobDTO jobDTO = JobMapping.getJob(job);
+                List<SkillDTO> skillDTOs = new ArrayList<>();
+                for (SkillJob s : job.getSkillJobs()) {
+                    if (s.getSkills().getDeleted_at() == null) {
+                        skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
+                    }
+                }
+                List<LevelDTO> levelDTOs = new ArrayList<>();
+                for (LevelJob l : job.getLevelJobs()) {
+                    if (l.getLevel().getDeleted_at() == null) {
+                        levelDTOs.add(LevelMapping.levelDTO(l.getLevel()));
+                    }
+                }
+                jobDTO.setSkills(skillDTOs);
+                jobDTO.setLevels(levelDTOs);
+                jobDTOs.add(jobDTO);
             }
             searchAll.setJobs(jobDTOs);
+            for (SkillJob s : getOneSkill.getSkillJobs()) {
+                if (s.getDeleted_at() != null) {
+                    continue;
+                }
+                boolean checkExist = false;
+
+                for (JobDTO j : searchAll.getJobs()) {
+                    if (j.getId() == s.getJobs().getId()) {
+                        checkExist = true;
+                    }
+                }
+                if (checkExist == false) {
+                    JobDTO jobDTO = JobMapping.getJob(s.getJobs());
+
+                    List<SkillDTO> skillDTOs = new ArrayList<>();
+                    for (SkillJob sj : s.getJobs().getSkillJobs()) {
+                        if (sj.getSkills().getDeleted_at() == null) {
+                            skillDTOs.add(SkillMapping.getSkill(sj.getSkills()));
+                        }
+                    }
+                    List<LevelDTO> levelDTOs = new ArrayList<>();
+                    for (LevelJob l : s.getJobs().getLevelJobs()) {
+                        if (l.getLevel().getDeleted_at() == null) {
+                            levelDTOs.add(LevelMapping.levelDTO(l.getLevel()));
+                        }
+                    }
+                    jobDTO.setSkills(skillDTOs);
+                    jobDTO.setLevels(levelDTOs);
+                    searchAll.getJobs().add(jobDTO);
+                }
+            }
         }
-        searchAll.setQuantity(searchAll.getCompanies().size()+searchAll.getJobs().size());
+        searchAll.setQuantity(searchAll.getCompanies().size() + searchAll.getJobs().size());
         return searchAll;
     }
 
