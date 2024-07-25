@@ -24,17 +24,17 @@ public class MailService implements IMailService {
 	@Value("${spring.mail.username}")
 	private String sender;
 
-	public boolean SendMail(Mail details) {
+	public boolean SendMailForEmployer(String email, SubcriptionPlanCompany subcriptionPlanCompany) {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setSubject("PHTV4: BUY SUBCRIPTION PLAN");
 
-			String html = Variable.GETHTMLSUBCRIPTIONPLAN(new SubcriptionPlanCompany());
+			String html = Variable.GETHTMLSUBCRIPTIONPLAN(subcriptionPlanCompany);
 
 			helper.setText(html, true);
-			helper.setTo(details.getRecipient());
+			helper.setTo(email);
 			helper.setFrom(sender);
 			javaMailSender.send(mimeMessage);
 			return true;

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.Entity.Mail;
 import com.company.phtv.Services.MailService;
-import com.company.phtv.Services.IServices.IMailService;
 import com.company.phtv.Utils.HttpException;
 
 @RestController
@@ -25,7 +24,7 @@ public class MailController {
     @PostMapping("/send_mail")
     public ResponseEntity<?> SendMail(@RequestBody Mail mail) {
         try {
-            boolean result = _mailService.SendMail(mail);
+            boolean result = _mailService.SendMailForEmployer(null,null);
             if (result) {
                 return _baseController.success("");
             }

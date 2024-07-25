@@ -34,6 +34,9 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     CompanyRepo _companyRepo;
 
     @Autowired
+    MailService _mailService;
+
+    @Autowired
     SubcriptionPlanCompanyRepo _SubcriptionPlanCompanyRepo;
 
     @Autowired
@@ -149,11 +152,11 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         }
         Company company = _companyRepo.findOneCompanyWithAccount(account);
         for (SubcriptionPlanCompany sp : company.getSubcritionPlanCompanies()) {
-            if(sp.getDeleted_at() != null){
+            if (sp.getDeleted_at() != null) {
                 continue;
             }
             boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
-            if(checkDate){
+            if (checkDate) {
                 throw Variable.SUBCRIPTION_PLAN_EXIST;
             }
         }
@@ -170,6 +173,9 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
             _SubcriptionPlanCompanyRepo.save(subcriptionPlanCompany);
             company.setCount_job(0);
             _companyRepo.save(company);
+
+            _mailService.SendMailForEmployer(account.getEmail(), subcriptionPlanCompany);
+
         }
 
     }
