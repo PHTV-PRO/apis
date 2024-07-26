@@ -1,6 +1,7 @@
 package com.company.phtv.Services.IServices;
 
 import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Models.Request.RequestAccount;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface IAccountService {
     AccountDTO delete(int id);
 
     AccountDTO getById(int id);
-    AccountDTO getAccountCompanyJob();
+    AccountDTOForEmployer getAccountCompanyJob();
 
 }

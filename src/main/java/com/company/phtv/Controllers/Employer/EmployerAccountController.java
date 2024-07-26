@@ -2,6 +2,7 @@ package com.company.phtv.Controllers.Employer;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Services.AccountService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.List;
 public class EmployerAccountController {
     @Autowired
     AccountService _accountService;
-    BaseController<AccountDTO> _baseController = new BaseController<AccountDTO>();
+    BaseController<AccountDTOForEmployer> _baseController = new BaseController<AccountDTOForEmployer>();
     BaseController<List<AccountDTO>> _baseControllers = new BaseController<List<AccountDTO>>();
 
 

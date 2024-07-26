@@ -1,6 +1,7 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.CompanyForEmployerDTO;
 import com.company.phtv.Models.DTO.JobDTO;
@@ -185,10 +186,10 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTO getAccountCompanyJob() {
+    public AccountDTOForEmployer getAccountCompanyJob() {
         Account account = _currentAccount.getAccount();
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO = AccountMapping.accountDTO(account);
+        AccountDTOForEmployer accountDTO = new AccountDTOForEmployer();
+        accountDTO = AccountMapping.accountDTOForEmployer(account);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
             throw Variable.NOT_FOUND;
@@ -209,11 +210,9 @@ public class AccountService implements IAccountService {
                     }
                     if (job.getStart_date().after(Date.from(Instant.now()))) {
                         jobDTOsNotOpen.add(JobMapping.getJob(job));
-                    }
-                    else if (job.getEnd_date().before(Date.from(Instant.now()))) {
+                    } else if (job.getEnd_date().before(Date.from(Instant.now()))) {
                         jobDTOsOpened.add(JobMapping.getJob(job));
-                    }
-                    else{
+                    } else {
                         jobDTOsOpening.add(JobMapping.getJob(job));
                     }
                 }
@@ -224,14 +223,19 @@ public class AccountService implements IAccountService {
                     if (checkSubcritionplan) {
                         companyDTO.setSubcriptionPlan(
                                 SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                        accountDTO.setLimit_job(sub.getSubscription_plan().getExpiry());
+
                     }
                 }
+
                 companyDTO.setJobsNotOpen(jobDTOsNotOpen);
                 companyDTO.setJobsOpening(jobDTOsOpening);
                 companyDTO.setJobsOpened(jobDTOsOpened);
 
             }
             accountDTO.setCompanyForEmployer(companyDTO);
+            accountDTO.setCount_jobs(company.getCount_job());
+
         }
         return accountDTO;
     }
