@@ -17,13 +17,15 @@ public interface IJobService {
 
     JobDTO delete(int id);
 
-    List<JobDTO> getJobsNew();
+    List<JobDTO> getJobsNew(int size, int page);
 
-    List<JobDTO> getJobsSave();
+    List<JobDTO> getJobsSave(int size, int page);
 
-    List<JobDTO> getJobsViewed();
+    List<JobDTO> getJobsViewed(int size, int page);
 
-    List<JobDTO> getJobApplicationByAccount();
+    List<JobDTO> getJobsHot(int size, int page);
+
+    List<JobDTO> getJobApplicationByAccount(int size, int page);
 
     JobDTO CreatejobApplication(RequestApplication requestApplication);
 

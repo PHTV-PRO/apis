@@ -67,9 +67,9 @@ public class CompanyService implements ICompanyService {
     CurrentAccount _currentAccount;
 
     @Override
-    public List<CompanyDTO> getAll() {
+    public List<CompanyDTO> getAll(int size, int page) {
         List<Company> companies = _companyRepo.findAll();
-        return companyDTOMapping(companies);
+        return pagination(size, page, companyDTOMapping(companies));
     }
 
     @Override
@@ -224,7 +224,7 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public List<CompanyDTO> companyContractAll() {
+    public List<CompanyDTO> companyContractAll(int size, int page) {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < (companies.size() < 5 ? companies.size() : 5); i++) {
@@ -254,14 +254,14 @@ public class CompanyService implements ICompanyService {
             }
 
         }
-        return companyDTOS;
+        return pagination(size, page, companyDTOS);
     }
 
-    public List<CompanyDTO> companyApplicationMost() {
+    public List<CompanyDTO> companyApplicationMost(int size, int page) {
         List<Company> companies = _companyRepo.findAll();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         if (companies.size() < 5) {
-            return companyDTOMapping(companies);
+            return pagination(size, page, companyDTOMapping(companies));
         }
 
         HashMap<Company, Integer> companiesWithCounts = new HashMap<Company, Integer>();
@@ -301,9 +301,9 @@ public class CompanyService implements ICompanyService {
                 }
                 companyDTOS.add(companyDTO);
             }
-            return companyDTOS;
+            return pagination(size, page, companyDTOS);
         }
-        return companyDTOMapping(companies);
+        return pagination(size, page, companyDTOMapping(companies));
 
     }
 
@@ -323,7 +323,8 @@ public class CompanyService implements ICompanyService {
 
     }
 
-    public List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany) {
+    public List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany, int size,
+            int page) {
         List<Company> getCompanies = _companyRepo.findCompanyByIndustryAndProvinceCity();
         List<Company> companies = new ArrayList<>();
         int CASE = 0;
@@ -338,7 +339,7 @@ public class CompanyService implements ICompanyService {
         }
         if (requestSearchCompany.industry_id == 0 && requestSearchCompany.province_city_id == 0) {
             List<CompanyDTO> companyDTOs = companyDTOMapping(getCompanies);
-            return companyDTOs;
+            return pagination(size, page, companyDTOs);
         }
         switch (CASE) {
             case 1:
@@ -356,7 +357,7 @@ public class CompanyService implements ICompanyService {
                         }
                     }
                 }
-                return companyDTOMapping(companies);
+                return pagination(size, page, companyDTOMapping(companies));
             case 2:
                 for (int i = 0; i < getCompanies.size(); i++) {
                     if (getCompanies.get(i).getDeleted_at() != null) {
@@ -373,7 +374,7 @@ public class CompanyService implements ICompanyService {
                         }
                     }
                 }
-                return companyDTOMapping(companies);
+                return pagination(size, page, companyDTOMapping(companies));
             case 3:
                 for (int i = 0; i < getCompanies.size(); i++) {
                     if (getCompanies.get(i).getDeleted_at() != null) {
@@ -397,9 +398,9 @@ public class CompanyService implements ICompanyService {
                         }
                     }
                 }
-                return companyDTOMapping(companies);
+                return pagination(size, page, companyDTOMapping(companies));
             default:
-                return companyDTOMapping(getCompanies);
+                return pagination(size, page, companyDTOMapping(getCompanies));
         }
 
     }
@@ -543,7 +544,7 @@ public class CompanyService implements ICompanyService {
                 price_for_subcription_plan += spc.getSubscription_plan().getPrice();
 
             }
-            //add list
+            // add list
             listApplicated.add(number_of_job_applicated);
             listViewed.add(number_of_job_viewed);
             listSaved.add(number_of_job_saved);
@@ -573,4 +574,28 @@ public class CompanyService implements ICompanyService {
         int result = get.get(Calendar.YEAR);
         return result;
     }
+
+    List<CompanyDTO> pagination(int size, int page, List<CompanyDTO> companyDTOs) {
+        if (size ==0  && page == 0) {
+            return companyDTOs;
+        }
+        if (size <= 0 || page < 0) {
+            companyDTOs = new ArrayList<>();
+            return companyDTOs;
+        }
+        if (companyDTOs == null || companyDTOs.isEmpty()) {
+            return companyDTOs;
+        }
+        int startIndex = Math.max(0, (page - 1) * size);
+        int endIndex = Math.min(startIndex + size, companyDTOs.size());
+        if (startIndex > companyDTOs.size()) {
+            companyDTOs = new ArrayList<>();
+            return companyDTOs;
+        }
+        if (endIndex > companyDTOs.size()) {
+            return companyDTOs.subList(startIndex, companyDTOs.size() - 1);
+        }
+        return companyDTOs.subList(startIndex, endIndex);
+    }
+
 }

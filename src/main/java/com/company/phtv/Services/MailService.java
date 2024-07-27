@@ -3,13 +3,14 @@ package com.company.phtv.Services;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Mail;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Services.IServices.IMailService;
@@ -61,6 +62,23 @@ public class MailService implements IMailService {
 		catch (MessagingException e) {
 
 			return "Error while sending mail!!!";
+		}
+	}
+
+	public void SendMailForCreateJob(String email, Company c, Jobs job) {
+		try {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			helper.setSubject("PHTV4: BUY SUBCRIPTION PLAN");
+
+			String html = "";
+
+			helper.setText(html, true);
+			helper.setTo(email);
+			helper.setFrom(sender);
+			javaMailSender.send(mimeMessage);
+		} catch (Exception e) {
 		}
 	}
 }

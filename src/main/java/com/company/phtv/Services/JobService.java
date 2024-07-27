@@ -59,6 +59,9 @@ public class JobService implements IJobService {
     AuthenticationManager _authenticationManager;
 
     @Autowired
+    MailService _mailService;
+
+    @Autowired
     CurrentAccount _currentAccount;
 
     @Autowired
@@ -93,7 +96,7 @@ public class JobService implements IJobService {
         return jobDTO;
     }
 
-    public List<JobDTO> getJobsNew() {
+    public List<JobDTO> getJobsNew(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account != null) {
             List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
@@ -108,7 +111,7 @@ public class JobService implements IJobService {
 
                 }
             }
-            return jobDTOS;
+            return pagination(size, page, jobDTOS);
         }
 
         List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
@@ -121,10 +124,10 @@ public class JobService implements IJobService {
             }
 
         }
-        return jobDTOS;
+        return pagination(size, page, jobDTOS);
     }
 
-    public List<JobDTO> getJobsHot() {
+    public List<JobDTO> getJobsHot(int size, int page) {
         List<JobDTO> jobDTOs = new ArrayList<>();
         Account account = _currentAccount.getAccount();
         if (account == null) {
@@ -136,7 +139,7 @@ public class JobService implements IJobService {
                 jobDTO = setSkill_level(j, jobDTO);
                 jobDTOs.add(jobDTO);
             }
-            return jobDTOs;
+            return pagination(size, page, jobDTOs);
         }
         ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).get(0);
         List<Skill> skills = new ArrayList<>();
@@ -170,11 +173,10 @@ public class JobService implements IJobService {
                 jobDTOs.add(jobDTO);
             }
         }
-
-        return jobDTOs;
+        return pagination(size, page, jobDTOs);
     }
 
-    public List<JobDTO> getJobsSave() {
+    public List<JobDTO> getJobsSave(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
             throw Variable.ACTION_FAIL;
@@ -190,10 +192,10 @@ public class JobService implements IJobService {
                 jobDTOS.add(jobDTO);
             }
         }
-        return jobDTOS;
+        return pagination(size, page, jobDTOS);
     }
 
-    public List<JobDTO> getJobsViewed() {
+    public List<JobDTO> getJobsViewed(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
             throw Variable.ACTION_FAIL;
@@ -209,11 +211,11 @@ public class JobService implements IJobService {
                 jobDTOS.add(jobDTO);
             }
         }
-        return jobDTOS;
+        return pagination(size, page, jobDTOS);
     }
 
     @Override
-    public List<JobDTO> getJobApplicationByAccount() {
+    public List<JobDTO> getJobApplicationByAccount(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
             throw Variable.ACTION_FAIL;
@@ -226,7 +228,7 @@ public class JobService implements IJobService {
             jobDTO = setSkill_level(a.getJobs(), jobDTO);
             jobDTOs.add(jobDTO);
         }
-        return jobDTOs;
+        return pagination(size, page, jobDTOs);
     }
 
     @Override
@@ -285,6 +287,13 @@ public class JobService implements IJobService {
         }
         c.setCount_job(c.getCount_job() + 1);
         _companyRepo.save(c);
+        for (FollowCompany fl : c.getFollowCompany()) {
+            if (fl.getDeleted_at() == null) {
+                continue;
+            }
+            _mailService.SendMailForCreateJob(fl.getAccount().getEmail(), c, job);
+        }
+
         return (JobDTO) JobMapping.getJob(job);
     }
 
@@ -419,7 +428,7 @@ public class JobService implements IJobService {
     }
 
     JobDTO setSkill_level(Jobs job, JobDTO jobDTO) {
-        // sai chung
+        //
         List<SkillDTO> skillDTOs = new ArrayList<>();
         for (SkillJob s : job.getSkillJobs()) {
             if (s.getDeleted_at() == null) {
@@ -438,7 +447,7 @@ public class JobService implements IJobService {
     }
 
     JobDTO setAppliedAndSaved(Jobs job, JobDTO jobDTO) {
-        // sai chung
+        //
         Account account = _currentAccount.getAccount();
         if (account != null) {
             boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
@@ -451,6 +460,26 @@ public class JobService implements IJobService {
             }
         }
         return jobDTO;
+    }
+
+    List<JobDTO> pagination(int size, int page, List<JobDTO> jobDTOs) {
+        if (size <= 0 || page < 0) {
+            jobDTOs = new ArrayList<>();
+            return jobDTOs;
+        }
+        if (jobDTOs == null || jobDTOs.isEmpty()) {
+            return jobDTOs;
+        }
+        int startIndex = Math.max(0, (page - 1) * size);
+        int endIndex = Math.min(startIndex + size, jobDTOs.size());
+        if (startIndex > jobDTOs.size()) {
+            jobDTOs = new ArrayList<>();
+            return jobDTOs;
+        }
+        if (endIndex > jobDTOs.size()) {
+            return jobDTOs.subList(startIndex, jobDTOs.size() - 1);
+        }
+        return jobDTOs.subList(startIndex, endIndex);
     }
 
 }

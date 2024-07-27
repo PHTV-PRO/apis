@@ -20,9 +20,9 @@ public class CompanyController {
     BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> get() {
+    public ResponseEntity<?> get(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_companyService.getAll());
+            return _baseControllers.success(_companyService.getAll(size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -40,9 +40,9 @@ public class CompanyController {
         }
     }
     @GetMapping("/contract")
-    public ResponseEntity<?> companyContract() {
+    public ResponseEntity<?> companyContract(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_companyService.companyContractAll());
+            return _baseControllers.success(_companyService.companyContractAll(size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -50,9 +50,9 @@ public class CompanyController {
         }
     }
     @GetMapping("/application_most")
-    public ResponseEntity<?> companyApplicationMost() {
+    public ResponseEntity<?> companyApplicationMost(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_companyService.companyApplicationMost());
+            return _baseControllers.success(_companyService.companyApplicationMost(size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -61,9 +61,9 @@ public class CompanyController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestSearchCompany requestSearchCompany) {
+    public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestSearchCompany requestSearchCompany,@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_companyService.CompanyByProvenceAndIndustry(requestSearchCompany));
+            return _baseControllers.success(_companyService.CompanyByProvenceAndIndustry(requestSearchCompany,size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

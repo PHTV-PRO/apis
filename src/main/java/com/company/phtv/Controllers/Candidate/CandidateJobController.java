@@ -35,9 +35,9 @@ public class CandidateJobController {
     }
 
     @GetMapping("/application")
-    public ResponseEntity<?> get() {
+    public ResponseEntity<?> getApplicated(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getJobApplicationByAccount());
+            return _baseControllers.success(_jobService.getJobApplicationByAccount(size,page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -46,9 +46,9 @@ public class CandidateJobController {
     }
 
     @GetMapping("/save")
-    public ResponseEntity<?> getJobsSave() {
+    public ResponseEntity<?> getJobsSave(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getJobsSave());
+            return _baseControllers.success(_jobService.getJobsSave(size,page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -86,9 +86,9 @@ public class CandidateJobController {
     // }
 
     @GetMapping("/viewed")
-    public ResponseEntity<?> getJobsViewd() {
+    public ResponseEntity<?> getJobsViewd(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getJobsViewed());
+            return _baseControllers.success(_jobService.getJobsViewed(size,page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -111,9 +111,9 @@ public class CandidateJobController {
         }
     }
     @GetMapping("/hot")
-    public ResponseEntity<?> getJobsHot() {
+    public ResponseEntity<?> getJobsHot(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getJobsHot());
+            return _baseControllers.success(_jobService.getJobsHot(size,page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

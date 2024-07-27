@@ -43,15 +43,15 @@ public class JobController {
     }
 
     @GetMapping("/new")
-    public ResponseEntity<?> getJobsNew() {
+    public ResponseEntity<?> getJobsNew(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getJobsNew());
+            return _baseControllers.success(_jobService.getJobsNew(size,page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseController.error(null, 500, e.getMessage());
         }
-    }
+    } 
    
 
 }

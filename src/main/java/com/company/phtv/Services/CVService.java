@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.CVDTO;
+import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Map.CVMapping;
@@ -48,7 +49,7 @@ public class CVService implements ICVService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadCV(requestCV.getFile(), requestCV.getFile().toString());
-                CV.setFile_name(Variable.PATH_IMAGE +check.get("public_id").toString());
+                CV.setFile_name(Variable.PATH_IMAGE + check.get("public_id").toString());
                 CV.setAccount(account);
                 CV.setName(requestCV.getName());
                 _cvRepo.save(CV);
@@ -89,9 +90,9 @@ public class CVService implements ICVService {
     }
 
     @Override
-    public List<CVDTO> getByAccount() {
+    public List<CVDTO> getByAccount(int size, int page) {
         Account account = _currentAccount.getAccount();
-        if(account==null){
+        if (account == null) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
         List<CurriculumVitae> CVs = _cvRepo.findByAccount(account);
@@ -101,7 +102,27 @@ public class CVService implements ICVService {
                 cvdto.add(CVMapping.CVDTO(CV));
             }
         }
-        return cvdto;
+        return pagination(size, page, cvdto);
+    }
+
+    List<CVDTO> pagination(int size, int page, List<CVDTO> cvdtos) {
+        if (size <= 0 || page < 0) {
+            cvdtos = new ArrayList<>();
+            return cvdtos;
+        }
+        if (cvdtos == null || cvdtos.isEmpty()) {
+            return cvdtos;
+        }
+        int startIndex = Math.max(0, (page - 1) * size);
+        int endIndex = Math.min(startIndex + size, cvdtos.size());
+        if (startIndex > cvdtos.size()) {
+            cvdtos = new ArrayList<>();
+            return cvdtos;
+        }
+        if (endIndex > cvdtos.size()) {
+            return cvdtos.subList(startIndex, cvdtos.size() - 1);
+        }
+        return cvdtos.subList(startIndex, endIndex);
     }
 
 }

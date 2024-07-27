@@ -7,7 +7,7 @@ import com.company.phtv.Models.Request.RequestSearchCompany;
 import java.util.List;
 
 public interface ICompanyService {
-    List<CompanyDTO> getAll();
+    List<CompanyDTO> getAll(int size, int page);
 
     CompanyDTO create(RequestCompany requestCompany);
 
@@ -17,7 +17,7 @@ public interface ICompanyService {
 
     CompanyDTO delete(int id);
 
-    List<CompanyDTO> companyContractAll();
-    List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany);
+    List<CompanyDTO> companyContractAll(int size, int page);
+    List<CompanyDTO> CompanyByProvenceAndIndustry(RequestSearchCompany requestSearchCompany,int size, int page);
 
 }

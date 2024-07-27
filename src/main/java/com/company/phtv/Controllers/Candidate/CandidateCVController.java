@@ -23,9 +23,9 @@ public class CandidateCVController {
     BaseController<List<CVDTO>> _baseControllers = new BaseController<List<CVDTO>>();
 
     @GetMapping("/account")
-    public ResponseEntity<?> getByAccount() {
+    public ResponseEntity<?> getByAccount(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_cvService.getByAccount());
+            return _baseControllers.success(_cvService.getByAccount(size, page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
