@@ -20,7 +20,7 @@ public class CandidateCompanyController {
     BaseController<CompanyDTO> _baseController = new BaseController<CompanyDTO>();
     BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
 
-      @PostMapping("")
+      @PostMapping("/save")
     public ResponseEntity<?> post(@RequestBody RequestFollowCompany requestCompany) {
         try {
             return _baseController.success(_companyService.followCompany(requestCompany));

@@ -253,7 +253,6 @@ public class AdminService implements IAdminService {
     }
 
     public ChartForEmployer getChart() {
-        Account account = _currentAccount.getAccount();
         List<Company> companys = _companyRepo.findAll();
         ChartForEmployer chart = new ChartForEmployer();
 
