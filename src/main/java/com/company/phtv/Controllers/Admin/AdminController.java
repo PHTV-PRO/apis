@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Services.AdminService;
 import com.company.phtv.Utils.HttpException;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/admin")
 public class AdminController {
     BaseController<SearchAll> _baseControllers = new BaseController<SearchAll>();
+    BaseController<ChartForEmployer> _baseController = new BaseController<ChartForEmployer>();
 
     @Autowired
     AdminService _adminService;
+
     @GetMapping("/search/{search}")
     public ResponseEntity<?> getMethodName(@PathVariable String search) {
         try {
@@ -29,6 +32,17 @@ public class AdminController {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/chart")
+    public ResponseEntity<?> getCompanyChart() {
+        try {
+            return _baseController.success(_adminService.getChart());
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
