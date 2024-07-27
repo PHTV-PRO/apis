@@ -22,4 +22,8 @@ public interface CompanyRepo extends JpaRepository<Company, Integer> {
 
     @Query("select c from  Company c  where  c.deleted_at IS NULL  ORDER BY c.created_at DESC")
     List<Company> findCompanyByIndustryAndProvinceCity();
+
+    @Query("select c from  Company c  where  c.contract =1  ORDER BY c.created_at DESC")
+    List<Company> findCompanyByContract();
+
 }

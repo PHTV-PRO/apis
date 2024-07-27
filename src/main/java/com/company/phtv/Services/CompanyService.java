@@ -225,7 +225,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public List<CompanyDTO> companyContractAll(int size, int page) {
-        List<Company> companies = _companyRepo.findAll();
+        List<Company> companies = _companyRepo.findCompanyByContract();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < (companies.size() < 5 ? companies.size() : 5); i++) {
             boolean checkNotDeleted = companies.get(i).getDeleted_at() == null;
@@ -288,20 +288,14 @@ public class CompanyService implements ICompanyService {
             if (pq.size() > 5) {
                 pq.poll();
             }
+            List<Company> listCompany = new ArrayList<>();
+
             while (!pq.isEmpty() && companyDTOS.size() < 5) {
                 Map.Entry<Company, Integer> entry = pq.poll();
                 Company company = entry.getKey();
-                CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
-                if (_currentAccount.getAccount() != null) {
-                    FollowCompany followCompany = _followCompanyRepo
-                            .findByAccountAndCompany(_currentAccount.getAccount(), company);
-                    if (followCompany != null) {
-                        companyDTO.setCompany_is_save(true);
-                    }
-                }
-                companyDTOS.add(companyDTO);
+                listCompany.add(company);
             }
-            return pagination(size, page, companyDTOS);
+            return pagination(size, page, companyDTOMapping(listCompany));
         }
         return pagination(size, page, companyDTOMapping(companies));
 
