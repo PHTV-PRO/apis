@@ -402,6 +402,7 @@ public class CompanyService implements ICompanyService {
     List<CompanyDTO> companyDTOMapping(List<Company> companies) {
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
+            List<JobDTO> jobs = new ArrayList<>();
             if (companies.get(i).getDeleted_at() == null) {
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
                 List<SkillDTO> skillDTOs = new ArrayList<>();
@@ -425,6 +426,7 @@ public class CompanyService implements ICompanyService {
                             && j.getEnd_date().after(Date.from(Instant.now()));
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
+                        jobs.add(JobMapping.getJob(j));
                     }
                 }
                 if (_currentAccount.getAccount() != null) {
@@ -435,6 +437,7 @@ public class CompanyService implements ICompanyService {
                     }
                 }
                 companyDTO.setOpening_jobs(count);
+                companyDTO.setJobs(jobs);
                 companyDTOS.add(companyDTO);
             }
         }
@@ -570,7 +573,7 @@ public class CompanyService implements ICompanyService {
     }
 
     List<CompanyDTO> pagination(int size, int page, List<CompanyDTO> companyDTOs) {
-        if (size ==0  && page == 0) {
+        if (size == 0 && page == 0) {
             return companyDTOs;
         }
         if (size <= 0 || page < 0) {
