@@ -390,6 +390,18 @@ public class JobService implements IJobService {
         if (account == null || job == null) {
             return false;
         }
+        if (_ViewedJobRepo.findWithLatestDate(account, job).size() > 0) {
+            ViewedJob viewedJobExist = _ViewedJobRepo.findWithLatestDate(account, job).get(0);
+            if (viewedJobExist != null) {
+                List<ViewedJob> viewedJobBetween = _ViewedJobRepo
+                        .findJobBetweenCurrentAndDateViewedJobExist(viewedJobExist.getCreated_at(), new Date());
+                if (viewedJobBetween.size() == 0) {
+                    viewedJobExist.setCreated_at(new Date());
+                    _ViewedJobRepo.save(viewedJobExist);
+                    return true;
+                }
+            }
+        }
         _ViewedJobRepo.save(new ViewedJob(0, job, account));
         return true;
     }
