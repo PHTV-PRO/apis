@@ -131,15 +131,7 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         Account account = _currentAccount.getAccount();
         if (account == null) {
-            // not sign in
-            List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
-            List<Jobs> job = (List<Jobs>) jobs.stream().limit(5).collect(Collectors.toList());
-            for (Jobs j : job) {
-                JobDTO jobDTO = JobMapping.getJob(j);
-                jobDTO = setSkill_level(j, jobDTO);
-                jobDTOs.add(jobDTO);
-            }
-            return pagination(size, page, jobDTOs);
+            throw Variable.NOT_SIGNED_IN;
         }
         ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).get(0);
         List<Skill> skills = new ArrayList<>();
@@ -179,7 +171,7 @@ public class JobService implements IJobService {
     public List<JobDTO> getJobsSave(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
-            throw Variable.ACTION_FAIL;
+            throw Variable.NOT_SIGNED_IN;
         }
         List<JobDTO> jobDTOS = new ArrayList<>();
         List<FollowJob> followJobs = _followJobRepo.findJobByAccount(account);
@@ -198,7 +190,7 @@ public class JobService implements IJobService {
     public List<JobDTO> getJobsViewed(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
-            throw Variable.ACTION_FAIL;
+            throw Variable.NOT_SIGNED_IN;
         }
         List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount());
         List<JobDTO> jobDTOS = new ArrayList<>();
@@ -218,7 +210,7 @@ public class JobService implements IJobService {
     public List<JobDTO> getJobApplicationByAccount(int size, int page) {
         Account account = _currentAccount.getAccount();
         if (account == null) {
-            throw Variable.ACTION_FAIL;
+            throw Variable.NOT_SIGNED_IN;
         }
         List<Application> application = _applicationRepo.findByAccount(account);
         List<JobDTO> jobDTOs = new ArrayList<>();
