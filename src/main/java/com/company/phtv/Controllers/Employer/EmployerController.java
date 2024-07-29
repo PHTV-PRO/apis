@@ -34,7 +34,7 @@ public class EmployerController {
         }
     }
 
-    @GetMapping("/applicaion_by_job")
+    @GetMapping("/application_by_job")
     public ResponseEntity<?> getApplicationByJob(@RequestParam int job_id, @RequestParam int size,
             @RequestParam int page) {
         try {
