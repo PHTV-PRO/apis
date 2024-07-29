@@ -2,7 +2,6 @@ package com.company.phtv.Services;
 
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.AccountDTOForEmployer;
-import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.CompanyForEmployerDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;

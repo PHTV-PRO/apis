@@ -13,7 +13,6 @@ import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.SkillCompany;
-import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
 import com.company.phtv.Models.Map.CompanyMapping;
@@ -30,8 +29,10 @@ import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
+import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public List<CompanyDTO> getAll(int size, int page) {
         List<Company> companies = _companyRepo.findAll();
+
         return pagination(size, page, companyDTOMapping(companies));
     }
 
@@ -83,7 +85,7 @@ public class CompanyService implements ICompanyService {
         }
         for (Company c : a.getCompanies()) {
             // check list company of account is deleted
-            if (c.getDeleted_at() != null) {
+            if (c.getDeleted_at() == null) {
                 throw Variable.COMPANY_ACCOUNT_EXISTING;
             }
         }
@@ -163,6 +165,12 @@ public class CompanyService implements ICompanyService {
             throw Variable.NOT_FOUND;
         }
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+        String[] convertStringToArray = Convert.convertStringToObject(company.getList_image());
+        List<String> list_image_mobile = new ArrayList<>();
+        for (String image : convertStringToArray) {
+            list_image_mobile.add(image);
+        }
+        companyDTO.setList_image_mobile(list_image_mobile);
 
         List<LocationDTO> locationDTO = new ArrayList<>();
         for (Location l : company.getLocations()) {
@@ -234,6 +242,7 @@ public class CompanyService implements ICompanyService {
             boolean checkContract = companies.get(i).getContract() == 1;
             if (checkNotDeleted && checkContract) {
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
+
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillCompany s : companies.get(i).getSkillCompanies()) {
                     boolean checkSkillNotDeleted = s.getSkill().getDeleted_at() == null;
@@ -242,6 +251,14 @@ public class CompanyService implements ICompanyService {
                     }
                 }
                 companyDTO.setSkills(skillDTOs);
+
+                String[] convertStringToArray = Convert.convertStringToObject(companies.get(i).getList_image());
+                List<String> list_image_mobile = new ArrayList<>();
+                if (convertStringToArray != null) {
+                    for (String image : convertStringToArray) {
+                        list_image_mobile.add(image);
+                    }
+                }
                 companyDTOS.add(companyDTO);
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
@@ -407,6 +424,16 @@ public class CompanyService implements ICompanyService {
             List<JobDTO> jobs = new ArrayList<>();
             if (companies.get(i).getDeleted_at() == null) {
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
+
+                String[] convertStringToArray = Convert.convertStringToObject(companies.get(i).getList_image());
+                List<String> list_image_mobile = new ArrayList<>();
+                if (convertStringToArray != null) {
+                    for (String image : convertStringToArray) {
+                        list_image_mobile.add(image);
+                    }
+                }
+
+                companyDTO.setList_image_mobile(list_image_mobile);
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillCompany s : companies.get(i).getSkillCompanies()) {
                     if (s.getSkill().getDeleted_at() == null) {
