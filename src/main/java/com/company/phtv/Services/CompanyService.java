@@ -40,11 +40,13 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 @Service
 public class CompanyService implements ICompanyService {
@@ -441,7 +443,12 @@ public class CompanyService implements ICompanyService {
                 companyDTOS.add(companyDTO);
             }
         }
-        return companyDTOS;
+
+        // Sort by openingJob in descending order
+        List<CompanyDTO> sortedCompanies = companyDTOS.stream()
+                .sorted(Comparator.comparingInt(CompanyDTO::getOpening_jobs).reversed())
+                .collect(Collectors.toList());
+        return sortedCompanies;
     }
 
     public ChartForEmployer companyChart() {

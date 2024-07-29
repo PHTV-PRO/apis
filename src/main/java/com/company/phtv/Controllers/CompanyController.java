@@ -60,7 +60,7 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("/search")
+    @PostMapping("/filter")
     public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestSearchCompany requestSearchCompany,@RequestParam int size, @RequestParam int page) {
         try {
             return _baseControllers.success(_companyService.CompanyByProvenceAndIndustry(requestSearchCompany,size, page));
