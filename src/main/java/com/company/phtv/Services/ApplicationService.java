@@ -56,7 +56,10 @@ public class ApplicationService implements IApplicationService {
     }
 
     List<ApplicationDTO> pagination(int size, int page, List<ApplicationDTO> applications) {
-        if (size <= 0 || page < 0) {
+        if (size == 0 && page == 0) {
+            return applications;
+        }
+        if (size <= 0 || page <= 0) {
             applications = new ArrayList<>();
             return applications;
         }

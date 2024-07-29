@@ -475,6 +475,9 @@ public class JobService implements IJobService {
     }
 
     List<JobDTO> pagination(int size, int page, List<JobDTO> jobDTOs) {
+        if (size == 0 && page == 0) {
+            return jobDTOs;
+        }
         if (size <= 0 || page < 0) {
             jobDTOs = new ArrayList<>();
             return jobDTOs;
