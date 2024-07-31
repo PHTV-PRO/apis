@@ -33,6 +33,6 @@ public class ChartForAdmin {
     List<Float> price_for_subcription_plan;
 
     // (table) thông tin top 3 company có appli, save cao nhất
-    List<Jobs> top_3_company_by_application;
-    List<Jobs> top_3_company_by_save;
+    List<CompanyDTO> top_3_company_by_application;
+    List<CompanyDTO> top_3_company_by_save;
 }

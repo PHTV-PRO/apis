@@ -3,7 +3,10 @@ package com.company.phtv.Services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -271,8 +274,8 @@ public class AdminService implements IAdminService {
         List<Integer> listJobs = new ArrayList<>();
         List<Float> listPrice = new ArrayList<>();
 
-        List<Jobs> top_3_job_by_application = new ArrayList<>();
-        List<Jobs> top_3_job_by_save = new ArrayList<>();
+        List<CompanyDTO> top_3_company_by_application = new ArrayList<>();
+        List<CompanyDTO> top_3_company_by_save = new ArrayList<>();
 
         // get current year (2024) (sài nhiều chỗ)
         int currentYear = getYearOrMonth(new Date(), Variable.YEAR);
@@ -389,25 +392,107 @@ public class AdminService implements IAdminService {
             }
         }
         for (Company c : companys) {
+            if (c.getDeleted_at() != null) {
+                // deleted
+                continue;
+            }
             int YearCompany = getYearOrMonth(c.getCreated_at(), Variable.YEAR);
             if (YearCompany == currentYear) {
                 companys_has_been_created += 1;
             }
         }
         for (Account a : accounts) {
+            if (a.getDeleted_at() != null) {
+                continue;
+            }
             int YearCompany = getYearOrMonth(a.getCreated_at(), Variable.YEAR);
             if (YearCompany == currentYear) {
                 account_has_been_created += 1;
             }
         }
+
+        // get total data
         chart.setAccount_has_been_created(account_has_been_created);
         chart.setJobs_has_been_created(jobs_has_been_created);
         chart.setCompanys_has_been_created(companys_has_been_created);
         chart.setOverall_payment(overall_payment);
         chart.setTop_grossing_month(top_grossing_month);
 
+        // get job highest by application
+        HashMap<Company, Integer> getCompaniesByApplication = new HashMap<Company, Integer>();
+        HashMap<Company, Integer> getCompaniesBySave = new HashMap<Company, Integer>();
+        for (Company c : companys) {
+            int number_application_job_company = 0;
+            int number_save_job_company = 0;
+            if (c.getDeleted_at() != null) {
+                // deleted
+                continue;
+            }
+            for (Jobs j : c.getJobs()) {
+                if (j.getDeleted_at() != null) {
+                    // deleted
+                    continue;
+                }
+                for (Application a : j.getApplications()) {
+                    if (a.getDeleted_at() != null) {
+                        // deleted
+                        continue;
+                    }
+                    int yearApplication = getYearOrMonth(a.getCreated_at(), Variable.YEAR);
+                    if (yearApplication != currentYear) {
+                        continue;
+                    }
+                    number_application_job_company += 1;
+                }
+                for (FollowJob f : j.getFollowJobs()) {
+                    if (f.getDeleted_at() != null) {
+                        // deleted
+                        continue;
+                    }
+                    int yearApplication = getYearOrMonth(f.getCreated_at(), Variable.YEAR);
+                    if (yearApplication != currentYear) {
+                        continue;
+                    }
+                    number_save_job_company += 1;
+                }
+            }
+            // set data map<key, value> for sort
+            getCompaniesByApplication.put(c, number_application_job_company);
+            getCompaniesBySave.put(c, number_save_job_company);
 
-        
+        }
+        if (getCompaniesByApplication.size() > 3) {
+            // sort
+            PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+                    (e1, e2) -> e2.getValue() - e1.getValue());
+            pq.addAll(getCompaniesByApplication.entrySet());
+            if (pq.size() > 5) {
+                pq.poll();
+            }
+            while (!pq.isEmpty()) {
+                Map.Entry<Company, Integer> entry = pq.poll();
+                Company company = entry.getKey();
+                top_3_company_by_application.add(CompanyMapping.CompanyDTO(company));
+            }
+            // add 3 company have application heighest to chart
+            chart.setTop_3_company_by_application(top_3_company_by_application.subList(0, 3));
+        }
+        if (getCompaniesBySave.size() > 3) {
+            // sort
+            PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+                    (e1, e2) -> e2.getValue() - e1.getValue());
+            pq.addAll(getCompaniesBySave.entrySet());
+            if (pq.size() > 5) {
+                pq.poll();
+            }
+            while (!pq.isEmpty()) {
+                Map.Entry<Company, Integer> entry = pq.poll();
+                Company company = entry.getKey();
+                top_3_company_by_save.add(CompanyMapping.CompanyDTO(company));
+            }
+            // add 3 company have save heighest to chart
+            chart.setTop_3_company_by_save(top_3_company_by_save.subList(0, 3));
+        }
         return chart;
     }
 
