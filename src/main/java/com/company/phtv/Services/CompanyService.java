@@ -166,8 +166,10 @@ public class CompanyService implements ICompanyService {
         CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
         String[] convertStringToArray = Convert.convertStringToObject(company.getList_image());
         List<String> list_image_mobile = new ArrayList<>();
-        for (String image : convertStringToArray) {
-            list_image_mobile.add(image);
+        if (convertStringToArray != null) {
+            for (String image : convertStringToArray) {
+                list_image_mobile.add(image);
+            }
         }
         companyDTO.setList_image_mobile(list_image_mobile);
 
