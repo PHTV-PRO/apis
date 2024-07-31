@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.ChartForEmployer;
+import com.company.phtv.Models.DTO.ChartForAdmin;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Services.AdminService;
 import com.company.phtv.Utils.HttpException;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/admin")
 public class AdminController {
     BaseController<SearchAll> _baseControllers = new BaseController<SearchAll>();
-    BaseController<ChartForEmployer> _baseController = new BaseController<ChartForEmployer>();
+    BaseController<ChartForAdmin> _baseController = new BaseController<ChartForAdmin>();
 
     @Autowired
     AdminService _adminService;

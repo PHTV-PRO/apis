@@ -5,12 +5,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.AccountDTO;
-import com.company.phtv.Models.DTO.ChartForEmployer;
+import com.company.phtv.Models.DTO.ChartForAdmin;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.LevelDTO;
@@ -252,9 +251,18 @@ public class AdminService implements IAdminService {
         return searchAll;
     }
 
-    public ChartForEmployer getChart() {
+    public ChartForAdmin getChart() {
         List<Company> companys = _companyRepo.findAll();
-        ChartForEmployer chart = new ChartForEmployer();
+        List<Account> accounts = _accountRepo.findAll();
+
+        ChartForAdmin chart = new ChartForAdmin();
+
+        // detail notes in class dto ( Ghi chú chi tiết trong class dto)
+        int jobs_has_been_created = 0;
+        int account_has_been_created = 0;
+        int companys_has_been_created = 0;
+        Float overall_payment = (float) 0;
+        int top_grossing_month = 0;
 
         List<Integer> listMonth = new ArrayList<>();
         List<Integer> listApplicated = new ArrayList<>();
@@ -262,21 +270,24 @@ public class AdminService implements IAdminService {
         List<Integer> listSaved = new ArrayList<>();
         List<Integer> listJobs = new ArrayList<>();
         List<Float> listPrice = new ArrayList<>();
+
+        List<Jobs> top_3_job_by_application = new ArrayList<>();
+        List<Jobs> top_3_job_by_save = new ArrayList<>();
+
+        // get current year (2024) (sài nhiều chỗ)
+        int currentYear = getYearOrMonth(new Date(), Variable.YEAR);
         for (int i = 0; i < 12; i++) {
-            // get by month 1, 2, 3, 4, 5, 6, .....;
+            // get by month 1, 2, 3, 4, 5, 6, .....; (lấy thông tin theo từng tháng)
 
             int number_of_job_applicated = 0;
             int number_of_job_saved = 0;
             int number_of_job_viewed = 0;
             int number_jobs = 0;
             Float price_for_subcription_plan = (float) 0;
-            // int subcription_plan = 0;
 
             for (Company company : companys) {
-
                 for (Jobs job : company.getJobs()) {
-                    // get current year (2024)
-                    int currentYear = getYearOrMonth(new Date(), Variable.YEAR);
+
                     // get year start of job
                     int yearStartJob = getYearOrMonth(job.getStart_date(), Variable.YEAR);
                     // get year end of job
@@ -331,8 +342,6 @@ public class AdminService implements IAdminService {
                 }
 
                 for (SubcriptionPlanCompany spc : company.getSubcritionPlanCompanies()) {
-                    // get current year (2024)
-                    int currentYear = getYearOrMonth(new Date(), Variable.YEAR);
                     // get year subcription plan
                     int yearSubcriptionPlanCompany = getYearOrMonth(spc.getCreated_at(), Variable.YEAR);
                     boolean checkYear = currentYear == yearSubcriptionPlanCompany;
@@ -359,12 +368,46 @@ public class AdminService implements IAdminService {
             listPrice.add(price_for_subcription_plan);
         }
         // set dto
+        // thống kê theo từng tháng (là những thông tin ở giữa trong DTO)
         chart.setMonth(listMonth);
         chart.setNumber_of_job_applicated(listApplicated);
         chart.setNumber_of_job_saved(listSaved);
         chart.setNumber_of_job_viewed(listViewed);
         chart.setJobs(listJobs);
         chart.setPrice_for_subcription_plan(listPrice);
+
+        for (Integer j : listJobs) {
+            jobs_has_been_created += j;
+        }
+        for (Float p : listPrice) {
+            overall_payment += p;
+        }
+        top_grossing_month = listMonth.get(0);
+        for (int index = 1; index < listPrice.size(); index++) {
+            if (listPrice.get(index - 1) < listPrice.get(index)) {
+                top_grossing_month = listMonth.get(index);
+            }
+        }
+        for (Company c : companys) {
+            int YearCompany = getYearOrMonth(c.getCreated_at(), Variable.YEAR);
+            if (YearCompany == currentYear) {
+                companys_has_been_created += 1;
+            }
+        }
+        for (Account a : accounts) {
+            int YearCompany = getYearOrMonth(a.getCreated_at(), Variable.YEAR);
+            if (YearCompany == currentYear) {
+                account_has_been_created += 1;
+            }
+        }
+        chart.setAccount_has_been_created(account_has_been_created);
+        chart.setJobs_has_been_created(jobs_has_been_created);
+        chart.setCompanys_has_been_created(companys_has_been_created);
+        chart.setOverall_payment(overall_payment);
+        chart.setTop_grossing_month(top_grossing_month);
+
+
+        
         return chart;
     }
 
