@@ -32,7 +32,7 @@ public class ChartForAdmin {
     List<Integer> jobs;
     List<Float> price_for_subcription_plan;
 
-    // (table) thông tin company 3  có appli, save cao nhất
-    List<Jobs> company_3_job_by_application;
-    List<Jobs> company_3_job_by_save;
+    // (table) thông tin top 3 company có appli, save cao nhất
+    List<Jobs> top_3_company_by_application;
+    List<Jobs> top_3_company_by_save;
 }
