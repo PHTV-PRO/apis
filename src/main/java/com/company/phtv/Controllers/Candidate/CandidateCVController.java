@@ -88,7 +88,7 @@ public class CandidateCVController {
                     "pdf",
                     pdfBytes);
 
-            _cvService.create(new RequestCV(multipartFile, requestDataCreateCV.name));
+            _cvService.create(new RequestCV(multipartFile, requestDataCreateCV.getName_cv()));
             return _baseController.success(null);
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);

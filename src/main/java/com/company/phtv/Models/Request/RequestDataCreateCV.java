@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
@@ -14,9 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class RequestDataCreateCV {
 
-    //candidate
+    // candidate
     @Nullable
     public String name;
+    @Nullable
+    public String name_cv;
     @Nullable
     public String decription;
     @Nullable
@@ -28,7 +33,7 @@ public class RequestDataCreateCV {
     @Nullable
     public String skill;
 
-    //schooll
+    // schooll
     @Nullable
     public String name_school;
     @Nullable
@@ -36,12 +41,8 @@ public class RequestDataCreateCV {
     @Nullable
     public String major;
 
-    //project
+    // project
     @Nullable
-    public String name_project;
-    @Nullable
-    public String content;
-    @Nullable
-    public String skill_project;
+    public List<RequestProject> projects;
 
 }

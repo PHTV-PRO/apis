@@ -5,14 +5,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.SearchAll;
+import com.company.phtv.Models.Request.RequestDataCreateCV;
 import com.company.phtv.Services.AdminService;
 import com.company.phtv.Utils.HttpException;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/general")
