@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.CVDTO;
-import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Map.CVMapping;
@@ -49,7 +48,7 @@ public class CVService implements ICVService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadCV(requestCV.getFile(), requestCV.getFile().toString());
-                CV.setFile_name(Variable.PATH_IMAGE + check.get("public_id").toString());
+                CV.setFile_name(check.get("url").toString());
                 CV.setAccount(account);
                 CV.setName(requestCV.getName());
                 _cvRepo.save(CV);

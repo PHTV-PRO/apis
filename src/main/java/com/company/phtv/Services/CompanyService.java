@@ -32,7 +32,6 @@ import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Variable;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,7 +95,7 @@ public class CompanyService implements ICompanyService {
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompany.getBackground(),
                         company.getBackground_image());
-                company.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+                company.setBackground_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -106,7 +105,7 @@ public class CompanyService implements ICompanyService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompany.getLogo(), company.getLogo_image());
-                company.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+                company.setLogo_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -130,7 +129,7 @@ public class CompanyService implements ICompanyService {
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompany.getBackground(),
                         getCompany.getBackground_image());
-                getCompany.setBackground_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+                getCompany.setBackground_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -140,7 +139,7 @@ public class CompanyService implements ICompanyService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompany.getLogo(), getCompany.getLogo_image());
-                getCompany.setLogo_image(Variable.PATH_IMAGE + check.get("public_id").toString());
+                getCompany.setLogo_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }

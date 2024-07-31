@@ -3,12 +3,18 @@ package com.company.phtv.Controllers.Candidate;
 import com.company.phtv.Controllers.BaseController.BaseController;
 import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.Request.RequestCV;
+import com.company.phtv.Models.Request.RequestDataCreateCV;
 import com.company.phtv.Services.CVService;
+import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.HttpException;
+import com.company.phtv.Utils.Variable;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,11 +39,11 @@ public class CandidateCVController {
         }
     }
 
-    @PostMapping( consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
-        MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> post(@RequestParam MultipartFile file,@RequestParam String name ) {
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> post(@RequestParam MultipartFile file, @RequestParam String name) {
         try {
-            return _baseController.success(_cvService.create(new RequestCV( file, name)));
+            return _baseController.success(_cvService.create(new RequestCV(file, name)));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -55,14 +61,39 @@ public class CandidateCVController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable int id,@RequestParam String name) {
+    public ResponseEntity<?> put(@PathVariable int id, @RequestParam String name) {
         try {
             return _baseController.success(_cvService.delete(id));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/generate_pdf")
+    public ResponseEntity<?> generatePdf(@RequestBody RequestDataCreateCV requestDataCreateCV) {
+        try {
+            String htmlContent = Variable.GET_HTML_CV(requestDataCreateCV);
+            byte[] pdfBytes = Convert.convertHtmlToPdf(htmlContent);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.attachment().filename("document.pdf").build());
+
+            MultipartFile multipartFile = new MockMultipartFile(
+                    "cv",
+                    "cv.pdf",
+                    "pdf",
+                    pdfBytes);
+
+            _cvService.create(new RequestCV(multipartFile, requestDataCreateCV.name));
+            return _baseController.success(null);
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
         }
     }
 
