@@ -1,6 +1,6 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Services.CVService;
 import com.company.phtv.Utils.HttpException;

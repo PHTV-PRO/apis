@@ -1,8 +1,8 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CompanyDTO;
-import com.company.phtv.Models.Request.RequestSearchCompany;
+import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,7 @@ public class CompanyController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable int id) {
         try {
@@ -39,6 +40,7 @@ public class CompanyController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
     @GetMapping("/contract")
     public ResponseEntity<?> companyContract(@RequestParam int size, @RequestParam int page) {
         try {
@@ -49,6 +51,7 @@ public class CompanyController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
+
     @GetMapping("/application_most")
     public ResponseEntity<?> companyApplicationMost(@RequestParam int size, @RequestParam int page) {
         try {
@@ -61,15 +64,16 @@ public class CompanyController {
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestSearchCompany requestSearchCompany,@RequestParam int size, @RequestParam int page) {
+    public ResponseEntity<?> companyByProvinceAndIndustry(@RequestBody RequestFilterCompany requestFilterCompany,
+            @RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_companyService.CompanyByProvenceAndIndustry(requestSearchCompany,size, page));
+            return _baseControllers
+                    .success(_companyService.CompanyByProvenceAndIndustry(requestFilterCompany, size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
-
 
 }

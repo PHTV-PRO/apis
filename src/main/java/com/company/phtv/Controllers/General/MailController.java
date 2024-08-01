@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.Entity.Mail;
 import com.company.phtv.Services.MailService;
 import com.company.phtv.Utils.HttpException;

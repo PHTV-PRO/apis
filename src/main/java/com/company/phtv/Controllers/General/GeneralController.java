@@ -1,9 +1,9 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Models.Request.RequestDataCreateCV;
 import com.company.phtv.Services.AdminService;

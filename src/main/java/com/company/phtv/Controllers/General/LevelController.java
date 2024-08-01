@@ -1,8 +1,8 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.IndustryDTO;
-import com.company.phtv.Services.IndustryService;
+import com.company.phtv.Controllers.BaseController;
+import com.company.phtv.Models.DTO.LevelDTO;
+import com.company.phtv.Services.LevelService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/general/industry")
-public class IndustryController {
+@RequestMapping("/general/level")
+public class LevelController {
     @Autowired
-    IndustryService _industryService;
-    BaseController<IndustryDTO> _baseController = new BaseController<IndustryDTO>();
-    BaseController<List<IndustryDTO>> _baseControllers = new BaseController<List<IndustryDTO>>();
+    LevelService _leveService;
+    BaseController<LevelDTO> _baseController = new BaseController<LevelDTO>();
+    BaseController<List<LevelDTO>> _baseControllers = new BaseController<List<LevelDTO>>();
 
     @GetMapping()
     public ResponseEntity<?> get() {
         try {
-            return _baseControllers.success(_industryService.getAll());
+            return _baseControllers.success(_leveService.getAll());
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class IndustryController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.success(_industryService.getById(id));
+            return _baseController.success(_leveService.getById(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

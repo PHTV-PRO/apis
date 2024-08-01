@@ -3,7 +3,7 @@ package com.company.phtv.Controllers.Admin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.ChartForAdmin;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Services.AdminService;

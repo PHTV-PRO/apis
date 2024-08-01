@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Employer;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.ApplicationDTO;
 import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Services.ApplicationService;

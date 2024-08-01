@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Employer;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Services.AccountService;

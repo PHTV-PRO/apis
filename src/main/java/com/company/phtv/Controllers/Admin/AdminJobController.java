@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Admin;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.Request.RequestJob;
 import com.company.phtv.Services.JobService;

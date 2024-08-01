@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Employer;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.DTO.SubcriptionPlanForEmployer;
 import com.company.phtv.Services.SubcriptionPlanService;

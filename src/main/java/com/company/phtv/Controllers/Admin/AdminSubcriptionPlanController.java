@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Admin;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
 import com.company.phtv.Services.SubcriptionPlanService;

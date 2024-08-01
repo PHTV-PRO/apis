@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
 
 public class Convert {
-    public static String[] convertStringToObject(String listImage) {
+    public  String[] convertStringToObject(String listImage) {
         if (listImage == null) {
             return null;
         }

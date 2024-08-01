@@ -1,9 +1,6 @@
 package com.company.phtv.Models.DTO;
 
 import java.util.List;
-
-import com.company.phtv.Models.Entity.Jobs;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

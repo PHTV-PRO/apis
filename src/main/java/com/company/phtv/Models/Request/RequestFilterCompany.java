@@ -1,7 +1,7 @@
 package com.company.phtv.Models.Request;
 
 
-public class RequestSearchCompany {
+public class RequestFilterCompany {
     public int province_city_id;
     public int industry_id;
 }

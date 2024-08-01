@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Admin;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CityProvinceDTO;
 import com.company.phtv.Models.Request.RequestCityProvince;
 import com.company.phtv.Services.CityProvinceService;

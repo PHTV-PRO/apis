@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Admin;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Request.RequestSkill;
 import com.company.phtv.Services.SkillService;

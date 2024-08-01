@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
@@ -60,6 +60,7 @@ public class AuthenController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
+
     @PostMapping("/check_token_web")
     public ResponseEntity<?> postTokenWeb(@RequestBody String token) {
         try {

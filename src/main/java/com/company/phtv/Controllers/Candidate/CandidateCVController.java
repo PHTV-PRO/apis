@@ -1,6 +1,6 @@
 package com.company.phtv.Controllers.Candidate;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
+import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.Request.RequestCV;
 import com.company.phtv.Models.Request.RequestDataCreateCV;

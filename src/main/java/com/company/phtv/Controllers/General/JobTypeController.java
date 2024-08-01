@@ -1,8 +1,8 @@
-package com.company.phtv.Controllers;
+package com.company.phtv.Controllers.General;
 
-import com.company.phtv.Controllers.BaseController.BaseController;
-import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
-import com.company.phtv.Services.SubcriptionPlanService;
+import com.company.phtv.Controllers.BaseController;
+import com.company.phtv.Models.DTO.JobTypeDTO;
+import com.company.phtv.Services.JobTypeService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/general/subcription_plan")
-
-public class SubcriptionPlanController {
+@RequestMapping("/general/job_type")
+public class JobTypeController {
     @Autowired
-    SubcriptionPlanService _subcriptionPlanService;
-    BaseController<SubcriptionPlanDTO> _baseController = new BaseController<SubcriptionPlanDTO>();
-    BaseController<List<SubcriptionPlanDTO>> _baseControllers = new BaseController<List<SubcriptionPlanDTO>>();
+    JobTypeService _jobTypeService;
+    BaseController<JobTypeDTO> _baseController = new BaseController<JobTypeDTO>();
+    BaseController<List<JobTypeDTO>> _baseControllers = new BaseController<List<JobTypeDTO>>();
 
     @GetMapping()
     public ResponseEntity<?> get() {
         try {
-            return _baseControllers.success(_subcriptionPlanService.getAll());
+            return _baseControllers.success(_jobTypeService.getAll());
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -33,12 +32,11 @@ public class SubcriptionPlanController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         try {
-            return _baseController.success(_subcriptionPlanService.getById(id));
+            return _baseController.success(_jobTypeService.getById(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
-
 }

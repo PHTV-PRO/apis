@@ -1,4 +1,4 @@
-package com.company.phtv.Controllers.BaseController;
+package com.company.phtv.Controllers;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
