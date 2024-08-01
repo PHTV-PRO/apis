@@ -57,8 +57,6 @@ public class CompanyService implements ICompanyService {
     @Autowired
     AccountRepo _accountRepo;
     @Autowired
-    CloudinaryService _cloudinaryService;
-    @Autowired
     FollowCompanyRepo _followCompanyRepo;
     @Autowired
     ApplicationRepo _applicationRepo;
@@ -66,13 +64,17 @@ public class CompanyService implements ICompanyService {
     FollowJobRepo _followJobRepo;
     @Autowired
     CompanyImageRepo _companyImageRepo;
+
+    // call service
     @Autowired
-    CurrentAccount _currentAccount;
+    CloudinaryService _cloudinaryService;
 
     // call util
     Pagination<CompanyDTO> pagination = new Pagination<CompanyDTO>();
     Convert convert = new Convert();
     HandleDate handleDate = new HandleDate();
+    @Autowired
+    CurrentAccount _currentAccount;
 
     // for method get
     @Override
