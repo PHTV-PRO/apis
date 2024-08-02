@@ -65,6 +65,28 @@ public class AccountService implements IAccountService {
         return accountDTOS;
     }
 
+    public List<AccountDTO> getEmployer() {
+        List<Account> accounts = _accountRepo.findAllEmployer();
+        List<AccountDTO> accountDTOS = new ArrayList<>();
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).getDeleted_at() == null) {
+                accountDTOS.add(AccountMapping.accountDTO(accounts.get(i)));
+            }
+        }
+        return accountDTOS;
+    }
+
+    public List<AccountDTO> getCandidate() {
+        List<Account> accounts = _accountRepo.findAllCandidate();
+        List<AccountDTO> accountDTOS = new ArrayList<>();
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).getDeleted_at() == null) {
+                accountDTOS.add(AccountMapping.accountDTO(accounts.get(i)));
+            }
+        }
+        return accountDTOS;
+    }
+
     @Override
     public AccountDTO create(RequestAccount requestAccount) {
         boolean checkEmail = Regex.regexEmail(requestAccount.getEmail());

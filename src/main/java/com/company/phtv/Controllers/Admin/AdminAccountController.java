@@ -31,6 +31,28 @@ public class AdminAccountController {
         }
     }
 
+    @GetMapping("/employer")
+    public ResponseEntity<?> getEmployer() {
+        try {
+            return _baseControllers.success(_accountService.getEmployer());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/candidate")
+    public ResponseEntity<?> getCandidate() {
+        try {
+            return _baseControllers.success(_accountService.getCandidate());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
     @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
             MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> post(@ModelAttribute RequestAccount account) {
@@ -54,8 +76,8 @@ public class AdminAccountController {
         }
     }
 
-    @PutMapping(value = "/{id}" ,  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-            ,produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> Put(@PathVariable int id, @ModelAttribute RequestAccount requestAccount) {
         try {
             return _baseController.success(_accountService.put(id, requestAccount));
@@ -65,8 +87,6 @@ public class AdminAccountController {
             return _baseController.error(null, 500, e.getMessage());
         }
     }
-
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {

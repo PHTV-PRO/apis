@@ -13,5 +13,11 @@ public interface AccountRepo extends JpaRepository<Account, Integer> {
     @Query("select a from Account a Where a.id = ?1 ORDER BY a.created_at DESC")
     Account findIdAccount(int id);
 
-    List<Account> findAccountByNameContaining( String name);
+    @Query("select a from Account a Where a.role = 1 ORDER BY a.created_at DESC")
+    List<Account> findAllEmployer();
+
+    @Query("select a from Account a Where a.role = 0 ORDER BY a.created_at DESC")
+    List<Account> findAllCandidate();
+
+    List<Account> findAccountByNameContaining(String name);
 }
