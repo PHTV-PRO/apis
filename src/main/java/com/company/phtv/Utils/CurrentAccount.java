@@ -16,6 +16,7 @@ public class CurrentAccount {
     @Autowired
     AccountRepo _accountRepo;
 
+    // get account by token with JWT
     public Account getAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getPrincipal() != "anonymousUser") {

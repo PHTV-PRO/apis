@@ -128,7 +128,7 @@ public interface Variable {
                                 "";
         }
 
-        // mail
+        // generate cv for candidate
         public static String GET_HTML_CV(RequestDataCreateCV data) {
                 String project = "";
                 for (RequestProject p : data.getProjects()) {

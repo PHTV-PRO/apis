@@ -33,18 +33,19 @@ import java.util.Map;
 
 @Service
 public class AccountService implements IAccountService {
+    // call repository(database)
     @Autowired
     AccountRepo _accountRepo;
-
-    @Autowired
-    PasswordEncoder _passwordEncoder;
-
-    @Autowired
-    CloudinaryService _cloudinaryService;
-
     @Autowired
     CompanyRepo _companyRepo;
 
+    // call service
+    @Autowired
+    CloudinaryService _cloudinaryService;
+
+    // call utils
+    @Autowired
+    PasswordEncoder _passwordEncoder;
     @Autowired
     CurrentAccount _currentAccount;
 
@@ -112,7 +113,7 @@ public class AccountService implements IAccountService {
                 // create image in cloudinary
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(r.UploadFile, getAccount.getImage());
-                getAccount.setImage( check.get("url").toString());
+                getAccount.setImage(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
@@ -186,56 +187,65 @@ public class AccountService implements IAccountService {
 
     @Override
     public AccountDTOForEmployer getAccountCompanyJob() {
+        // contemporaneous get company, job, subcription plan by account
+        // STEP 1: get and check not delete account
         Account account = _currentAccount.getAccount();
         AccountDTOForEmployer accountDTO = new AccountDTOForEmployer();
         accountDTO = AccountMapping.accountDTOForEmployer(account);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
+            // check account
             throw Variable.NOT_FOUND;
         }
+        // STEP 2: get and check company by account
         Company company = _companyRepo.findOneCompanyWithAccount(account);
-        boolean checkCompanyExisting = company != null;
-        if (checkCompanyExisting) {
-            CompanyForEmployerDTO companyDTO = CompanyMapping.CompanyForEmployerDTO(company);
-            if (company.getJobs().size() > 0) {
-                List<JobDTO> jobDTOsNotOpen = new ArrayList<>();
-                List<JobDTO> jobDTOsOpening = new ArrayList<>();
-                List<JobDTO> jobDTOsOpened = new ArrayList<>();
+        boolean checkCompanyNotExisting = company == null || company.getDeleted_at() != null;
+        if (checkCompanyNotExisting) {
+            return accountDTO;
+        }
+        CompanyForEmployerDTO companyDTO = CompanyMapping.CompanyForEmployerDTO(company);
+        // STEP 3: handle job
+        if (company.getJobs().size() > 0) {
+            // (3 case : not start, starting , started)
+            List<JobDTO> jobDTOsNotOpen = new ArrayList<>();
+            List<JobDTO> jobDTOsOpening = new ArrayList<>();
+            List<JobDTO> jobDTOsOpened = new ArrayList<>();
 
-                for (Jobs job : company.getJobs()) {
-                    boolean checkJobDeleted = job.getDeleted_at() != null;
-                    if (checkJobDeleted) {
-                        continue;
-                    }
-                    if (job.getStart_date().after(Date.from(Instant.now()))) {
-                        jobDTOsNotOpen.add(JobMapping.getJob(job));
-                    } else if (job.getEnd_date().before(Date.from(Instant.now()))) {
-                        jobDTOsOpened.add(JobMapping.getJob(job));
-                    } else {
-                        jobDTOsOpening.add(JobMapping.getJob(job));
-                    }
+            for (Jobs job : company.getJobs()) {
+                boolean checkJobDeleted = job.getDeleted_at() != null;
+                if (checkJobDeleted) {
+                    continue;
                 }
-                for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
-                    boolean checkSubcritionplan = sub.getDeleted_at() == null
-                            && (sub.getStart_date().before(Date.from(Instant.now()))
-                                    && sub.getEnd_date().after(Date.from(Instant.now())));
-                    if (checkSubcritionplan) {
-                        companyDTO.setSubcriptionPlan(
-                                SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
-                        accountDTO.setLimit_job(sub.getSubscription_plan().getExpiry());
-
-                    }
+                if (job.getStart_date().after(Date.from(Instant.now()))) {
+                    jobDTOsNotOpen.add(JobMapping.getJob(job));
+                } else if (job.getEnd_date().before(Date.from(Instant.now()))) {
+                    jobDTOsOpened.add(JobMapping.getJob(job));
+                } else {
+                    jobDTOsOpening.add(JobMapping.getJob(job));
                 }
-
-                companyDTO.setJobsNotOpen(jobDTOsNotOpen);
-                companyDTO.setJobsOpening(jobDTOsOpening);
-                companyDTO.setJobsOpened(jobDTOsOpened);
-
             }
-            accountDTO.setCompanyForEmployer(companyDTO);
-            accountDTO.setCount_jobs(company.getCount_job());
+            // STEP 4: get subCription plane
+            for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
+                boolean checkSubcritionplan = sub.getDeleted_at() == null
+                        && (sub.getStart_date().before(Date.from(Instant.now()))
+                                && sub.getEnd_date().after(Date.from(Instant.now())));
+                if (checkSubcritionplan) {
+                    companyDTO.setSubcriptionPlan(
+                            SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    accountDTO.setLimit_job(sub.getSubscription_plan().getExpiry());
+
+                }
+            }
+
+            // STEP 5: add data
+            companyDTO.setJobsNotOpen(jobDTOsNotOpen);
+            companyDTO.setJobsOpening(jobDTOsOpening);
+            companyDTO.setJobsOpened(jobDTOsOpened);
 
         }
+        accountDTO.setCompanyForEmployer(companyDTO);
+        accountDTO.setCount_jobs(company.getCount_job());
+
         return accountDTO;
     }
 }

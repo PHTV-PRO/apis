@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseData <T>{
+    // data return when status 200
     public int statusCode;
     public String message;
     public String error;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
 
 public class Convert {
-    public  String[] convertStringToObject(String listImage) {
+    public String[] convertStringToObject(String listImage) {
         if (listImage == null) {
             return null;
         }
@@ -22,7 +22,7 @@ public class Convert {
         return null;
     }
 
-    public static  byte[] convertHtmlToPdf(String html) {
+    public static byte[] convertHtmlToPdf(String html) {
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
         renderer.layout();

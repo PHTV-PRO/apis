@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HttpException  extends RuntimeException{
+public class HttpException extends RuntimeException {
+    // set data when service fail -> return status code != 200 for api
     public int StatusCode;
     public String message;
 }

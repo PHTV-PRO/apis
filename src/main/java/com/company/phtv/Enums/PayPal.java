@@ -1,5 +1,5 @@
 package com.company.phtv.Enums;
 
 public enum PayPal {
-    sale, authorize, order
+    SALE, AUTHORIZE, ORDER
 }

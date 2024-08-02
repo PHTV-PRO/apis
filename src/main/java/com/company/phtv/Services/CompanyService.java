@@ -356,7 +356,6 @@ public class CompanyService implements ICompanyService {
     }
 
     public ChartForEmployer companyChart() {
-
         // STEP 1: data
         Account account = _currentAccount.getAccount();
         Company company = _companyRepo.findOneCompanyWithAccount(account);

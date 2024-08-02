@@ -43,11 +43,12 @@ import com.company.phtv.Repository.JobRepo;
 import com.company.phtv.Repository.SkillRepo;
 import com.company.phtv.Services.IServices.IAdminService;
 import com.company.phtv.Utils.CurrentAccount;
-import com.company.phtv.Utils.Variable;
+import com.company.phtv.Utils.HandleDate;
 
 @Service
 public class AdminService implements IAdminService {
 
+    // service
     @Autowired
     AccountRepo _accountRepo;
 
@@ -60,17 +61,22 @@ public class AdminService implements IAdminService {
     @Autowired
     SkillRepo _skillRepo;
 
+    // utils
     @Autowired
     CurrentAccount _currentAccount;
+    HandleDate handleDate = new HandleDate();
 
     @Override
     public SearchAll searchByNameForAdmin(String name) {
+        // Get maximum data <3 for web admin
+        // get 2 company, 2 account, 2 job
         SearchAll searchAll = new SearchAll();
+        // STEP 1: get data account containing by name,
         List<Account> accounts = _accountRepo.findAccountByNameContaining(name);
         List<AccountDTO> accountDTOs = new ArrayList<>();
         if (accounts != null) {
             int accountSize = accounts.size();
-            // Fetch a maximum of 2 accounts
+            // get a maximum of 2 accounts
             if (accountSize <= 2) {
                 for (Account account : accounts) {
                     accountDTOs.add(AccountMapping.accountDTO(account));
@@ -80,9 +86,10 @@ public class AdminService implements IAdminService {
                     accountDTOs.add(AccountMapping.accountDTO(accounts.get(i)));
                 }
             }
+            // add data account to dto
             searchAll.setAccounts(accountDTOs);
         }
-
+        // STEP 2: handle company: get data by name(title)
         List<Company> companies = _companyRepo.findCompanyByNameContaining(name);
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
@@ -100,6 +107,7 @@ public class AdminService implements IAdminService {
             searchAll.setCompanies(companyDTOs);
         }
 
+        // STEP 3: handle job: get data by name(title)
         List<Jobs> jobs = _jobRepo.findJobByTitleContaining(name);
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
@@ -122,7 +130,9 @@ public class AdminService implements IAdminService {
 
     @Override
     public SearchAll searchByNameForAll(String name) {
+        // search for mobile (candidate)
         SearchAll searchAll = new SearchAll();
+        // STEP 1 : Get data company
         List<Company> companies = _companyRepo.findCompanyByNameContaining(name);
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
@@ -159,6 +169,7 @@ public class AdminService implements IAdminService {
             }
             searchAll.setCompanies(companyDTOs);
         }
+
         Skill getOneSkill = _skillRepo.findSkillByNameContaining(name).get(0);
         if (getOneSkill != null) {
 
@@ -255,12 +266,14 @@ public class AdminService implements IAdminService {
     }
 
     public ChartForAdmin getChart() {
+        // STEP 1: get data
         List<Company> companys = _companyRepo.findAll();
         List<Account> accounts = _accountRepo.findAll();
 
         ChartForAdmin chart = new ChartForAdmin();
 
         // detail notes in class dto ( Ghi chú chi tiết trong class dto)
+        // STEP 2:create variable contain
         int jobs_has_been_created = 0;
         int account_has_been_created = 0;
         int companys_has_been_created = 0;
@@ -278,31 +291,33 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> top_3_company_by_save = new ArrayList<>();
 
         // get current year (2024) (sài nhiều chỗ)
-        int currentYear = getYearOrMonth(new Date(), Variable.YEAR);
+        int currentYear = handleDate.getYear(new Date());
         for (int i = 0; i < 12; i++) {
             // get by month 1, 2, 3, 4, 5, 6, .....; (lấy thông tin theo từng tháng)
 
+            // Variable contain by month
             int number_of_job_applicated = 0;
             int number_of_job_saved = 0;
             int number_of_job_viewed = 0;
             int number_jobs = 0;
             Float price_for_subcription_plan = (float) 0;
 
+            // STEP 3: handle data
             for (Company company : companys) {
                 for (Jobs job : company.getJobs()) {
 
                     // get year start of job
-                    int yearStartJob = getYearOrMonth(job.getStart_date(), Variable.YEAR);
+                    int yearStartJob = handleDate.getYear(job.getStart_date());
                     // get year end of job
-                    int yearEndJob = getYearOrMonth(job.getEnd_date(), Variable.YEAR);
+                    int yearEndJob = handleDate.getYear(job.getEnd_date());
                     boolean checkYearJob = currentYear >= yearStartJob || currentYear <= yearEndJob;
                     if (!checkYearJob) {
                         continue;
                     }
                     // get month start date
-                    int month_start = getYearOrMonth(job.getStart_date(), Variable.MONTH);
+                    int month_start = handleDate.getMonth(job.getStart_date());
                     // get month end date
-                    int month_end = getYearOrMonth(job.getEnd_date(), Variable.MONTH);
+                    int month_end = handleDate.getMonth(job.getEnd_date());
                     // check month of job == i+1(month 1,2,3,4,5....) ---- get job by month;
                     // check month part 1;
                     boolean checkMonthJob = month_start <= i + 1 && month_end >= i + 1;
@@ -315,7 +330,7 @@ public class AdminService implements IAdminService {
                     // get applicated by job
                     for (Application app : job.getApplications()) {
                         // get month applicated
-                        int monthApplicated = getYearOrMonth(app.getCreated_at(), Variable.MONTH);
+                        int monthApplicated = handleDate.getMonth(app.getCreated_at());
                         // check month part 2
                         boolean checkMonthApplicated = monthApplicated == i + 1;
                         if (checkMonthApplicated) {
@@ -325,7 +340,7 @@ public class AdminService implements IAdminService {
                     // get applicated by job
                     for (ViewedJob viewed : job.getViewedJobs()) {
                         // get month applicated
-                        int monthViewd = getYearOrMonth(viewed.getCreated_at(), Variable.MONTH);
+                        int monthViewd = handleDate.getMonth(viewed.getCreated_at());
                         // check month part 2
                         boolean checkMonthViewed = monthViewd == i + 1;
                         if (checkMonthViewed) {
@@ -335,7 +350,7 @@ public class AdminService implements IAdminService {
                     // get applicated by job
                     for (FollowJob saved : job.getFollowJobs()) {
                         // get month applicated
-                        int monthSaved = getYearOrMonth(saved.getCreated_at(), Variable.MONTH);
+                        int monthSaved = handleDate.getMonth(saved.getCreated_at());
                         // check month part 2
                         boolean checkMonthSaved = monthSaved == i + 1;
                         if (checkMonthSaved) {
@@ -346,13 +361,13 @@ public class AdminService implements IAdminService {
 
                 for (SubcriptionPlanCompany spc : company.getSubcritionPlanCompanies()) {
                     // get year subcription plan
-                    int yearSubcriptionPlanCompany = getYearOrMonth(spc.getCreated_at(), Variable.YEAR);
+                    int yearSubcriptionPlanCompany = handleDate.getYear(spc.getCreated_at());
                     boolean checkYear = currentYear == yearSubcriptionPlanCompany;
                     if (!checkYear) {
                         continue;
                     }
                     // get month
-                    int month = getYearOrMonth(spc.getCreated_at(), Variable.MONTH);
+                    int month = handleDate.getMonth(spc.getCreated_at());
                     boolean checkMonth = month == i + 1;
                     if (!checkMonth) {
                         // if month of subcription plan different month(i+1)
@@ -362,7 +377,6 @@ public class AdminService implements IAdminService {
 
                 }
             }
-            // add list
             listApplicated.add(number_of_job_applicated);
             listViewed.add(number_of_job_viewed);
             listSaved.add(number_of_job_saved);
@@ -370,7 +384,7 @@ public class AdminService implements IAdminService {
             listJobs.add(number_jobs);
             listPrice.add(price_for_subcription_plan);
         }
-        // set dto
+        // STEP 4: set dto
         // thống kê theo từng tháng (là những thông tin ở giữa trong DTO)
         chart.setMonth(listMonth);
         chart.setNumber_of_job_applicated(listApplicated);
@@ -379,6 +393,7 @@ public class AdminService implements IAdminService {
         chart.setJobs(listJobs);
         chart.setPrice_for_subcription_plan(listPrice);
 
+        // STEP 5: get data total for admin
         for (Integer j : listJobs) {
             jobs_has_been_created += j;
         }
@@ -396,7 +411,7 @@ public class AdminService implements IAdminService {
                 // deleted
                 continue;
             }
-            int YearCompany = getYearOrMonth(c.getCreated_at(), Variable.YEAR);
+            int YearCompany = handleDate.getYear(c.getCreated_at());
             if (YearCompany == currentYear) {
                 companys_has_been_created += 1;
             }
@@ -405,20 +420,20 @@ public class AdminService implements IAdminService {
             if (a.getDeleted_at() != null) {
                 continue;
             }
-            int YearCompany = getYearOrMonth(a.getCreated_at(), Variable.YEAR);
+            int YearCompany = handleDate.getYear(a.getCreated_at());
             if (YearCompany == currentYear) {
                 account_has_been_created += 1;
             }
         }
 
-        // get total data
+        // STEP 6: get total data
         chart.setAccount_has_been_created(account_has_been_created);
         chart.setJobs_has_been_created(jobs_has_been_created);
         chart.setCompanys_has_been_created(companys_has_been_created);
         chart.setOverall_payment(overall_payment);
         chart.setTop_grossing_month(top_grossing_month);
 
-        // get job highest by application
+        // STEP 7: get job highest by application and save job
         HashMap<Company, Integer> getCompaniesByApplication = new HashMap<Company, Integer>();
         HashMap<Company, Integer> getCompaniesBySave = new HashMap<Company, Integer>();
         for (Company c : companys) {
@@ -433,36 +448,39 @@ public class AdminService implements IAdminService {
                     // deleted
                     continue;
                 }
+                // get application by jon
                 for (Application a : j.getApplications()) {
                     if (a.getDeleted_at() != null) {
                         // deleted
                         continue;
                     }
-                    int yearApplication = getYearOrMonth(a.getCreated_at(), Variable.YEAR);
+                    int yearApplication = handleDate.getYear(a.getCreated_at());
                     if (yearApplication != currentYear) {
                         continue;
                     }
                     number_application_job_company += 1;
                 }
+                // get save by jon
+
                 for (FollowJob f : j.getFollowJobs()) {
                     if (f.getDeleted_at() != null) {
                         // deleted
                         continue;
                     }
-                    int yearApplication = getYearOrMonth(f.getCreated_at(), Variable.YEAR);
+                    int yearApplication = handleDate.getYear(f.getCreated_at());
                     if (yearApplication != currentYear) {
                         continue;
                     }
                     number_save_job_company += 1;
                 }
             }
-            // set data map<key, value> for sort
+            // STEP 7.1 set data map<key, value> for sort
             getCompaniesByApplication.put(c, number_application_job_company);
             getCompaniesBySave.put(c, number_save_job_company);
 
         }
         if (getCompaniesByApplication.size() > 3) {
-            // sort
+            // STEP 7.2: sort
             PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
                     (e1, e2) -> e2.getValue() - e1.getValue());
             pq.addAll(getCompaniesByApplication.entrySet());
@@ -474,11 +492,11 @@ public class AdminService implements IAdminService {
                 Company company = entry.getKey();
                 top_3_company_by_application.add(CompanyMapping.CompanyDTO(company));
             }
-            // add 3 company have application heighest to chart
+            // STEP 7.3 add 3 company have application heighest to chart
             chart.setTop_3_company_by_application(top_3_company_by_application.subList(0, 3));
         }
         if (getCompaniesBySave.size() > 3) {
-            // sort
+            // STEP 7.2: sort
             PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
                     (e1, e2) -> e2.getValue() - e1.getValue());
             pq.addAll(getCompaniesBySave.entrySet());
@@ -490,23 +508,11 @@ public class AdminService implements IAdminService {
                 Company company = entry.getKey();
                 top_3_company_by_save.add(CompanyMapping.CompanyDTO(company));
             }
-            // add 3 company have save heighest to chart
+            // STEP 7.3: add 3 company have save heighest to chart
             chart.setTop_3_company_by_save(top_3_company_by_save.subList(0, 3));
         }
+        // OK
         return chart;
-    }
-
-    int getYearOrMonth(Date date, String yearOrMonth) {
-        if (Variable.MONTH == yearOrMonth) {
-            Calendar get = Calendar.getInstance();
-            get.setTime(date);
-            int result = get.get(Calendar.MONTH) + 1;
-            return result;
-        }
-        Calendar get = Calendar.getInstance();
-        get.setTime(date);
-        int result = get.get(Calendar.YEAR);
-        return result;
     }
 
 }

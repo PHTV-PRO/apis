@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConfigCloudinary {
 
+    // Get key in application.properties
     @Value("${cloudinary.cloud-name}")
     private String cloudName;
 
@@ -21,9 +22,8 @@ public class ConfigCloudinary {
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary(ObjectUtils.asMap(
-            "cloud_name", cloudName,
-            "api_key", apiKey,
-            "api_secret", apiSecret
-        ));
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret));
     }
 }

@@ -15,6 +15,7 @@ import com.company.phtv.Repository.ApplicationRepo;
 import com.company.phtv.Repository.JobRepo;
 import com.company.phtv.Services.IServices.IApplicationService;
 import com.company.phtv.Utils.CurrentAccount;
+import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
 @Service
@@ -33,10 +34,15 @@ public class ApplicationService implements IApplicationService {
     @Autowired
     CurrentAccount _currentAccount;
 
+    Pagination<ApplicationDTO> pagination = new Pagination<>();
+
     @Override
     public List<ApplicationDTO> getByJob(int job_id, int size, int page) {
+        // STEP 1: get data job
         Jobs job = _jobRepo.findJobId(job_id);
         if (job == null || job.getDeleted_at() != null) {
+            // check job
+            // job not found
             throw Variable.ACTION_FAIL;
         }
         List<ApplicationDTO> listApplications = new ArrayList<>();
@@ -44,6 +50,7 @@ public class ApplicationService implements IApplicationService {
             if (application.getDeleted_at() != null) {
                 continue;
             }
+            // STEP 2: set data to dto
             ApplicationDTO applicationDTO = new ApplicationDTO();
             applicationDTO.setAccount(AccountMapping.accountDTO(application.getAccount()));
             applicationDTO.setId(application.getId());
@@ -51,31 +58,7 @@ public class ApplicationService implements IApplicationService {
             applicationDTO.setCv(CVMapping.CVDTO(application.getCurriculumVitae()));
             listApplications.add(applicationDTO);
         }
-        return pagination(size, page, listApplications);
+        return pagination.pagination(size, page, listApplications);
 
     }
-
-    List<ApplicationDTO> pagination(int size, int page, List<ApplicationDTO> applications) {
-        if (size == 0 && page == 0) {
-            return applications;
-        }
-        if (size <= 0 || page <= 0) {
-            applications = new ArrayList<>();
-            return applications;
-        }
-        if (applications == null || applications.isEmpty()) {
-            return applications;
-        }
-        int startIndex = Math.max(0, (page - 1) * size);
-        int endIndex = Math.min(startIndex + size, applications.size());
-        if (startIndex > applications.size()) {
-            applications = new ArrayList<>();
-            return applications;
-        }
-        if (endIndex > applications.size()) {
-            return applications.subList(startIndex, applications.size() - 1);
-        }
-        return applications.subList(startIndex, endIndex);
-    }
-
 }

@@ -35,15 +35,22 @@ public class PaymentController {
     @PostMapping("/pay")
     public ResponseEntity<?> pay(@RequestParam("id") int id, @RequestParam("price") Double price) {
         try {
+            // method get link paypal
+            // get id sub for api under
             id_sub = id;
+            // get data subcription plan
             String description = subcriptionPlanService.getById(id).getName();
+            // set data for paypal
             Payment payment = paypalService.createPayment(
+                    // price of subcription plan
                     price,
                     "USD",
-                    PaypalPaymentMethod.paypal,
-                    PayPal.sale,
+                    PaypalPaymentMethod.PAYPAL,
+                    PayPal.SALE,
                     description,
+                    // link back when click cancel
                     "http://localhost:3000/employer/emprofile",
+                    // link back when click pay
                     "http://localhost:3000/employer/emprofile");
             for (Links links : payment.getLinks())
                 if (links.getRel().equals("approval_url"))
@@ -60,7 +67,9 @@ public class PaymentController {
     public ResponseEntity<?> successPay(@RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId) {
         try {
+            // deduction to paypal account
             Payment payment = paypalService.executePayment(paymentId, payerId);
+            // create subcription plan for company
             subcriptionPlanService.createForEmployer(id_sub);
             if (payment.getState().equals("approved"))
                 return _baseController.success("Success");
