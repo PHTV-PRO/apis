@@ -20,6 +20,7 @@ import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestCompany;
+import com.company.phtv.Models.Request.RequestCompanyRegister;
 import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
@@ -137,10 +138,12 @@ public class CompanyService implements ICompanyService {
             }
             boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
                     && j.getEnd_date().after(Date.from(Instant.now()));
+            JobDTO job = new JobDTO();
             if (checkDateJob) {
                 count++;
+                job = JobMapping.getJob(j);
+
             }
-            JobDTO job = JobMapping.getJob(j);
             // set job have save and applicatin ( yes or no) by account
             if (account != null) {
                 boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
@@ -536,6 +539,11 @@ public class CompanyService implements ICompanyService {
         _followCompanyRepo.save(new FollowCompany(0, company, account));
         return null;
 
+    }
+
+    public List<CompanyDTO> registerCompany(RequestCompanyRegister requestCompanyRegister) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'registerCompany'");
     }
 
     // for method put

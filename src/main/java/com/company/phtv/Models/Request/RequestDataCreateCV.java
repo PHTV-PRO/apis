@@ -41,8 +41,8 @@ public class RequestDataCreateCV {
     @Nullable
     public String major;
 
-    // project
+    //
     @Nullable
-    public List<RequestProject> projects;
+    public List<RequestWorkExperiences> work_experiences;
 
 }

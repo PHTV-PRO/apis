@@ -27,6 +27,7 @@ public class CandidateCVController {
     CVService _cvService;
     BaseController<CVDTO> _baseController = new BaseController<CVDTO>();
     BaseController<List<CVDTO>> _baseControllers = new BaseController<List<CVDTO>>();
+    BaseController<String> _baseControllerString = new BaseController<String>();
 
     @GetMapping("/account")
     public ResponseEntity<?> getByAccount(@RequestParam int size, @RequestParam int page) {
@@ -89,7 +90,7 @@ public class CandidateCVController {
                     pdfBytes);
 
             _cvService.create(new RequestCV(multipartFile, requestDataCreateCV.getName_cv()));
-            return _baseController.success(null);
+            return _baseControllerString.success("Success");
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

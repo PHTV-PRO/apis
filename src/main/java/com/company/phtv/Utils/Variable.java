@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Request.RequestDataCreateCV;
-import com.company.phtv.Models.Request.RequestProject;
+import com.company.phtv.Models.Request.RequestWorkExperiences;
 
 public interface Variable {
         // 400
@@ -131,14 +131,14 @@ public interface Variable {
         // generate cv for candidate
         public static String GET_HTML_CV(RequestDataCreateCV data) {
                 String project = "";
-                for (RequestProject p : data.getProjects()) {
+                for (RequestWorkExperiences p : data.getWork_experiences()) {
                         project += "    <div style=\" padding: 0px 10px 3px 10px;border-radius: 12px; border: solid;\">\r\n"
                                         + //
-                                        "        <div ><h3 class=\"card-title\">" + p.getName_project()
+                                        "        <div ><h3 class=\"card-title\">" + p.getName()
                                         + "</h3></div>\r\n" + //
                                         "           <h5 > " + p.getContent() + "</h5>\r\n" + //
                                         "        <p class=\"card-text\">Skill:\r\n" + //
-                                        "          <span >" + p.getSkill_project() + "</span>\r\n"
+                                        "          <span >" + p.getSkill() + "</span>\r\n"
                                         + //
                                         "        </p>\r\n" + //
                                         "    </div>\r\n"; //
@@ -207,7 +207,7 @@ public interface Variable {
                                 "  <hr style=\"margin: 8px 0\" />\r\n" + //
                                 "  <div style=\"margin-top: 10px;\">\r\n" + //
                                 "    <div class=\"d-flex align-items-baseline\">\r\n" + //
-                                "      <h3><b>Projects</b></h3>\r\n" + //
+                                "      <h3><b>Work Experience</b></h3>\r\n" + //
                                 "    </div>\r\n" + //
                                 "\r\n" //
                                 + project +

@@ -15,11 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestProject {
+public class RequestWorkExperiences {
     @Nullable
-    public String name_project;
+    public String name;
     @Nullable
     public String content;
     @Nullable
-    public String skill_project;
+    public String skill;
 }
