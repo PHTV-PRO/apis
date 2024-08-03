@@ -27,6 +27,7 @@ import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
 import com.company.phtv.Repository.CompanyImageRepo;
+import com.company.phtv.Repository.CompanyPendingApprovalRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
@@ -73,6 +74,8 @@ public class CompanyService implements ICompanyService {
     FollowJobRepo _followJobRepo;
     @Autowired
     CompanyImageRepo _companyImageRepo;
+    @Autowired
+    CompanyPendingApprovalRepo _companyPendingApprovalRepo;
 
     // call service
     @Autowired
@@ -549,14 +552,21 @@ public class CompanyService implements ICompanyService {
 
     }
 
-    public List<CompanyDTO> registerCompany(RequestCompanyRegister requestCompanyRegister) {
+    public CompanyPendingApproval registerCompany(RequestCompanyRegister requestCompanyRegister) {
+        // STEP 1: get account
         Account account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
         if (account == null) {
-            // data not found
+            // account not found
             throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
+        for (Company c : account.getCompanies()) {
+            // STEP 2: check company existing
+            if (c.getDeleted_at() == null) {
+                throw Variable.COMPANY_ACCOUNT_EXISTING;
+            }
+        }
         try {
-            // STEP 1: check email and password
+            // STEP 3: check email and password
             _authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(requestCompanyRegister.getEmail(),
                             requestCompanyRegister.getPassword()));
@@ -565,11 +575,45 @@ public class CompanyService implements ICompanyService {
             throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
 
+        // STEP 4: add data from client to entity for save database
         CompanyPendingApproval companyPendingApproval = new CompanyPendingApproval();
+        // data not null
         companyPendingApproval.setAccount_id(account.getId());
-        // companyPendingApproval.set
+        companyPendingApproval.setName(requestCompanyRegister.getName_company());
+        if (requestCompanyRegister.getLogo_image() != null) {
+            try {
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompanyRegister.getLogo_image(),
+                        requestCompanyRegister.getLogo_image().getName());
+                companyPendingApproval.setLogo_image(check.get("url").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        // data can null
+        if (requestCompanyRegister.getIntroduction() != null) {
+            companyPendingApproval.setIntroduction(requestCompanyRegister.getIntroduction());
+        }
+        if (requestCompanyRegister.getBenefit() != null) {
+            companyPendingApproval.setBenefit(requestCompanyRegister.getBenefit());
+        }
+        if (requestCompanyRegister.getProfession() != null) {
+            companyPendingApproval.setProfession(requestCompanyRegister.getProfession());
+        }
+        if (requestCompanyRegister.getSize() != null) {
+            companyPendingApproval.setSize(requestCompanyRegister.getSize());
+        }
+        if (requestCompanyRegister.getLink_website() != null) {
+            companyPendingApproval.setLink_website(requestCompanyRegister.getLink_website());
+        }
+        if (requestCompanyRegister.getNationnality() != null) {
+            companyPendingApproval.setNationnality(requestCompanyRegister.getNationnality());
+        }
 
-        return null;
+        _companyPendingApprovalRepo.save(companyPendingApproval);
+
+        // STEP 5: save
+        return companyPendingApproval;
     }
 
     // for method put

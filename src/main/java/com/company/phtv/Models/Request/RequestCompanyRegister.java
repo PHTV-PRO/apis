@@ -14,7 +14,7 @@ public class RequestCompanyRegister {
     // need
     public String email;
     public String password;
-    public String name;
+    public String name_company;
     @Nullable
     public String introduction;
     @Nullable
@@ -27,16 +27,8 @@ public class RequestCompanyRegister {
     public String link_website;
     public String nationnality;
     @Nullable
-    public int enable;
-    @Nullable
-    public String skill_id;
-    @Nullable
-    public String level_id;
-    @Nullable
-    public MultipartFile background;
+    public MultipartFile background_image;
     // need
-    public MultipartFile logo;
-    @Nullable
-    public String list_image;
+    public MultipartFile logo_image;
 
 }

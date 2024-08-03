@@ -2,11 +2,13 @@ package com.company.phtv.Controllers.General;
 
 import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.Entity.CompanyPendingApproval;
 import com.company.phtv.Models.Request.RequestCompanyRegister;
 import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ public class CompanyController {
     CompanyService _companyService;
     BaseController<CompanyDTO> _baseController = new BaseController<CompanyDTO>();
     BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
+    BaseController<CompanyPendingApproval> _baseController2 = new BaseController<CompanyPendingApproval>();
 
     @GetMapping()
     public ResponseEntity<?> get(@RequestParam int size, @RequestParam int page) {
@@ -77,10 +80,11 @@ public class CompanyController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+            MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> register(@ModelAttribute RequestCompanyRegister requestCompanyRegister) {
         try {
-            return _baseControllers
+            return _baseController2
                     .success(_companyService.registerCompany(requestCompanyRegister));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
