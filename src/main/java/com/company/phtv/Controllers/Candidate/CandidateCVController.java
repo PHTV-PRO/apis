@@ -6,6 +6,7 @@ import com.company.phtv.Models.Request.RequestCV;
 import com.company.phtv.Models.Request.RequestDataCreateCV;
 import com.company.phtv.Services.CVService;
 import com.company.phtv.Utils.Convert;
+import com.company.phtv.Utils.Html;
 import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
 
@@ -77,7 +78,7 @@ public class CandidateCVController {
     @PostMapping("/generate_pdf")
     public ResponseEntity<?> generatePdf(@RequestBody RequestDataCreateCV requestDataCreateCV) {
         try {
-            String htmlContent = Variable.GET_HTML_CV(requestDataCreateCV);
+            String htmlContent = Html.GET_HTML_CV(requestDataCreateCV);
             byte[] pdfBytes = Convert.convertHtmlToPdf(htmlContent);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);

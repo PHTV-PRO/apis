@@ -6,20 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestWorkExperiences {
+public class RequestWorkExperience {
     @Nullable
-    public String name;
+    public String name_work_experience;
     @Nullable
     public String content;
     @Nullable
-    public String skill;
+    public String skill_work_experience;
+    @Nullable
+    public String working_time;
 }

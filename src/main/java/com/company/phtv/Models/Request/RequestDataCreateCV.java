@@ -1,6 +1,5 @@
 package com.company.phtv.Models.Request;
 
-import com.company.phtv.Enums.Role;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,7 +16,7 @@ public class RequestDataCreateCV {
 
     // candidate
     @Nullable
-    public String name;
+    public String name_candidate;
     @Nullable
     public String name_cv;
     @Nullable
@@ -32,8 +29,7 @@ public class RequestDataCreateCV {
     public String phone;
     @Nullable
     public String skill;
-
-    // schooll
+    // school
     @Nullable
     public String name_school;
     @Nullable
@@ -43,6 +39,6 @@ public class RequestDataCreateCV {
 
     //
     @Nullable
-    public List<RequestWorkExperiences> work_experiences;
+    public List<RequestWorkExperience> work_experiences;
 
 }

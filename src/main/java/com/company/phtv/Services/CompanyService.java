@@ -8,6 +8,7 @@ import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.CompanyPendingApproval;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
@@ -29,6 +30,7 @@ import com.company.phtv.Repository.CompanyImageRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
+import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
@@ -37,6 +39,8 @@ import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -57,6 +61,10 @@ public class CompanyService implements ICompanyService {
     CompanyRepo _companyRepo;
     @Autowired
     AccountRepo _accountRepo;
+    @Autowired
+    UserRepo _userRepo;
+    @Autowired
+    AuthenticationManager _authenticationManager;
     @Autowired
     FollowCompanyRepo _followCompanyRepo;
     @Autowired
@@ -143,19 +151,19 @@ public class CompanyService implements ICompanyService {
                 count++;
                 job = JobMapping.getJob(j);
 
-            }
-            // set job have save and applicatin ( yes or no) by account
-            if (account != null) {
-                boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
-                if (applied) {
-                    job.setJob_is_apply(true);
+                // set job have save and applicatin ( yes or no) by account
+                if (account != null) {
+                    boolean applied = _applicationRepo.findByAccountAndJobs(account, j) != null;
+                    if (applied) {
+                        job.setJob_is_apply(true);
+                    }
+                    boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
+                    if (saved) {
+                        job.setJob_is_save(true);
+                    }
                 }
-                boolean saved = _followJobRepo.findByAccountAndJobs(account, j) != null;
-                if (saved) {
-                    job.setJob_is_save(true);
-                }
+                jobDTOS.add(job);
             }
-            jobDTOS.add(job);
         }
         // STEP 4: set final data for dto
         companyDTO.setOpening_jobs(count);
@@ -542,8 +550,26 @@ public class CompanyService implements ICompanyService {
     }
 
     public List<CompanyDTO> registerCompany(RequestCompanyRegister requestCompanyRegister) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'registerCompany'");
+        Account account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
+        if (account == null) {
+            // data not found
+            throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
+        }
+        try {
+            // STEP 1: check email and password
+            _authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(requestCompanyRegister.getEmail(),
+                            requestCompanyRegister.getPassword()));
+        } catch (Exception e) {
+            // login fail;
+            throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
+        }
+
+        CompanyPendingApproval companyPendingApproval = new CompanyPendingApproval();
+        companyPendingApproval.setAccount_id(account.getId());
+        // companyPendingApproval.set
+
+        return null;
     }
 
     // for method put

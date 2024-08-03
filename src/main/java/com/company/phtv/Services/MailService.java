@@ -14,6 +14,7 @@ import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.Mail;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Services.IServices.IMailService;
+import com.company.phtv.Utils.Html;
 import com.company.phtv.Utils.Variable;
 
 @Service
@@ -32,7 +33,7 @@ public class MailService implements IMailService {
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setSubject("PHTV4: BUY SUBCRIPTION PLAN");
 
-			String html = Variable.GETHTMLSUBCRIPTIONPLAN(subcriptionPlanCompany);
+			String html = Html.GETHTMLSUBCRIPTIONPLAN(subcriptionPlanCompany);
 
 			helper.setText(html, true);
 			helper.setTo(email);

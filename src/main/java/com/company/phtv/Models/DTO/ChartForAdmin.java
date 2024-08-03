@@ -12,12 +12,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChartForAdmin {
     // thông tin job, account, company được tạo trong năm;
+    //information job, account, company has been craete in current year
     Integer jobs_has_been_created;
     Integer account_has_been_created;
     Integer companys_has_been_created;
     // tổng số doanh thu theo năm ($$$)
+    //tatol price in current year
     Float overall_payment;
     // tháng có doanh thu cao nhất trong năm
+    //month have price heghest in current year
     Integer top_grossing_month;
 
     // thống kê thông tin tất cả các job của tất cả company theo từng tháng;

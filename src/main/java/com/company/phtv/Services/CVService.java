@@ -19,6 +19,7 @@ import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CVRepo;
 import com.company.phtv.Services.IServices.ICVService;
 import com.company.phtv.Utils.CurrentAccount;
+import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
 @Service
@@ -34,6 +35,8 @@ public class CVService implements ICVService {
 
     @Autowired
     CurrentAccount _currentAccount;
+
+    Pagination<CVDTO> pagination = new Pagination<>();
 
     @Override
     public CVDTO create(RequestCV requestCV) {
@@ -101,27 +104,7 @@ public class CVService implements ICVService {
                 cvdto.add(CVMapping.CVDTO(CV));
             }
         }
-        return pagination(size, page, cvdto);
-    }
-
-    List<CVDTO> pagination(int size, int page, List<CVDTO> cvdtos) {
-        if (size <= 0 || page < 0) {
-            cvdtos = new ArrayList<>();
-            return cvdtos;
-        }
-        if (cvdtos == null || cvdtos.isEmpty()) {
-            return cvdtos;
-        }
-        int startIndex = Math.max(0, (page - 1) * size);
-        int endIndex = Math.min(startIndex + size, cvdtos.size());
-        if (startIndex > cvdtos.size()) {
-            cvdtos = new ArrayList<>();
-            return cvdtos;
-        }
-        if (endIndex > cvdtos.size()) {
-            return cvdtos.subList(startIndex, cvdtos.size() - 1);
-        }
-        return cvdtos.subList(startIndex, endIndex);
+        return pagination.pagination(size, page, cvdto);
     }
 
 }

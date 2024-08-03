@@ -21,18 +21,18 @@ public class MailController {
 
     BaseController<String> _baseController = new BaseController<String>();
 
-    @PostMapping("/send_mail")
-    public ResponseEntity<?> SendMail(@RequestBody Mail mail) {
-        try {
-            boolean result = _mailService.SendMailForEmployer(null,null);
-            if (result) {
-                return _baseController.success("");
-            }
-            return _baseController.error(null, 500, "FAIL!!");
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
+    // @PostMapping("/send_mail")
+    // public ResponseEntity<?> SendMail(@RequestBody Mail mail) {
+    //     try {
+    //         boolean result = _mailService.SendMailForEmployer(null,null);
+    //         if (result) {
+    //             return _baseController.success("");
+    //         }
+    //         return _baseController.error(null, 500, "FAIL!!");
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
 }
