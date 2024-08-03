@@ -2,6 +2,7 @@ package com.company.phtv.Controllers.General;
 
 import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CompanyDTO;
+import com.company.phtv.Models.Request.RequestCompanyRegister;
 import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
@@ -69,6 +70,18 @@ public class CompanyController {
         try {
             return _baseControllers
                     .success(_companyService.CompanyByProvenceAndIndustry(requestFilterCompany, size, page));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@ModelAttribute RequestCompanyRegister requestCompanyRegister) {
+        try {
+            return _baseControllers
+                    .success(_companyService.registerCompany(requestCompanyRegister));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
