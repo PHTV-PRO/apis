@@ -23,10 +23,10 @@ public class EmployerController {
     BaseController<ChartForEmployer> _baseController = new BaseController<ChartForEmployer>();
     BaseController<List<ApplicationDTO>> _baseControllers = new BaseController<List<ApplicationDTO>>();
 
-    @GetMapping("/chart")
-    public ResponseEntity<?> getCompanyChart() {
+    @GetMapping("/chart/{id}")
+    public ResponseEntity<?> getCompanyChart(@RequestParam int id) {
         try {
-            return _baseController.success(_companyService.companyChart());
+            return _baseController.success(_companyService.chartByCompany(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
