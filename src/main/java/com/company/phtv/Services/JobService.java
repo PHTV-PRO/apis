@@ -397,6 +397,10 @@ public class JobService implements IJobService {
         Account account = _currentAccount.getAccount();
         // STEP 2: get data
         Jobs job = _jobRepo.findJobId(Integer.parseInt(requestApplication.getJob_id()));
+        boolean checkJobOff = job.is_active() == false;
+        if (checkJobOff) {
+            throw Variable.JOB_OFF;
+        }
         CurriculumVitae Cv = _cvRepo.findById(Integer.parseInt(requestApplication.getCv_id())).get();
         if (account == null || job == null || Cv == null) {
             // incomplete data for application
@@ -424,6 +428,10 @@ public class JobService implements IJobService {
         boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
+        }
+        boolean checkJobOff = getJob.is_active() == false;
+        if (checkJobOff) {
+            throw Variable.JOB_OFF;
         }
         // STEP 2: handle level and skill (Intermediate table)
         if (requestJob.getLevel_id() != null) {

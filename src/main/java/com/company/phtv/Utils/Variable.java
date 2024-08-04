@@ -25,6 +25,7 @@ public interface Variable {
         public static HttpException CONFLIG = new HttpException(409, "Action Confliig data!!");
         // 500
         public static Exception FAIL = new HttpException(500, "Action Fail");
+        public static HttpException JOB_OFF = new HttpException(500, "Action Fail because job off");
         public static HttpException ADD_IMAGE_FAIL = new HttpException(500, "Action add image Fail");
         public static HttpException COMPANY_ACCOUNT_EXISTING = new HttpException(500,
                         "The account already exists for this company. Please delete the existing company before creating a new one.");
