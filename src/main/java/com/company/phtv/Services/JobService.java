@@ -79,6 +79,11 @@ public class JobService implements IJobService {
         for (int i = 0; i < jobs.size(); i++) {
             boolean checkJobNotDeleted = jobs.get(i).getDeleted_at() == null;
             if (checkJobNotDeleted) {
+                boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
+                        && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+                if (!checkOpening) {
+                    continue;
+                }
                 // STEP 2: map to dto
                 JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
                 // STEP 3: call function check application and saved; set skill
@@ -120,6 +125,11 @@ public class JobService implements IJobService {
             for (int i = 0; i < jobs.size(); i++) {
                 if (jobs.get(i).getDeleted_at() == null
                         && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
+                    boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
+                            && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+                    if (!checkOpening) {
+                        continue;
+                    }
                     // STEP 2: map to dto
                     JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
                     // STEP 3: call function check application and saved; set skill
@@ -138,6 +148,11 @@ public class JobService implements IJobService {
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
+                boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
+                        && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+                if (!checkOpening) {
+                    continue;
+                }
                 // STEP 2: map to dto
                 JobDTO jobDTO = JobMapping.getJob(jobs.get(i));
                 // STEP 3: call function set skill
@@ -179,13 +194,14 @@ public class JobService implements IJobService {
             // STEP 5: map dto and check saved, aplication,
             JobDTO jobDTO = JobMapping.getJob(j);
             jobDTO = setAppliedAndSaved(j, jobDTO);
-            boolean checkDate = (j.getStart_date()).before(Date.from(Instant.now()))
+            boolean checkOpening = (j.getStart_date()).before(Date.from(Instant.now()))
                     && (j.getEnd_date()).after(Date.from(Instant.now()));
+                    
             boolean checkSizeJob = jobDTOs.size() <= 30;
             if (!checkSizeJob) {
                 break;
             }
-            if (checkDate && checkSizeJob) {
+            if (checkOpening && checkSizeJob) {
                 // add skill and level detail job
                 jobDTO = setSkill_level(j, jobDTO);
                 jobDTOs.add(jobDTO);

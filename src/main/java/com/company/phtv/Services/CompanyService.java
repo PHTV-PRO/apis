@@ -499,8 +499,11 @@ public class CompanyService implements ICompanyService {
 
         // STEP 7: get job highest by application and save job
         int total_applicated_by_month = 0;
-        for (int a : listApplicated) {
-            total_applicated_by_month += a;
+        for (int i = 1; i < listApplicated.size(); i++) {
+            if (handleDate.getMonth(new Date()) == i) {
+                total_applicated_by_month = listApplicated.get(i);
+
+            }
         }
 
         chart.setTotal_applicated_by_month(total_applicated_by_month);
