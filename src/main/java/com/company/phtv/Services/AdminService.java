@@ -148,7 +148,7 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             for (Company company : companies) {
-                if (searchAll.getCompanies().size() >= 30) {
+                if (searchAll.getCompanies() != null && searchAll.getCompanies().size() >= 30) {
                     break;
                 }
                 boolean checkCompanyNotDeleted = company.getDeleted_at() == null;
@@ -244,7 +244,7 @@ public class AdminService implements IAdminService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             for (Jobs job : jobs) {
-                if (searchAll.getJobs().size() >= 30) {
+                if (searchAll.getJobs()!=null &&searchAll.getJobs().size() >= 30) {
                     break;
                 }
                 JobDTO jobDTO = JobMapping.getJob(job);
