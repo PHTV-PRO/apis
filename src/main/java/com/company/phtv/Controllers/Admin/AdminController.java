@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.ChartForAdmin;
+import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Services.AdminService;
+import com.company.phtv.Services.CompanyService;
 import com.company.phtv.Utils.HttpException;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class AdminController {
     BaseController<SearchAll> _baseControllers = new BaseController<SearchAll>();
     BaseController<ChartForAdmin> _baseController = new BaseController<ChartForAdmin>();
+    BaseController<ChartForEmployer> _baseController_employer_chart = new BaseController<ChartForEmployer>();
 
     @Autowired
     AdminService _adminService;
+    @Autowired
+    CompanyService _companyService;
 
     @GetMapping("/search/{search}")
     public ResponseEntity<?> getMethodName(@PathVariable String search) {
@@ -39,6 +43,17 @@ public class AdminController {
     public ResponseEntity<?> getCompanyChart() {
         try {
             return _baseController.success(_adminService.getChart());
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+
+    @GetMapping("/employer_chart/{id}")
+    public ResponseEntity<?> getChartByCompany(@PathVariable int id) {
+        try {
+            return _baseController_employer_chart.success(_companyService.chartByCompany(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

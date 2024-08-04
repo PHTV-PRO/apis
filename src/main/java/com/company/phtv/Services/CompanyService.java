@@ -39,6 +39,7 @@ import com.company.phtv.Utils.HandleDate;
 import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -741,5 +742,145 @@ public class CompanyService implements ICompanyService {
                 .sorted(Comparator.comparingInt(CompanyDTO::getOpening_jobs).reversed())
                 .collect(Collectors.toList());
         return sortedCompanies;
+    }
+
+    public ChartForEmployer chartByCompany(int id) {
+        // STEP 1: get data
+        Company company = _companyRepo.findById(id).get();
+
+        ChartForEmployer chart = new ChartForEmployer();
+
+        // detail notes in class dto ( Ghi chú chi tiết trong class dto)
+        // STEP 2:create variable contain
+        int jobs_has_been_created = 0;
+        Float overall_payment = (float) 0;
+
+        List<Integer> listMonth = new ArrayList<>();
+        List<Integer> listApplicated = new ArrayList<>();
+        List<Integer> listViewed = new ArrayList<>();
+        List<Integer> listSaved = new ArrayList<>();
+        List<Integer> listJobs = new ArrayList<>();
+        List<Float> listPrice = new ArrayList<>();
+
+        // get current year (2024) (sài nhiều chỗ)
+        int currentYear = handleDate.getYear(new Date());
+        for (int i = 0; i < 12; i++) {
+            // get by month 1, 2, 3, 4, 5, 6, .....; (lấy thông tin theo từng tháng)
+
+            // Variable contain by month
+            int number_of_job_applicated = 0;
+            int number_of_job_saved = 0;
+            int number_of_job_viewed = 0;
+            int number_jobs = 0;
+            Float price_for_subcription_plan = (float) 0;
+
+            // STEP 3: handle data
+            for (Jobs job : company.getJobs()) {
+
+                // get year start of job
+                int yearStartJob = handleDate.getYear(job.getStart_date());
+                // get year end of job
+                int yearEndJob = handleDate.getYear(job.getEnd_date());
+                boolean checkYearJob = currentYear >= yearStartJob || currentYear <= yearEndJob;
+                if (!checkYearJob) {
+                    continue;
+                }
+                // get month start date
+                int month_start = handleDate.getMonth(job.getStart_date());
+                // get month end date
+                int month_end = handleDate.getMonth(job.getEnd_date());
+                // check month of job == i+1(month 1,2,3,4,5....) ---- get job by month;
+                // check month part 1;
+                boolean checkMonthJob = month_start <= i + 1 && month_end >= i + 1;
+                if (!checkMonthJob) {
+                    // if month of job(month start or month end) different month(i+1)
+                    continue;
+                }
+                // count job
+                number_jobs += 1;
+                // get applicated by job
+                for (Application app : job.getApplications()) {
+                    // get month applicated
+                    int monthApplicated = handleDate.getMonth(app.getCreated_at());
+                    // check month part 2
+                    boolean checkMonthApplicated = monthApplicated == i + 1;
+                    if (checkMonthApplicated) {
+                        number_of_job_applicated += 1;
+                    }
+                }
+                // get applicated by job
+                for (ViewedJob viewed : job.getViewedJobs()) {
+                    // get month applicated
+                    int monthViewd = handleDate.getMonth(viewed.getCreated_at());
+                    // check month part 2
+                    boolean checkMonthViewed = monthViewd == i + 1;
+                    if (checkMonthViewed) {
+                        number_of_job_viewed += 1;
+                    }
+                }
+                // get applicated by job
+                for (FollowJob saved : job.getFollowJobs()) {
+                    // get month applicated
+                    int monthSaved = handleDate.getMonth(saved.getCreated_at());
+                    // check month part 2
+                    boolean checkMonthSaved = monthSaved == i + 1;
+                    if (checkMonthSaved) {
+                        number_of_job_saved += 1;
+                    }
+                }
+            }
+
+            for (SubcriptionPlanCompany spc : company.getSubcritionPlanCompanies()) {
+                // get year subcription plan
+                int yearSubcriptionPlanCompany = handleDate.getYear(spc.getCreated_at());
+                boolean checkYear = currentYear == yearSubcriptionPlanCompany;
+                if (!checkYear) {
+                    continue;
+                }
+                // get month
+                int month = handleDate.getMonth(spc.getCreated_at());
+                boolean checkMonth = month == i + 1;
+                if (!checkMonth) {
+                    // if month of subcription plan different month(i+1)
+                    continue;
+                }
+                price_for_subcription_plan += spc.getSubscription_plan().getPrice();
+
+            }
+            listApplicated.add(number_of_job_applicated);
+            listViewed.add(number_of_job_viewed);
+            listSaved.add(number_of_job_saved);
+            listMonth.add(i + 1);
+            listJobs.add(number_jobs);
+            listPrice.add(price_for_subcription_plan);
+        }
+        // STEP 4: set dto
+        // thống kê theo từng tháng (là những thông tin ở giữa trong DTO)
+        chart.setMonth(listMonth);
+        chart.setNumber_of_job_applicated(listApplicated);
+        chart.setNumber_of_job_saved(listSaved);
+        chart.setNumber_of_job_viewed(listViewed);
+        chart.setJobs(listJobs);
+        chart.setPrice_for_subcription_plan(listPrice);
+
+        // STEP 5: get data total for admin
+        for (Integer j : listJobs) {
+            jobs_has_been_created += j;
+        }
+        for (Float p : listPrice) {
+            overall_payment += p;
+        }
+
+        // STEP 7: get job highest by application and save job
+        int total_applicated_by_month = 0;
+        for (int a : listApplicated) {
+            total_applicated_by_month += a;
+        }
+
+        chart.setTotal_applicated_by_month(total_applicated_by_month);
+        chart.setJobs_has_been_created(jobs_has_been_created);
+        chart.setOverall_payment(overall_payment);
+        // OK
+        return chart;
     }
 }
