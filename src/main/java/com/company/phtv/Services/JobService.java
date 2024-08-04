@@ -480,6 +480,20 @@ public class JobService implements IJobService {
 
     }
 
+    public JobDTO editJobOnOrOff(int id) {
+        Jobs getJob = _jobRepo.findJobId(id);
+        boolean checkJobNotFound = (getJob != null && getJob.getDeleted_at() == null) ? false : true;
+        if (checkJobNotFound || getJob == null) {
+            throw Variable.NOT_FOUND;
+        }
+        if (getJob.is_active() == true) {
+            getJob.set_active(false);
+        }
+        getJob.set_active(true);
+        _jobRepo.save(getJob);
+        return JobMapping.getJob(getJob);
+    }
+
     @Override
     public JobDTO delete(int id) {
         Jobs job = _jobRepo.findJobId(id);
