@@ -30,13 +30,16 @@ public class JobMapping {
                         jobs.getCompany().getProfession(),
                         jobs.getCompany().getSize(),
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
-                        jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),jobs.getCompany().getList_image(),null,
-                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), false,0, null, null, null, null,
+                        jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
+                        jobs.getCompany().getList_image(), null,
+                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), false, 0, null, null, null,
+                        null,
                         null));
         if (jobs.getLocation() != null) {
             jobDTO.setLocation(
                     new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null,
-                            CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
+                            jobs.getLocation().getCity_provence() == null ? null
+                                    : CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
         }
         if (jobs.getJobType() != null) {
             jobDTO.setJobType(

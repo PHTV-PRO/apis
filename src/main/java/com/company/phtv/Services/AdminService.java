@@ -1,5 +1,6 @@
 package com.company.phtv.Services;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,6 +23,7 @@ import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.LevelJob;
@@ -38,10 +40,14 @@ import com.company.phtv.Models.Map.LevelMapping;
 import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Repository.AccountRepo;
+import com.company.phtv.Repository.ApplicationRepo;
 import com.company.phtv.Repository.CompanyRepo;
+import com.company.phtv.Repository.FollowCompanyRepo;
+import com.company.phtv.Repository.FollowJobRepo;
 import com.company.phtv.Repository.JobRepo;
 import com.company.phtv.Repository.SkillRepo;
 import com.company.phtv.Services.IServices.IAdminService;
+import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.HandleDate;
 
@@ -54,16 +60,21 @@ public class AdminService implements IAdminService {
 
     @Autowired
     CompanyRepo _companyRepo;
-
+    @Autowired
+    FollowCompanyRepo _followCompanyRepo;
     @Autowired
     JobRepo _jobRepo;
-
+    @Autowired
+    ApplicationRepo _applicationRepo;
+    @Autowired
+    FollowJobRepo _followJobRepo;
     @Autowired
     SkillRepo _skillRepo;
 
     // utils
     @Autowired
     CurrentAccount _currentAccount;
+    Convert convert = new Convert();
     HandleDate handleDate = new HandleDate();
 
     @Override
@@ -142,13 +153,16 @@ public class AdminService implements IAdminService {
                 }
                 boolean checkCompanyNotDeleted = company.getDeleted_at() == null;
                 if (checkCompanyNotDeleted) {
-                    CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
-                    List<JobDTO> jobs = new ArrayList<>();
-                    for (Jobs j : company.getJobs()) {
-                        if (j.getDeleted_at() == null) {
-                            jobs.add(JobMapping.getJob(j));
+                    // handle Image
+                    String[] convertStringToArray = convert.convertStringToObject(company.getList_image());
+                    List<String> list_image_mobile = new ArrayList<>();
+                    if (convertStringToArray != null) {
+                        for (String image : convertStringToArray) {
+                            list_image_mobile.add(image);
                         }
                     }
+                    CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
+                    List<JobDTO> jobs = new ArrayList<>();
                     companyDTO.setJobs(jobs);
                     List<LocationDTO> lDtos = new ArrayList<>();
                     for (Location l : company.getLocations()) {
@@ -162,6 +176,31 @@ public class AdminService implements IAdminService {
                             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
                         }
                     }
+                    int count = 0;
+                    for (Jobs j : company.getJobs()) {
+
+                        boolean checkJobNotDeleted = j.getDeleted_at() == null;
+                        boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
+                                && j.getEnd_date().after(Date.from(Instant.now()));
+                        if (checkJobNotDeleted && checkDateJob) {
+                            JobDTO jobDTO = JobMapping.getJob(j);
+                            jobDTO = setAppliedAndSaved(j, jobDTO);
+                            jobDTO = setSkill_level(j, jobDTO);
+                            count++;
+                            jobs.add(jobDTO);
+
+                        }
+                    }
+                    if (_currentAccount.getAccount() != null) {
+                        FollowCompany followCompany = _followCompanyRepo
+                                .findByAccountAndCompany(_currentAccount.getAccount(), company);
+                        if (followCompany != null) {
+                            companyDTO.setCompany_is_save(true);
+                        }
+                    }
+                    // STEP 3: set to dto
+                    companyDTO.setOpening_jobs(count);
+                    companyDTO.setJobs(jobs);
                     companyDTO.setLocations(lDtos);
                     companyDTO.setSkills(skillDTOs);
                     companyDTOs.add(companyDTO);
@@ -515,4 +554,38 @@ public class AdminService implements IAdminService {
         return chart;
     }
 
+    JobDTO setSkill_level(Jobs job, JobDTO jobDTO) {
+        //
+        List<SkillDTO> skillDTOs = new ArrayList<>();
+        for (SkillJob s : job.getSkillJobs()) {
+            if (s.getDeleted_at() == null) {
+                skillDTOs.add(SkillMapping.getSkill(s.getSkills()));
+            }
+        }
+        jobDTO.setSkills(skillDTOs);
+        List<LevelDTO> levelDTOs = new ArrayList<>();
+        for (LevelJob s : job.getLevelJobs()) {
+            if (s.getDeleted_at() == null) {
+                levelDTOs.add(LevelMapping.levelDTO(s.getLevel()));
+            }
+        }
+        jobDTO.setLevels(levelDTOs);
+        return jobDTO;
+    }
+
+    JobDTO setAppliedAndSaved(Jobs job, JobDTO jobDTO) {
+        //
+        Account account = _currentAccount.getAccount();
+        if (account != null) {
+            boolean applied = _applicationRepo.findByAccountAndJobs(account, job) != null;
+            if (applied) {
+                jobDTO.setJob_is_apply(true);
+            }
+            boolean saved = _followJobRepo.findByAccountAndJobs(account, job) != null;
+            if (saved) {
+                jobDTO.setJob_is_save(true);
+            }
+        }
+        return jobDTO;
+    }
 }

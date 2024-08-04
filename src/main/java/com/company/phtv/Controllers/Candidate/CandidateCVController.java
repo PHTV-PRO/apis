@@ -6,6 +6,7 @@ import com.company.phtv.Models.Request.RequestCV;
 import com.company.phtv.Models.Request.RequestDataCreateCV;
 import com.company.phtv.Services.CVService;
 import com.company.phtv.Utils.Convert;
+import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Html;
 import com.company.phtv.Utils.HttpException;
 import com.company.phtv.Utils.Variable;
@@ -26,6 +27,9 @@ import java.util.List;
 public class CandidateCVController {
     @Autowired
     CVService _cvService;
+    @Autowired
+    CurrentAccount account;
+    
     BaseController<CVDTO> _baseController = new BaseController<CVDTO>();
     BaseController<List<CVDTO>> _baseControllers = new BaseController<List<CVDTO>>();
     BaseController<String> _baseControllerString = new BaseController<String>();
@@ -78,7 +82,7 @@ public class CandidateCVController {
     @PostMapping("/generate_pdf")
     public ResponseEntity<?> generatePdf(@RequestBody RequestDataCreateCV requestDataCreateCV) {
         try {
-            String htmlContent = Html.GET_HTML_CV(requestDataCreateCV);
+            String htmlContent = Html.GET_HTML_CV(requestDataCreateCV, account.getAccount());
             byte[] pdfBytes = Convert.convertHtmlToPdf(htmlContent);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
