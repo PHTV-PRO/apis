@@ -97,7 +97,7 @@ public interface Html {
         }
 
         // generate cv for candidate
-        public static String GET_HTML_CV(RequestDataCreateCV data, String image) {
+        public static String GET_HTML_CV(RequestDataCreateCV data, Account account) {
                 String wordExperiences = "";
                 for (RequestWorkExperience p : data.getWork_experiences()) {
                         wordExperiences += "    <div style=\"margin-bottom:5px; padding: 0px 10px 3px 10px;border-radius: 12px; border: solid;\">\r\n"
@@ -128,7 +128,9 @@ public interface Html {
                                 "</head>\r\n" + //
                                 "\r\n" + //
                                 "<div style=\"width: 690px; margin: auto;\">\r\n" + //
-                                "<image src=\"" + image + "\" />" +
+                                (account == null || account.getImage() == null ? ""
+                                                : ("<image src=\"" + account.getImage() + "\" />"))
+                                +
                                 "  <div  >\r\n" + //
                                 "    <span  style=\" width: 800px;\">\r\n" + //
                                 "      <h1><b>" + data.getName_candidate() + "</b></h1>\r\n" + //

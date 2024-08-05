@@ -38,9 +38,6 @@ public class RequestDataCreateCV {
     public String year;
     @Nullable
     public String major;
-    @Nullable
-    public MultipartFile image;
-
     //
     @Nullable
     public List<RequestWorkExperience> work_experiences;

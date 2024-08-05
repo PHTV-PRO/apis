@@ -1,5 +1,6 @@
 package com.company.phtv.Controllers.Candidate;
 
+import com.cloudinary.provisioning.Account;
 import com.company.phtv.Controllers.BaseController;
 import com.company.phtv.Models.DTO.CVDTO;
 import com.company.phtv.Models.Request.RequestCV;
@@ -86,12 +87,7 @@ public class CandidateCVController {
     @PostMapping("/generate_pdf")
     public ResponseEntity<?> generatePdf(@RequestBody RequestDataCreateCV requestDataCreateCV) {
         try {
-
-            @SuppressWarnings("rawtypes")
-            Map check = _cloudinaryService.uploadCV(requestDataCreateCV.getImage(),
-                    requestDataCreateCV.getImage().toString());
-
-            String htmlContent = Html.GET_HTML_CV(requestDataCreateCV, check.get("url").toString());
+            String htmlContent = Html.GET_HTML_CV(requestDataCreateCV, account.getAccount());
             byte[] pdfBytes = Convert.convertHtmlToPdf(htmlContent);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
