@@ -128,7 +128,7 @@ public interface Html {
                 "</head>\r\n" + //
                 "\r\n" + //
                 "<div style=\"width: 690px; margin: auto;\">\r\n" + //
-                "<image src=\""+account.getImage()+"\""+
+                "<image src=\""+account.getImage()+"\" />"+
                 "  <div  >\r\n" + //
                 "    <span  style=\" width: 800px;\">\r\n" + //
                 "      <h1><b>" + data.getName_candidate() + "</b></h1>\r\n" + //
