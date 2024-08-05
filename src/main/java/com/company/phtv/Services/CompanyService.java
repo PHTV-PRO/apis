@@ -16,6 +16,7 @@ import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
+import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.LocationMapping;
@@ -94,6 +95,26 @@ public class CompanyService implements ICompanyService {
     public List<CompanyDTO> getAll(int size, int page) {
         List<Company> companies = _companyRepo.findAll();
         return pagination.pagination(size, page, companyDTOMapping(companies));
+    }
+
+    public List<CompanyDTO> getCompanyPending() {
+        List<CompanyDTO> companyDTOs = new ArrayList<>();
+        List<CompanyPendingApproval> companyPendingApproval = _companyPendingApprovalRepo.findAll();
+        for (CompanyPendingApproval cp : companyPendingApproval) {
+            if (cp.getDeleted_at() == null) {
+                CompanyDTO companyDTO = new CompanyDTO();
+                companyDTO.setAccount(AccountMapping.accountDTO(_accountRepo.findById(cp.getAccount_id()).get()));
+                companyDTO.setName(cp.getName());
+                companyDTO.setIntroduction(cp.getIntroduction());
+                companyDTO.setLogo_image(cp.getLogo_image());
+                companyDTO.setBenefit(cp.getBenefit());
+                companyDTO.setLink_website(cp.getLink_website());
+                companyDTO.setNationnality(cp.getNationnality());
+                companyDTO.setId(cp.getId());
+                companyDTOs.add(companyDTO);
+            }
+        }
+        return companyDTOs;
     }
 
     @Override
