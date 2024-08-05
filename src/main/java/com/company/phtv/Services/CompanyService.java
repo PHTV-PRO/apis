@@ -643,6 +643,51 @@ public class CompanyService implements ICompanyService {
         return companyPendingApproval;
     }
 
+    public String approveCompany(int id) {
+        CompanyPendingApproval companyPendingApproval = _companyPendingApprovalRepo.findById(id).get();
+        if (companyPendingApproval == null) {
+            throw Variable.NOT_FOUND;
+        }
+        Account account = _accountRepo.findIdAccount(companyPendingApproval.getAccount_id());
+        if (account == null || account.getDeleted_at() != null) {
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
+        Company company = new Company();
+        company.setAccount(account);
+        company.setName(companyPendingApproval.getName());
+        company.setLogo_image(companyPendingApproval.getLogo_image());
+
+        if (company.getIntroduction() != null) {
+            company.setIntroduction(companyPendingApproval.getIntroduction());
+        }
+        if (company.getBenefit() != null) {
+            company.setBenefit(companyPendingApproval.getBenefit());
+        }
+        if (company.getProfession() != null) {
+            company.setProfession(companyPendingApproval.getProfession());
+        }
+        if (company.getSize() != null) {
+            company.setSize(companyPendingApproval.getSize());
+        }
+        if (company.getLink_website() != null) {
+            company.setLink_website(companyPendingApproval.getLink_website());
+        }
+        if (company.getNationnality() != null) {
+            company.setNationnality(companyPendingApproval.getNationnality());
+        }
+        _companyRepo.save(company);
+        return "Success";
+    }
+
+    public String rejectCompany(int id) {
+        CompanyPendingApproval companyPendingApproval = _companyPendingApprovalRepo.findById(id).get();
+        if (companyPendingApproval == null) {
+            throw Variable.NOT_FOUND;
+        }
+        _companyPendingApprovalRepo.delete(companyPendingApproval);
+        return "Success";
+    }
+
     // for method put
     @Override
     public CompanyDTO put(int id, RequestCompany requestCompany) {

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/admin")
@@ -22,6 +23,7 @@ public class AdminController {
     BaseController<SearchAll> _baseControllers = new BaseController<SearchAll>();
     BaseController<ChartForAdmin> _baseController = new BaseController<ChartForAdmin>();
     BaseController<ChartForEmployer> _baseController_employer_chart = new BaseController<ChartForEmployer>();
+    BaseController<String> _baseControllers_string = new BaseController<String>();
 
     @Autowired
     AdminService _adminService;
@@ -61,4 +63,25 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/approve_company/{id}")
+    public ResponseEntity<?> approveCompany(@PathVariable int id) {
+        try {
+            return _baseControllers_string.success(_companyService.approveCompany(id));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+
+    @PostMapping("/reject_company/{id}")
+    public ResponseEntity<?> rejectCompany(@PathVariable int id) {
+        try {
+            return _baseControllers_string.success(_companyService.rejectCompany(id));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
 }
