@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,6 +38,8 @@ public class RequestDataCreateCV {
     public String year;
     @Nullable
     public String major;
+    @Nullable
+    public MultipartFile image;
 
     //
     @Nullable
