@@ -196,7 +196,7 @@ public class JobService implements IJobService {
             jobDTO = setAppliedAndSaved(j, jobDTO);
             boolean checkOpening = (j.getStart_date()).before(Date.from(Instant.now()))
                     && (j.getEnd_date()).after(Date.from(Instant.now()));
-                    
+
             boolean checkSizeJob = jobDTOs.size() <= 30;
             if (!checkSizeJob) {
                 break;
@@ -424,8 +424,8 @@ public class JobService implements IJobService {
         }
         // STEP 3: check account applicated job
         for (int i = 0; i < account.getApplications().size(); i++) {
-            boolean checkApplicated = account.getApplications().get(i).getAccount() == account
-                    && account.getApplications().get(i).getJobs() == job;
+            Application application = _applicationRepo.findByAccountAndJobs(account, job);
+            boolean checkApplicated = _applicationRepo.findByAccountAndJobs(account, job) != null;
             if (checkApplicated) {
                 // applicated by account
                 throw Variable.CONFLIG;
