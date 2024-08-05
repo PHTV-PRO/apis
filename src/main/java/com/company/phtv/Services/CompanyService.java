@@ -1,5 +1,6 @@
 package com.company.phtv.Services;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
@@ -423,12 +424,16 @@ public class CompanyService implements ICompanyService {
 
             // STEP 3: handle data
             for (Jobs job : company.getJobs()) {
-
+                // count job
+                if (handleDate.getYear(job.getCreated_at()) == currentYear
+                        && handleDate.getMonth(job.getCreated_at()) == i + 1) {
+                    number_jobs += 1;
+                }
                 // get year start of job
                 int yearStartJob = handleDate.getYear(job.getStart_date());
                 // get year end of job
                 int yearEndJob = handleDate.getYear(job.getEnd_date());
-                boolean checkYearJob = currentYear >= yearStartJob || currentYear <= yearEndJob;
+                boolean checkYearJob = currentYear >= yearStartJob && currentYear <= yearEndJob;
                 if (!checkYearJob) {
                     continue;
                 }
@@ -443,8 +448,7 @@ public class CompanyService implements ICompanyService {
                     // if month of job(month start or month end) different month(i+1)
                     continue;
                 }
-                // count job
-                number_jobs += 1;
+
                 // get applicated by job
                 for (Application app : job.getApplications()) {
                     // get month applicated
@@ -775,6 +779,14 @@ public class CompanyService implements ICompanyService {
         for (int i = 0; i < companies.size(); i++) {
             List<JobDTO> jobs = new ArrayList<>();
             if (companies.get(i).getDeleted_at() == null) {
+                Account currentAccount = _currentAccount.getAccount();
+                if (currentAccount == null || currentAccount.getRole() != Role.ADMIN) {
+                    boolean checkSubcriptionPlan = checkDateSubcriptionPlan(companies.get(i));
+                    if (!checkSubcriptionPlan) {
+                        continue;
+                    }
+                }
+
                 // STEP 1: map entity to dto for return
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
 
@@ -834,6 +846,18 @@ public class CompanyService implements ICompanyService {
                 .sorted(Comparator.comparingInt(CompanyDTO::getOpening_jobs).reversed())
                 .collect(Collectors.toList());
         return sortedCompanies;
+    }
+
+    boolean checkDateSubcriptionPlan(Company company) {
+        for (SubcriptionPlanCompany sp : company.getSubcritionPlanCompanies()) {
+            boolean checkNotDeleted = sp.getDeleted_at() == null;
+            boolean checkDate = sp.getStart_date().before(Date.from(Instant.now()))
+                    && sp.getEnd_date().after(Date.from(Instant.now()));
+            if (checkNotDeleted && checkDate) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
