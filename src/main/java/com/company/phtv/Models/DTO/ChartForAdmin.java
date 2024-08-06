@@ -24,15 +24,17 @@ public class ChartForAdmin {
     Integer top_grossing_month;
 
     // thống kê thông tin tất cả các job của tất cả company theo từng tháng;
-    List<Integer> number_of_job_applicated;
-    List<Integer> number_of_job_saved;
-    List<Integer> number_of_job_viewed;
+    // List<Integer> number_of_job_applicated;
+    // List<Integer> number_of_job_saved;
+    // List<Integer> number_of_job_viewed;
     List<Integer> month;
     // thống kê số job được tạo theo tháng
     List<Integer> jobs;
     List<Float> price_for_subcription_plan;
 
-    // (table) thông tin top 3 company có appli, save cao nhất
-    List<CompanyDTO> top_3_company_by_application;
-    List<CompanyDTO> top_3_company_by_save;
+    List<List<Integer>> number_subcription_by_month_subcription_plan;
+    List<String> name_subcription_plan;
+    // // (table) thông tin top 3 company có appli, save cao nhất
+    // List<CompanyDTO> top_3_company_by_application;
+    // List<CompanyDTO> top_3_company_by_save;
 }

@@ -786,7 +786,11 @@ public class CompanyService implements ICompanyService {
                         continue;
                     }
                 }
-
+                if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+                    if (companies.get(i).getEnable() == 0) {
+                        continue;
+                    }
+                }
                 // STEP 1: map entity to dto for return
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
 
