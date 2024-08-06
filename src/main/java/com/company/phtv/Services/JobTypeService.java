@@ -53,7 +53,7 @@ public class JobTypeService implements IJobTypeService {
     }
 
     @Override
-    public JobTypeDTO delete(int id) {
+    public String delete(int id) {
         JobType jobType = _jobTypeRepo.findIdJobType(id);
         boolean checkJobTypeNotFound = (jobType != null && jobType.getDeleted_at() == null) ? false : true;
         if (checkJobTypeNotFound) {
@@ -61,7 +61,7 @@ public class JobTypeService implements IJobTypeService {
         }
         jobType.setDeleted_at(new Date());
         _jobTypeRepo.save(jobType);
-        return null;
+        return "Success";
     }
 
     @Override

@@ -95,7 +95,7 @@ public class LocationService implements ILocationService {
     }
 
     @Override
-    public LocationDTO delete(int id) {
+    public String delete(int id) {
         Location location = _locationRepo.findIdLocation(id);
         boolean checkLocationNotFound = (location != null && location.getDeleted_at() == null) ? false : true;
         if (checkLocationNotFound) {
@@ -103,6 +103,6 @@ public class LocationService implements ILocationService {
         }
         location.setDeleted_at(new Date());
         _locationRepo.save(location);
-        return null;
+        return "Success";
     }
 }

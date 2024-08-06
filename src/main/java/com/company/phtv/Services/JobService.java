@@ -1,5 +1,6 @@
 package com.company.phtv.Services;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.LevelDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
@@ -77,10 +78,13 @@ public class JobService implements IJobService {
         List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
+            if (checkDateSubcriptionPlan(jobs.get(i))) {
+                continue;
+            }
             boolean checkJobNotDeleted = jobs.get(i).getDeleted_at() == null;
             if (checkJobNotDeleted) {
-                boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
-                        && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+                boolean checkOpening = (jobs.get(i).getEnd_date()).after(new Date())
+                        && jobs.get(i).getStart_date().before(new Date());
                 if (!checkOpening) {
                     continue;
                 }
@@ -105,6 +109,9 @@ public class JobService implements IJobService {
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
         }
+        if (checkDateSubcriptionPlan(job)) {
+            throw Variable.NOT_FOUND;
+        }
         // STEP 2: map to dto
         JobDTO jobDTO = JobMapping.getJob(job);
         // STEP 3: call function check application and saved; set skill
@@ -120,13 +127,16 @@ public class JobService implements IJobService {
         if (account != null) {
             // if have token (signed in)
             // STEP 1: get data job
-            List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
+            List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(new Date());
             List<JobDTO> jobDTOS = new ArrayList<>();
             for (int i = 0; i < jobs.size(); i++) {
+                if (checkDateSubcriptionPlan(jobs.get(i))) {
+                    continue;
+                }
                 if (jobs.get(i).getDeleted_at() == null
-                        && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
-                    boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
-                            && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+                        && (jobs.get(i).getEnd_date()).after(new Date())) {
+                    boolean checkOpening = (jobs.get(i).getEnd_date()).after(new Date())
+                            && jobs.get(i).getStart_date().before(new Date());
                     if (!checkOpening) {
                         continue;
                     }
@@ -144,12 +154,15 @@ public class JobService implements IJobService {
         }
         // if have not token (not signed in)
         // STEP 1: get data job
-        List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(Date.from(Instant.now()));
+        List<Jobs> jobs = _jobRepo.findAllByStartDateBefore(new Date());
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
-            if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))) {
-                boolean checkOpening = (jobs.get(i).getEnd_date()).after(Date.from(Instant.now()))
-                        && jobs.get(i).getStart_date().before(Date.from(Instant.now()));
+            if (checkDateSubcriptionPlan(jobs.get(i))) {
+                continue;
+            }
+            if (jobs.get(i).getDeleted_at() == null && (jobs.get(i).getEnd_date()).after(new Date())) {
+                boolean checkOpening = (jobs.get(i).getEnd_date()).after(new Date())
+                        && jobs.get(i).getStart_date().before(new Date());
                 if (!checkOpening) {
                     continue;
                 }
@@ -191,11 +204,14 @@ public class JobService implements IJobService {
             }
         }
         for (Jobs j : listJob) {
+            if (checkDateSubcriptionPlan(j)) {
+                continue;
+            }
             // STEP 5: map dto and check saved, aplication,
             JobDTO jobDTO = JobMapping.getJob(j);
             jobDTO = setAppliedAndSaved(j, jobDTO);
-            boolean checkOpening = (j.getStart_date()).before(Date.from(Instant.now()))
-                    && (j.getEnd_date()).after(Date.from(Instant.now()));
+            boolean checkOpening = (j.getStart_date()).before(new Date())
+                    && (j.getEnd_date()).after(new Date());
 
             boolean checkSizeJob = jobDTOs.size() <= 30;
             if (!checkSizeJob) {
@@ -221,6 +237,9 @@ public class JobService implements IJobService {
         List<FollowJob> followJobs = _followJobRepo.findJobByAccount(account);
         int sizeJob = followJobs.size() > 6 ? 6 : followJobs.size();
         for (int i = 0; i < sizeJob; i++) {
+            if (checkDateSubcriptionPlan(followJobs.get(i).getJobs())) {
+                continue;
+            }
             if (followJobs.get(i).getDeleted_at() == null) {
                 // STEP 3: set to dto
                 JobDTO jobDTO = JobMapping.getJob(followJobs.get(i).getJobs());
@@ -241,6 +260,9 @@ public class JobService implements IJobService {
         List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount());
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < viewedJobs.size(); i++) {
+            if (checkDateSubcriptionPlan(viewedJobs.get(i).getJobs())) {
+                continue;
+            }
             boolean checkJobDeleted = viewedJobs.get(i).getDeleted_at() != null;
             if (!checkJobDeleted) {
                 JobDTO jobDTO = JobMapping.getJob(viewedJobs.get(i).getJobs());
@@ -262,6 +284,12 @@ public class JobService implements IJobService {
         List<Application> application = _applicationRepo.findByAccount(account);
         List<JobDTO> jobDTOs = new ArrayList<>();
         for (Application a : application) {
+            if (checkDateSubcriptionPlan(a.getJobs())) {
+                continue;
+            }
+            if (a.getDeleted_at() != null) {
+                continue;
+            }
             JobDTO jobDTO = JobMapping.getJob(a.getJobs());
             jobDTO = setAppliedAndSaved(a.getJobs(), jobDTO);
             jobDTO = setSkill_level(a.getJobs(), jobDTO);
@@ -407,7 +435,7 @@ public class JobService implements IJobService {
         return true;
     }
 
-    public JobDTO CreatejobApplication(RequestApplication requestApplication) {
+    public String CreatejobApplication(RequestApplication requestApplication) {
         // application need account, cv of account and job for application;
         // STEP 1: get account by token
         Account account = _currentAccount.getAccount();
@@ -433,7 +461,7 @@ public class JobService implements IJobService {
         }
         // STEP 4: save application
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
-        return null;
+        return "Success";
     }
 
     // method for put
@@ -519,7 +547,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO delete(int id) {
+    public String delete(int id) {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
@@ -527,7 +555,7 @@ public class JobService implements IJobService {
         }
         job.setDeleted_at(new Date());
         _jobRepo.save(job);
-        return null;
+        return "Success";
     }
 
     // public boolean deleteJobsSave(RequestIntermediaryJob requestIntermediaryJob)
@@ -581,6 +609,37 @@ public class JobService implements IJobService {
             }
         }
         return jobDTO;
+    }
+
+    boolean checkDateSubcriptionPlan(Jobs job) {
+        if (job == null) {
+            return true;
+        }
+        Account currentAccount = _currentAccount.getAccount();
+        if (currentAccount != null && currentAccount.getRole() == Role.ADMIN) {
+            return false;
+        }
+        if (currentAccount != null && currentAccount.getRole() == Role.EMPLOYER) {
+            return false;
+        }
+
+        if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+            if (job.getCompany().getEnable() == 0) {
+                return true;
+            }
+            for (SubcriptionPlanCompany sp : job.getCompany().getSubcritionPlanCompanies()) {
+                boolean checkDeleted = sp.getDeleted_at() != null;
+                boolean checkDate = sp.getStart_date().before(new Date())
+                        && sp.getEnd_date().after(new Date());
+                if (checkDeleted || !checkDate) {
+                    continue;
+                }
+                if (checkDate) {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
 }

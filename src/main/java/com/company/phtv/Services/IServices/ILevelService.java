@@ -12,7 +12,7 @@ public interface ILevelService {
 
     LevelDTO put(int id, RequestLevel requestLevel);
 
-    LevelDTO delete(int id);
+    String delete(int id);
 
     LevelDTO getById(int id);
 }

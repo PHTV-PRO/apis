@@ -12,7 +12,7 @@ public interface IJobTypeService {
 
     JobTypeDTO put(int id, RequestJobType requestJobType);
 
-    JobTypeDTO delete(int id);
+    String delete(int id);
 
     JobTypeDTO getById(int id);
 }

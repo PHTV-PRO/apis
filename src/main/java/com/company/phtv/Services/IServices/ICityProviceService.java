@@ -12,7 +12,7 @@ public interface ICityProviceService {
 
     CityProvinceDTO put(int id, RequestCityProvince requestCityProvince);
 
-    CityProvinceDTO delete(int id);
+    String delete(int id);
 
     CityProvinceDTO getById(int id);
 }

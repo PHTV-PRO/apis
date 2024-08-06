@@ -31,6 +31,7 @@ import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.Skill;
 import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Entity.SkillJob;
+import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
 import com.company.phtv.Models.Map.AccountMapping;
@@ -46,6 +47,7 @@ import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
 import com.company.phtv.Repository.JobRepo;
 import com.company.phtv.Repository.SkillRepo;
+import com.company.phtv.Repository.SubcriptionPlanRepo;
 import com.company.phtv.Services.IServices.IAdminService;
 import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
@@ -70,6 +72,8 @@ public class AdminService implements IAdminService {
     FollowJobRepo _followJobRepo;
     @Autowired
     SkillRepo _skillRepo;
+    @Autowired
+    SubcriptionPlanRepo _subcriptionPlanRepo;
 
     // utils
     @Autowired
@@ -180,8 +184,8 @@ public class AdminService implements IAdminService {
                     for (Jobs j : company.getJobs()) {
 
                         boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                        boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                                && j.getEnd_date().after(Date.from(Instant.now()));
+                        boolean checkDateJob = j.getStart_date().before(new Date())
+                                && j.getEnd_date().after(new Date());
                         if (checkJobNotDeleted && checkDateJob) {
                             JobDTO jobDTO = JobMapping.getJob(j);
                             jobDTO = setAppliedAndSaved(j, jobDTO);
@@ -244,7 +248,7 @@ public class AdminService implements IAdminService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             for (Jobs job : jobs) {
-                if (searchAll.getJobs()!=null &&searchAll.getJobs().size() >= 30) {
+                if (searchAll.getJobs() != null && searchAll.getJobs().size() >= 30) {
                     break;
                 }
                 JobDTO jobDTO = JobMapping.getJob(job);
@@ -320,31 +324,40 @@ public class AdminService implements IAdminService {
         int top_grossing_month = 0;
 
         List<Integer> listMonth = new ArrayList<>();
-        List<Integer> listApplicated = new ArrayList<>();
-        List<Integer> listViewed = new ArrayList<>();
-        List<Integer> listSaved = new ArrayList<>();
+        // List<Integer> listApplicated = new ArrayList<>();
+        // List<Integer> listViewed = new ArrayList<>();
+        // List<Integer> listSaved = new ArrayList<>();
         List<Integer> listJobs = new ArrayList<>();
         List<Float> listPrice = new ArrayList<>();
+        List<List<Integer>> listNumberSubscriptionPlanByMonthAndBySubcription = new ArrayList<>();
+        List<String> listScriptionPlan = new ArrayList<>();
 
-        List<CompanyDTO> top_3_company_by_application = new ArrayList<>();
-        List<CompanyDTO> top_3_company_by_save = new ArrayList<>();
+        // List<CompanyDTO> top_3_company_by_application = new ArrayList<>();
+        // List<CompanyDTO> top_3_company_by_save = new ArrayList<>();
 
         // get current year (2024) (sài nhiều chỗ)
         int currentYear = handleDate.getYear(new Date());
+        int currentMonth = handleDate.getMonth(new Date());
+
         for (int i = 0; i < 12; i++) {
             // get by month 1, 2, 3, 4, 5, 6, .....; (lấy thông tin theo từng tháng)
 
             // Variable contain by month
-            int number_of_job_applicated = 0;
-            int number_of_job_saved = 0;
-            int number_of_job_viewed = 0;
+            // int number_of_job_applicated = 0;
+            // int number_of_job_saved = 0;
+            // int number_of_job_viewed = 0;
             int number_jobs = 0;
+
             Float price_for_subcription_plan = (float) 0;
 
             // STEP 3: handle data
             for (Company company : companys) {
                 for (Jobs job : company.getJobs()) {
-
+                    // count job
+                    if (handleDate.getYear(job.getCreated_at()) == currentYear
+                            && handleDate.getMonth(job.getCreated_at()) == i + 1) {
+                        number_jobs += 1;
+                    }
                     // get year start of job
                     int yearStartJob = handleDate.getYear(job.getStart_date());
                     // get year end of job
@@ -364,38 +377,36 @@ public class AdminService implements IAdminService {
                         // if month of job(month start or month end) different month(i+1)
                         continue;
                     }
-                    // count job
-                    number_jobs += 1;
                     // get applicated by job
-                    for (Application app : job.getApplications()) {
-                        // get month applicated
-                        int monthApplicated = handleDate.getMonth(app.getCreated_at());
-                        // check month part 2
-                        boolean checkMonthApplicated = monthApplicated == i + 1;
-                        if (checkMonthApplicated) {
-                            number_of_job_applicated += 1;
-                        }
-                    }
-                    // get applicated by job
-                    for (ViewedJob viewed : job.getViewedJobs()) {
-                        // get month applicated
-                        int monthViewd = handleDate.getMonth(viewed.getCreated_at());
-                        // check month part 2
-                        boolean checkMonthViewed = monthViewd == i + 1;
-                        if (checkMonthViewed) {
-                            number_of_job_viewed += 1;
-                        }
-                    }
-                    // get applicated by job
-                    for (FollowJob saved : job.getFollowJobs()) {
-                        // get month applicated
-                        int monthSaved = handleDate.getMonth(saved.getCreated_at());
-                        // check month part 2
-                        boolean checkMonthSaved = monthSaved == i + 1;
-                        if (checkMonthSaved) {
-                            number_of_job_saved += 1;
-                        }
-                    }
+                    // for (Application app : job.getApplications()) {
+                    // // get month applicated
+                    // int monthApplicated = handleDate.getMonth(app.getCreated_at());
+                    // // check month part 2
+                    // boolean checkMonthApplicated = monthApplicated == i + 1;
+                    // if (checkMonthApplicated) {
+                    // number_of_job_applicated += 1;
+                    // }
+                    // }
+                    // // get applicated by job
+                    // for (ViewedJob viewed : job.getViewedJobs()) {
+                    // // get month applicated
+                    // int monthViewd = handleDate.getMonth(viewed.getCreated_at());
+                    // // check month part 2
+                    // boolean checkMonthViewed = monthViewd == i + 1;
+                    // if (checkMonthViewed) {
+                    // number_of_job_viewed += 1;
+                    // }
+                    // }
+                    // // get applicated by job
+                    // for (FollowJob saved : job.getFollowJobs()) {
+                    // // get month applicated
+                    // int monthSaved = handleDate.getMonth(saved.getCreated_at());
+                    // // check month part 2
+                    // boolean checkMonthSaved = monthSaved == i + 1;
+                    // if (checkMonthSaved) {
+                    // number_of_job_saved += 1;
+                    // }
+                    // }
                 }
 
                 for (SubcriptionPlanCompany spc : company.getSubcritionPlanCompanies()) {
@@ -416,9 +427,9 @@ public class AdminService implements IAdminService {
 
                 }
             }
-            listApplicated.add(number_of_job_applicated);
-            listViewed.add(number_of_job_viewed);
-            listSaved.add(number_of_job_saved);
+            // listApplicated.add(number_of_job_applicated);
+            // listViewed.add(number_of_job_viewed);
+            // listSaved.add(number_of_job_saved);
             listMonth.add(i + 1);
             listJobs.add(number_jobs);
             listPrice.add(price_for_subcription_plan);
@@ -426,9 +437,9 @@ public class AdminService implements IAdminService {
         // STEP 4: set dto
         // thống kê theo từng tháng (là những thông tin ở giữa trong DTO)
         chart.setMonth(listMonth);
-        chart.setNumber_of_job_applicated(listApplicated);
-        chart.setNumber_of_job_saved(listSaved);
-        chart.setNumber_of_job_viewed(listViewed);
+        // chart.setNumber_of_job_applicated(listApplicated);
+        // chart.setNumber_of_job_saved(listSaved);
+        // chart.setNumber_of_job_viewed(listViewed);
         chart.setJobs(listJobs);
         chart.setPrice_for_subcription_plan(listPrice);
 
@@ -473,84 +484,111 @@ public class AdminService implements IAdminService {
         chart.setTop_grossing_month(top_grossing_month);
 
         // STEP 7: get job highest by application and save job
-        HashMap<Company, Integer> getCompaniesByApplication = new HashMap<Company, Integer>();
-        HashMap<Company, Integer> getCompaniesBySave = new HashMap<Company, Integer>();
-        for (Company c : companys) {
-            int number_application_job_company = 0;
-            int number_save_job_company = 0;
-            if (c.getDeleted_at() != null) {
-                // deleted
+        // HashMap<Company, Integer> getCompaniesByApplication = new HashMap<Company,
+        // Integer>();
+        // HashMap<Company, Integer> getCompaniesBySave = new HashMap<Company,
+        // Integer>();
+        // for (Company c : companys) {
+        // int number_application_job_company = 0;
+        // int number_save_job_company = 0;
+        // if (c.getDeleted_at() != null) {
+        // // deleted
+        // continue;
+        // }
+        // for (Jobs j : c.getJobs()) {
+        // if (j.getDeleted_at() != null) {
+        // // deleted
+        // continue;
+        // }
+        // // get application by jon
+        // for (Application a : j.getApplications()) {
+        // if (a.getDeleted_at() != null) {
+        // // deleted
+        // continue;
+        // }
+        // int yearApplication = handleDate.getYear(a.getCreated_at());
+        // if (yearApplication != currentYear) {
+        // continue;
+        // }
+        // number_application_job_company += 1;
+        // }
+        // // get save by jon
+
+        // for (FollowJob f : j.getFollowJobs()) {
+        // if (f.getDeleted_at() != null) {
+        // // deleted
+        // continue;
+        // }
+        // int yearApplication = handleDate.getYear(f.getCreated_at());
+        // if (yearApplication != currentYear) {
+        // continue;
+        // }
+        // number_save_job_company += 1;
+        // }
+        // }
+        // // STEP 7.1 set data map<key, value> for sort
+        // getCompaniesByApplication.put(c, number_application_job_company);
+        // getCompaniesBySave.put(c, number_save_job_company);
+
+        // }
+        // if (getCompaniesByApplication.size() > 3) {
+        // // STEP 7.2: sort
+        // PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+        // (e1, e2) -> e2.getValue() - e1.getValue());
+        // pq.addAll(getCompaniesByApplication.entrySet());
+        // if (pq.size() > 5) {
+        // pq.poll();
+        // }
+        // while (!pq.isEmpty()) {
+        // Map.Entry<Company, Integer> entry = pq.poll();
+        // Company company = entry.getKey();
+        // top_3_company_by_application.add(CompanyMapping.CompanyDTO(company));
+        // }
+        // // STEP 7.3 add 3 company have application heighest to chart
+        // chart.setTop_3_company_by_application(top_3_company_by_application.subList(0,
+        // 3));
+        // }
+        // if (getCompaniesBySave.size() > 3) {
+        // // STEP 7.2: sort
+        // PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
+        // (e1, e2) -> e2.getValue() - e1.getValue());
+        // pq.addAll(getCompaniesBySave.entrySet());
+        // if (pq.size() > 5) {
+        // pq.poll();
+        // }
+        // while (!pq.isEmpty()) {
+        // Map.Entry<Company, Integer> entry = pq.poll();
+        // Company company = entry.getKey();
+        // top_3_company_by_save.add(CompanyMapping.CompanyDTO(company));
+        // }
+        // // STEP 7.3: add 3 company have save heighest to chart
+        // chart.setTop_3_company_by_save(top_3_company_by_save.subList(0, 3));
+        // }
+        // OK
+        List<SubcriptionPlan> subcriptionPlans = _subcriptionPlanRepo.findAll();
+        for (SubcriptionPlan sp : subcriptionPlans) {
+            List<Integer> list_number_subcription_by_month = new ArrayList<>();
+            if (sp.getDeleted_at() != null) {
                 continue;
             }
-            for (Jobs j : c.getJobs()) {
-                if (j.getDeleted_at() != null) {
-                    // deleted
-                    continue;
-                }
-                // get application by jon
-                for (Application a : j.getApplications()) {
-                    if (a.getDeleted_at() != null) {
-                        // deleted
-                        continue;
-                    }
-                    int yearApplication = handleDate.getYear(a.getCreated_at());
-                    if (yearApplication != currentYear) {
-                        continue;
-                    }
-                    number_application_job_company += 1;
-                }
-                // get save by jon
+            listScriptionPlan.add(sp.getName());
 
-                for (FollowJob f : j.getFollowJobs()) {
-                    if (f.getDeleted_at() != null) {
-                        // deleted
-                        continue;
-                    }
-                    int yearApplication = handleDate.getYear(f.getCreated_at());
-                    if (yearApplication != currentYear) {
-                        continue;
-                    }
-                    number_save_job_company += 1;
-                }
-            }
-            // STEP 7.1 set data map<key, value> for sort
-            getCompaniesByApplication.put(c, number_application_job_company);
-            getCompaniesBySave.put(c, number_save_job_company);
+            for (int i = 1; i <= 12; i++) {
+                int number_subcription_by_month = 0;
 
+                for (SubcriptionPlanCompany spc : sp.getSubcritionPlanCompanies()) {
+                    boolean checkYear = currentYear == handleDate.getYear(spc.getCreated_at());
+                    boolean checkMonth = handleDate.getMonth(spc.getCreated_at()) == i;
+                    if (checkYear && checkMonth) {
+                        number_subcription_by_month += 1;
+                    }
+                }
+                list_number_subcription_by_month.add(number_subcription_by_month);
+            }
+            listNumberSubscriptionPlanByMonthAndBySubcription.add(list_number_subcription_by_month);
         }
-        if (getCompaniesByApplication.size() > 3) {
-            // STEP 7.2: sort
-            PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
-                    (e1, e2) -> e2.getValue() - e1.getValue());
-            pq.addAll(getCompaniesByApplication.entrySet());
-            if (pq.size() > 5) {
-                pq.poll();
-            }
-            while (!pq.isEmpty()) {
-                Map.Entry<Company, Integer> entry = pq.poll();
-                Company company = entry.getKey();
-                top_3_company_by_application.add(CompanyMapping.CompanyDTO(company));
-            }
-            // STEP 7.3 add 3 company have application heighest to chart
-            chart.setTop_3_company_by_application(top_3_company_by_application.subList(0, 3));
-        }
-        if (getCompaniesBySave.size() > 3) {
-            // STEP 7.2: sort
-            PriorityQueue<Map.Entry<Company, Integer>> pq = new PriorityQueue<>(
-                    (e1, e2) -> e2.getValue() - e1.getValue());
-            pq.addAll(getCompaniesBySave.entrySet());
-            if (pq.size() > 5) {
-                pq.poll();
-            }
-            while (!pq.isEmpty()) {
-                Map.Entry<Company, Integer> entry = pq.poll();
-                Company company = entry.getKey();
-                top_3_company_by_save.add(CompanyMapping.CompanyDTO(company));
-            }
-            // STEP 7.3: add 3 company have save heighest to chart
-            chart.setTop_3_company_by_save(top_3_company_by_save.subList(0, 3));
-        }
-        // OK
+        chart.setName_subcription_plan(listScriptionPlan);
+        chart.setNumber_subcription_by_month_subcription_plan(listNumberSubscriptionPlanByMonthAndBySubcription);
         return chart;
     }
 

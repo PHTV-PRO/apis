@@ -17,6 +17,8 @@ public class AdminLevelController {
     @Autowired
     LevelService _leveService;
     BaseController<LevelDTO> _baseController = new BaseController<LevelDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
+
     BaseController<List<LevelDTO>> _baseControllers = new BaseController<List<LevelDTO>>();
 
     // @GetMapping()
@@ -66,7 +68,7 @@ public class AdminLevelController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.success(_leveService.delete(id));
+            return _baseController_string.success(_leveService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

@@ -53,7 +53,7 @@ public class IndustryService implements IIndustryService {
     }
 
     @Override
-    public IndustryDTO delete(int id) {
+    public String delete(int id) {
         Industry industry = _industryRepo.findIdIndustry(id);
         boolean checkIndustryNotFound = (industry != null && industry.getDeleted_at() == null) ? false : true;
         if (checkIndustryNotFound) {
@@ -61,7 +61,7 @@ public class IndustryService implements IIndustryService {
         }
         industry.setDeleted_at(new Date());
         _industryRepo.save(industry);
-        return null;
+        return "Success";
     }
 
     @Override

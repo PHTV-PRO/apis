@@ -102,16 +102,17 @@ public interface Html {
                 for (RequestWorkExperience p : data.getWork_experiences()) {
                         wordExperiences += "    <div style=\"margin-bottom:5px; padding: 0px 10px 3px 10px;border-radius: 12px; border: solid;\">\r\n"
                                         + //
+                                        "<p >\r\n" + //
+                                        "          <i >" + p.getWorking_time() + "</i>\r\n"
+                                        + //
                                         "        <div ><h3 >" + p.getName_work_experience()
                                         + "</h3></div>\r\n" + //
-                                        "           <h5 > " + p.getContent() + "</h5>\r\n" + //
+                                        "           <span > " + p.getContent() + "</span>\r\n" + //
                                         "        <p >Skill:\r\n" + //
                                         "          <span >" + p.getSkill_work_experience() + "</span>\r\n"
                                         + //
                                         "        </p>\r\n" + //
-                                        "<p >\r\n" + //
-                                        "          <i >" + p.getWorking_time() + "</i>\r\n"
-                                        + //
+
                                         "        </p>\r\n" + //
                                         "    </div>\r\n"; //
                 }

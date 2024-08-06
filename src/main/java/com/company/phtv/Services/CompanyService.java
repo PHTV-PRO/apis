@@ -170,8 +170,8 @@ public class CompanyService implements ICompanyService {
             if (checkJobDeleted) {
                 continue;
             }
-            boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                    && j.getEnd_date().after(Date.from(Instant.now()));
+            boolean checkDateJob = j.getStart_date().before(new Date())
+                    && j.getEnd_date().after(new Date());
             JobDTO job = new JobDTO();
             if (checkDateJob) {
                 count++;
@@ -233,8 +233,8 @@ public class CompanyService implements ICompanyService {
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    boolean checkDateJob = j.getStart_date().before(new Date())
+                            && j.getEnd_date().after(new Date());
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
                     }
@@ -584,7 +584,7 @@ public class CompanyService implements ICompanyService {
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 
-    public CompanyDTO followCompany(RequestFollowCompany requestCompany) {
+    public String followCompany(RequestFollowCompany requestCompany) {
         // STEP 1: get data
         Account account = _currentAccount.getAccount();
         Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
@@ -597,10 +597,10 @@ public class CompanyService implements ICompanyService {
         FollowCompany followCompany = _followCompanyRepo.findByAccountAndCompany(account, company);
         if (followCompany != null) {
             _followCompanyRepo.delete(followCompany);
-            return null;
+            return "Success";
         }
         _followCompanyRepo.save(new FollowCompany(0, company, account));
-        return null;
+        return "Success";
 
     }
 
@@ -759,7 +759,7 @@ public class CompanyService implements ICompanyService {
 
     // for method delete
     @Override
-    public CompanyDTO delete(int id) {
+    public String delete(int id) {
         // STEP 1: get data and check
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
@@ -769,7 +769,7 @@ public class CompanyService implements ICompanyService {
         // STEP 2: set deleted_at different null => finishe deleted
         company.setDeleted_at(new Date());
         _companyRepo.save(company);
-        return null;
+        return "Success";
     }
 
     // handle mapping and data like set skill set location...
@@ -786,7 +786,11 @@ public class CompanyService implements ICompanyService {
                         continue;
                     }
                 }
-
+                if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+                    if (companies.get(i).getEnable() == 0) {
+                        continue;
+                    }
+                }
                 // STEP 1: map entity to dto for return
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
 
@@ -820,8 +824,8 @@ public class CompanyService implements ICompanyService {
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    boolean checkDateJob = j.getStart_date().before(new Date())
+                            && j.getEnd_date().after(new Date());
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
                         jobs.add(JobMapping.getJob(j));
@@ -851,8 +855,8 @@ public class CompanyService implements ICompanyService {
     boolean checkDateSubcriptionPlan(Company company) {
         for (SubcriptionPlanCompany sp : company.getSubcritionPlanCompanies()) {
             boolean checkNotDeleted = sp.getDeleted_at() == null;
-            boolean checkDate = sp.getStart_date().before(Date.from(Instant.now()))
-                    && sp.getEnd_date().after(Date.from(Instant.now()));
+            boolean checkDate = sp.getStart_date().before(new Date())
+                    && sp.getEnd_date().after(new Date());
             if (checkNotDeleted && checkDate) {
                 return true;
             }

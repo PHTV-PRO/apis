@@ -50,7 +50,7 @@ public class Jobs extends BaseModel{
     @Column(name = "gender")
     private int gender;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
     private Company company;
 
