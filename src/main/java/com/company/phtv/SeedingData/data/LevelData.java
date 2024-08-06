@@ -13,9 +13,8 @@ public class LevelData {
         data.add(new Level(3,"Junior"));
         data.add(new Level(4,"Senior"));
         data.add(new Level(5,"Middle"));
-        data.add(new Level(6,"Trưởng Nhóm"));
-        data.add(new Level(7,"Trưởng Phòng"));
-        data.add(new Level(8,"All Levels"));
+        data.add(new Level(6,"Leader"));
+        data.add(new Level(7,"Manager"));
         return data;
     }
 }

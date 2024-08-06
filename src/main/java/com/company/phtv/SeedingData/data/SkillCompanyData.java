@@ -44,6 +44,7 @@ public class SkillCompanyData {
         data.add(new SkillCompany(27,_SkillRepo.getOne(28),_company.getOne(10)));
 
 
+
         return data;
     }
 }

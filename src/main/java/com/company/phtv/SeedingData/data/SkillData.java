@@ -70,7 +70,7 @@ public class SkillData {
                         _IndustryRepo.getOne(14)));
                 data.add(new Skill(27, "IT Operations",
                         _IndustryRepo.getOne(14)));
-                data.add(new Skill(28, "Triển Khai Phần Mền",
+                data.add(new Skill(28, "Software Development",
                         _IndustryRepo.getOne(14)));
                 return data;
         }
