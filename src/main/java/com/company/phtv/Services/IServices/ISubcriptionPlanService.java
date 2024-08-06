@@ -12,7 +12,7 @@ public interface ISubcriptionPlanService {
 
     SubcriptionPlanDTO put(int id, RequestSubcriptionPlan requestSubcriptionPlan);
 
-    SubcriptionPlanDTO delete(int id);
+    String delete(int id);
 
     SubcriptionPlanDTO getById(int id);
 }

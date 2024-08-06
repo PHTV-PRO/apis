@@ -18,6 +18,7 @@ public class AdminCompanyController {
     @Autowired
     CompanyService _companyService;
     BaseController<CompanyDTO> _baseController = new BaseController<CompanyDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<CompanyDTO>> _baseControllers = new BaseController<List<CompanyDTO>>();
 
     // @GetMapping()
@@ -57,7 +58,7 @@ public class AdminCompanyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.success(_companyService.delete(id));
+            return _baseController_string.success(_companyService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

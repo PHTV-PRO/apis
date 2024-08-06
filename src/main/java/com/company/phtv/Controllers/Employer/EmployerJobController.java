@@ -17,6 +17,7 @@ import java.util.List;
 public class EmployerJobController {
     @Autowired
     JobService _jobService;
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<JobDTO> _baseController = new BaseController<JobDTO>();
     BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
@@ -56,7 +57,7 @@ public class EmployerJobController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.success(_jobService.delete(id));
+            return _baseController_string.success(_jobService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

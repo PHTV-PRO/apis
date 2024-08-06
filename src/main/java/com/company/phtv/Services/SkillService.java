@@ -84,7 +84,7 @@ public class SkillService implements ISkillService {
     }
 
     @Override
-    public SkillDTO delete(int id) {
+    public String delete(int id) {
         Skill skill = _skillRepo.findIdSkill(id);
         boolean checkLSkillNotFound = (skill != null && skill.getDeleted_at() == null) ? false : true;
         if (checkLSkillNotFound) {
@@ -92,7 +92,7 @@ public class SkillService implements ISkillService {
         }
         skill.setDeleted_at(new Date());
         _skillRepo.save(skill);
-        return null;
+        return "Success";
     }
 
     public List<SkillDTO> getAllByCompany(int id) {

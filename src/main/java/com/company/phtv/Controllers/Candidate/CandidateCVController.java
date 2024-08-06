@@ -36,6 +36,7 @@ public class CandidateCVController {
     CloudinaryService _cloudinaryService;
 
     BaseController<CVDTO> _baseController = new BaseController<CVDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<CVDTO>> _baseControllers = new BaseController<List<CVDTO>>();
     BaseController<String> _baseControllerString = new BaseController<String>();
 
@@ -54,7 +55,7 @@ public class CandidateCVController {
             MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> post(@RequestParam MultipartFile file, @RequestParam String name) {
         try {
-            return _baseController.success(_cvService.create(new RequestCV(file, name)));
+            return _baseController_string.success(_cvService.create(new RequestCV(file, name)));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -65,7 +66,7 @@ public class CandidateCVController {
     @DeleteMapping()
     public ResponseEntity<?> delete(@RequestParam int id) {
         try {
-            return _baseController.success(_cvService.delete(id));
+            return _baseController_string.success(_cvService.delete(id));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
@@ -76,7 +77,7 @@ public class CandidateCVController {
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable int id, @RequestParam String name) {
         try {
-            return _baseController.success(_cvService.delete(id));
+            return _baseController_string.success(_cvService.delete(id));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

@@ -14,5 +14,5 @@ public interface ISkillService {
 
     SkillDTO getById(int id);
 
-    SkillDTO delete(int id);
+    String delete(int id);
 }

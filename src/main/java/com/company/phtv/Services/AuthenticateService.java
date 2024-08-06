@@ -89,16 +89,16 @@ public class AuthenticateService implements IAuthenticateService {
             String email = _jwtservice.extractEmail(token);
             if (email == null || email.trim().equals("")) {
                 // token fail
-                return null;
+                throw Variable.TOKEN_ERROR;
             }
             // STEP 2: get account by email find = token
             Account account = _userRepo.getAccountByEmail(email);
             if (account != null && account.getDeleted_at() == null) {
                 return AccountMapping.accountDTO(account);
             }
-            return null;
+            throw Variable.TOKEN_ERROR;
         } catch (Exception e) {
-            return null;
+            throw Variable.TOKEN_ERROR;
         }
     }
 

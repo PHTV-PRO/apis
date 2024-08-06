@@ -54,7 +54,7 @@ public class CityProvinceService implements ICityProviceService {
     }
 
     @Override
-    public CityProvinceDTO delete(int id) {
+    public String delete(int id) {
         CityProvince cityProvince = _cityProvinceRepo.findIdCityProvince(id);
         boolean checkCityProvinceNotFound = (cityProvince != null && cityProvince.getDeleted_at() == null) ? false
                 : true;
@@ -63,7 +63,7 @@ public class CityProvinceService implements ICityProviceService {
         }
         cityProvince.setDeleted_at(new Date());
         _cityProvinceRepo.save(cityProvince);
-        return null;
+        return "Success";
     }
 
     @Override

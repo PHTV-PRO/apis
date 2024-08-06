@@ -12,7 +12,7 @@ public interface IIndustryService {
 
     IndustryDTO put(int id, RequestIndustry requestIndustry);
 
-    IndustryDTO delete(int id);
+    String delete(int id);
 
     IndustryDTO getById(int id);
 }

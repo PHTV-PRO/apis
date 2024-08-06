@@ -17,6 +17,7 @@ public class AdminCityProvinceController {
     @Autowired
     CityProvinceService _cityProvinceService;
     BaseController<CityProvinceDTO> _baseController = new BaseController<CityProvinceDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<CityProvinceDTO>> _baseControllers = new BaseController<List<CityProvinceDTO>>();
 
     // @GetMapping()
@@ -65,7 +66,7 @@ public class AdminCityProvinceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.success(_cityProvinceService.delete(id));
+            return _baseController_string.success(_cityProvinceService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

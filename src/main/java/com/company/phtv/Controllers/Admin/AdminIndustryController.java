@@ -17,6 +17,7 @@ public class AdminIndustryController {
     @Autowired
     IndustryService _industryService;
     BaseController<IndustryDTO> _baseController = new BaseController<IndustryDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<IndustryDTO>> _baseControllers = new BaseController<List<IndustryDTO>>();
 
     // @GetMapping()
@@ -66,7 +67,7 @@ public class AdminIndustryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> Delete(@PathVariable int id) {
         try {
-            return _baseController.success(_industryService.delete(id));
+            return _baseController_string.success(_industryService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

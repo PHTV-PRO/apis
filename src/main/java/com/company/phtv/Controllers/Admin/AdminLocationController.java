@@ -16,6 +16,7 @@ import java.util.List;
 public class AdminLocationController {
     @Autowired
     LocationService _locationService;
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<LocationDTO> _baseController = new BaseController<LocationDTO>();
     BaseController<List<LocationDTO>> _baseControllers = new BaseController<List<LocationDTO>>();
 
@@ -34,7 +35,7 @@ public class AdminLocationController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {
         try {
-            return _baseController.success(_locationService.delete(id));
+            return _baseController_string.success(_locationService.delete(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

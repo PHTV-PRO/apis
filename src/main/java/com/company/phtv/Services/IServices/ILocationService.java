@@ -14,5 +14,5 @@ public interface ILocationService {
 
     LocationDTO getById(int id);
 
-    LocationDTO delete(int id);
+    String delete(int id);
 }

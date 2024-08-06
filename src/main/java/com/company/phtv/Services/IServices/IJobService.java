@@ -15,7 +15,7 @@ public interface IJobService {
 
     JobDTO getById(int id);
 
-    JobDTO delete(int id);
+    String delete(int id);
 
     List<JobDTO> getJobsNew(int size, int page);
 
@@ -27,6 +27,6 @@ public interface IJobService {
 
     List<JobDTO> getJobApplicationByAccount(int size, int page);
 
-    JobDTO CreatejobApplication(RequestApplication requestApplication);
+    String CreatejobApplication(RequestApplication requestApplication);
 
 }

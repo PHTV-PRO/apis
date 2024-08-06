@@ -79,7 +79,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
     }
 
     @Override
-    public SubcriptionPlanDTO delete(int id) {
+    public String delete(int id) {
         SubcriptionPlan subcriptionPlan = _subcriptionPlanRepo.findIdBySubcriptionPlan(id);
         boolean checkSubcriptionPlanNotFound = (subcriptionPlan != null && subcriptionPlan.getDeleted_at() == null)
                 ? false
@@ -89,7 +89,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         }
         subcriptionPlan.setDeleted_at(new Date());
         _subcriptionPlanRepo.save(subcriptionPlan);
-        return null;
+        return "Success";
     }
 
     @Override

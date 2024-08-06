@@ -584,7 +584,7 @@ public class CompanyService implements ICompanyService {
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 
-    public CompanyDTO followCompany(RequestFollowCompany requestCompany) {
+    public String followCompany(RequestFollowCompany requestCompany) {
         // STEP 1: get data
         Account account = _currentAccount.getAccount();
         Company company = _companyRepo.findCompanyById(Integer.parseInt(requestCompany.getCompany_id()));
@@ -597,10 +597,10 @@ public class CompanyService implements ICompanyService {
         FollowCompany followCompany = _followCompanyRepo.findByAccountAndCompany(account, company);
         if (followCompany != null) {
             _followCompanyRepo.delete(followCompany);
-            return null;
+            return "Success";
         }
         _followCompanyRepo.save(new FollowCompany(0, company, account));
-        return null;
+        return "Success";
 
     }
 
@@ -759,7 +759,7 @@ public class CompanyService implements ICompanyService {
 
     // for method delete
     @Override
-    public CompanyDTO delete(int id) {
+    public String delete(int id) {
         // STEP 1: get data and check
         Company company = _companyRepo.findCompanyById(id);
         boolean checkCompanyNotFound = (company != null && company.getDeleted_at() == null) ? false : true;
@@ -769,7 +769,7 @@ public class CompanyService implements ICompanyService {
         // STEP 2: set deleted_at different null => finishe deleted
         company.setDeleted_at(new Date());
         _companyRepo.save(company);
-        return null;
+        return "Success";
     }
 
     // handle mapping and data like set skill set location...

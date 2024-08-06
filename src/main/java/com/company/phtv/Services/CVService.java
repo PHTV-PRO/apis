@@ -39,7 +39,7 @@ public class CVService implements ICVService {
     Pagination<CVDTO> pagination = new Pagination<>();
 
     @Override
-    public CVDTO create(RequestCV requestCV) {
+    public String create(RequestCV requestCV) {
         CurriculumVitae CV = new CurriculumVitae();
         Account account = _currentAccount.getAccount();
         boolean checkAccountNotFound = account == null || account.getDeleted_at() != null;
@@ -55,7 +55,7 @@ public class CVService implements ICVService {
                 CV.setAccount(account);
                 CV.setName(requestCV.getName());
                 _cvRepo.save(CV);
-                return null;
+                return "Success";
             } catch (IOException e) {
                 throw Variable.ACTION_FAIL;
             }
@@ -65,7 +65,7 @@ public class CVService implements ICVService {
     }
 
     @Override
-    public CVDTO delete(int id) {
+    public String delete(int id) {
         CurriculumVitae CV = _cvRepo.findById(id).get();
         boolean checkExisting = CV == null || CV.getDeleted_at() != null;
         if (checkExisting) {
@@ -74,11 +74,11 @@ public class CVService implements ICVService {
         if (CV.getApplications().size() > 0) {
             CV.setDeleted_at(new Date());
             _cvRepo.save(CV);
-            return null;
+            return "Success";
         }
         CV.setDeleted_at(new Date());
         _cvRepo.delete(CV);
-        return null;
+        return "Success";
     }
 
     @Override

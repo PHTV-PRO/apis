@@ -53,7 +53,7 @@ public class LevelService implements ILevelService {
     }
 
     @Override
-    public LevelDTO delete(int id) {
+    public String delete(int id) {
         Level level = _levelRepo.findIdByLevel(id);
         boolean checkLevelNotFound = (level != null && level.getDeleted_at() == null) ? false : true;
         if (checkLevelNotFound) {
@@ -61,7 +61,7 @@ public class LevelService implements ILevelService {
         }
         level.setDeleted_at(new Date());
         _levelRepo.save(level);
-        return null;
+        return "Success";
     }
 
     @Override

@@ -435,7 +435,7 @@ public class JobService implements IJobService {
         return true;
     }
 
-    public JobDTO CreatejobApplication(RequestApplication requestApplication) {
+    public String CreatejobApplication(RequestApplication requestApplication) {
         // application need account, cv of account and job for application;
         // STEP 1: get account by token
         Account account = _currentAccount.getAccount();
@@ -461,7 +461,7 @@ public class JobService implements IJobService {
         }
         // STEP 4: save application
         _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
-        return null;
+        return "Success";
     }
 
     // method for put
@@ -547,7 +547,7 @@ public class JobService implements IJobService {
     }
 
     @Override
-    public JobDTO delete(int id) {
+    public String delete(int id) {
         Jobs job = _jobRepo.findJobId(id);
         boolean checkJobNotFound = (job != null && job.getDeleted_at() == null) ? false : true;
         if (checkJobNotFound) {
@@ -555,7 +555,7 @@ public class JobService implements IJobService {
         }
         job.setDeleted_at(new Date());
         _jobRepo.save(job);
-        return null;
+        return "Success";
     }
 
     // public boolean deleteJobsSave(RequestIntermediaryJob requestIntermediaryJob)

@@ -21,12 +21,13 @@ public class CandidateJobController {
     @Autowired
     JobService _jobService;
     BaseController<JobDTO> _baseController = new BaseController<JobDTO>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
     @PostMapping("/application")
     public ResponseEntity<?> postJobsApplication(@RequestBody RequestApplication requestApplication) {
         try {
-            return _baseController.success(_jobService.CreatejobApplication(requestApplication));
+            return _baseController_string.success(_jobService.CreatejobApplication(requestApplication));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
