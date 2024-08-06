@@ -4,9 +4,11 @@ import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Models.DTO.CompanyForEmployerDTO;
 import com.company.phtv.Models.DTO.JobDTO;
+import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
@@ -238,9 +240,9 @@ public class AccountService implements IAccountService {
                 if (checkJobDeleted) {
                     continue;
                 }
-                if (job.getStart_date().after(Date.from(Instant.now()))) {
+                if (job.getStart_date().after(new Date())) {
                     jobDTOsNotOpen.add(JobMapping.getJob(job));
-                } else if (job.getEnd_date().before(Date.from(Instant.now()))) {
+                } else if (job.getEnd_date().before(new Date())) {
                     jobDTOsOpened.add(JobMapping.getJob(job));
                 } else {
                     jobDTOsOpening.add(JobMapping.getJob(job));
@@ -249,11 +251,13 @@ public class AccountService implements IAccountService {
             // STEP 4: get subCription plane
             for (SubcriptionPlanCompany sub : company.getSubcritionPlanCompanies()) {
                 boolean checkSubcritionplan = sub.getDeleted_at() == null
-                        && (sub.getStart_date().before(Date.from(Instant.now()))
-                                && sub.getEnd_date().after(Date.from(Instant.now())));
+                        && (sub.getStart_date().before(new Date())
+                                && sub.getEnd_date().after(new Date()));
                 if (checkSubcritionplan) {
-                    companyDTO.setSubcriptionPlan(
-                            SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan()));
+                    SubcriptionPlanDTO subDTO = SubcriptionPlanMapping.subcriptionPlanDTO(sub.getSubscription_plan());
+                    subDTO.setEnd_date(sub.getEnd_date());
+                    subDTO.setStart_date(sub.getStart_date());
+                    companyDTO.setSubcriptionPlan(subDTO);
                     accountDTO.setLimit_job(sub.getSubscription_plan().getExpiry());
 
                 }

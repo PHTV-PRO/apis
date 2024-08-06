@@ -72,7 +72,7 @@ public class CVService implements ICVService {
             throw Variable.NOT_FOUND;
         }
         if (CV.getApplications().size() > 0) {
-            CV.setDeleted_at(Date.from(Instant.now()));
+            CV.setDeleted_at(new Date());
             _cvRepo.save(CV);
             return null;
         }

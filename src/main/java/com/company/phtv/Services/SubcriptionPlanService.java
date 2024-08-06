@@ -126,8 +126,8 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
                             .subcriptionPlanDTO(sub.getSubscription_plan());
                     subcriptionPlanDTO.setEnd_date(sub.getEnd_date());
                     subcriptionPlanDTO.setStart_date(sub.getStart_date());
-                    boolean checkSubcritionplan = (sub.getStart_date().before(Date.from(Instant.now()))
-                            && sub.getEnd_date().after(Date.from(Instant.now())));
+                    boolean checkSubcritionplan = (sub.getStart_date().before(new Date())
+                            && sub.getEnd_date().after(new Date()));
                     if (checkSubcritionplan) {
                         subcriptionPlan.setSubcriptionPlanDTO(subcriptionPlanDTO);
                     } else {

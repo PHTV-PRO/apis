@@ -184,8 +184,8 @@ public class AdminService implements IAdminService {
                     for (Jobs j : company.getJobs()) {
 
                         boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                        boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                                && j.getEnd_date().after(Date.from(Instant.now()));
+                        boolean checkDateJob = j.getStart_date().before(new Date())
+                                && j.getEnd_date().after(new Date());
                         if (checkJobNotDeleted && checkDateJob) {
                             JobDTO jobDTO = JobMapping.getJob(j);
                             jobDTO = setAppliedAndSaved(j, jobDTO);

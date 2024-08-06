@@ -170,8 +170,8 @@ public class CompanyService implements ICompanyService {
             if (checkJobDeleted) {
                 continue;
             }
-            boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                    && j.getEnd_date().after(Date.from(Instant.now()));
+            boolean checkDateJob = j.getStart_date().before(new Date())
+                    && j.getEnd_date().after(new Date());
             JobDTO job = new JobDTO();
             if (checkDateJob) {
                 count++;
@@ -233,8 +233,8 @@ public class CompanyService implements ICompanyService {
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    boolean checkDateJob = j.getStart_date().before(new Date())
+                            && j.getEnd_date().after(new Date());
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
                     }
@@ -824,8 +824,8 @@ public class CompanyService implements ICompanyService {
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
-                    boolean checkDateJob = j.getStart_date().before(Date.from(Instant.now()))
-                            && j.getEnd_date().after(Date.from(Instant.now()));
+                    boolean checkDateJob = j.getStart_date().before(new Date())
+                            && j.getEnd_date().after(new Date());
                     if (checkJobNotDeleted && checkDateJob) {
                         count++;
                         jobs.add(JobMapping.getJob(j));
@@ -855,8 +855,8 @@ public class CompanyService implements ICompanyService {
     boolean checkDateSubcriptionPlan(Company company) {
         for (SubcriptionPlanCompany sp : company.getSubcritionPlanCompanies()) {
             boolean checkNotDeleted = sp.getDeleted_at() == null;
-            boolean checkDate = sp.getStart_date().before(Date.from(Instant.now()))
-                    && sp.getEnd_date().after(Date.from(Instant.now()));
+            boolean checkDate = sp.getStart_date().before(new Date())
+                    && sp.getEnd_date().after(new Date());
             if (checkNotDeleted && checkDate) {
                 return true;
             }
