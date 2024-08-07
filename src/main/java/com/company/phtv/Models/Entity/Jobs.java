@@ -77,9 +77,6 @@ public class Jobs extends BaseModel{
     @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
     private List<SkillJob> skillJobs;
 
-    @OneToMany(mappedBy = "jobs", cascade = CascadeType.ALL)
-    private List<Notification> notifications;
-
     public Jobs(int id) {
         this.id = id;
     }
