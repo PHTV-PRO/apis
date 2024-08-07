@@ -93,12 +93,13 @@ public class AuthenticateService implements IAuthenticateService {
             }
             // STEP 2: get account by email find = token
             Account account = _userRepo.getAccountByEmail(email);
-            if (account != null && account.getDeleted_at() == null) {
-                return AccountMapping.accountDTO(account);
+            if (account == null || account.getDeleted_at() != null) {
+                throw Variable.TOKEN_ERROR;
             }
-            throw Variable.TOKEN_ERROR;
+            return AccountMapping.accountDTO(account);
         } catch (Exception e) {
-            throw Variable.TOKEN_ERROR;
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
