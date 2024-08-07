@@ -34,8 +34,6 @@ public class JobService implements IJobService {
     @Autowired
     CompanyRepo _companyRepo;
     @Autowired
-    LocationRepo _locationRepo;
-    @Autowired
     JobTypeRepo _jobTypeRepo;
     @Autowired
     FollowJobRepo _followJobRepo;
@@ -75,7 +73,7 @@ public class JobService implements IJobService {
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
         // STEP 1: get data
-        List<Jobs> jobs = _jobRepo.getAllJob(lotId, indId);
+        List<Jobs> jobs = _jobRepo.getAllJob( indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (checkDateSubcriptionPlan(jobs.get(i))) {
@@ -334,13 +332,13 @@ public class JobService implements IJobService {
 
         job.setCompany(c);
         // get location
-        Location location = new Location();
-        for (Location l : c.getLocations()) {
-            if (l.getDeleted_at() == null) {
-                location = l;
-            }
-        }
-        job.setLocation(location);
+        // Location location = new Location();
+        // for (Location l : c.getLocations()) {
+        //     if (l.getDeleted_at() == null) {
+        //         location = l;
+        //     }
+        // }
+        // job.setLocation(location);
         // get job type
         JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());
         job.setJobType(jt);
@@ -514,11 +512,11 @@ public class JobService implements IJobService {
         if (requestJob.getCompany_id() != 0) {
             Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
             job.setCompany(c);
-            for (Location l : c.getLocations()) {
-                if (l.getDeleted_at() == null) {
-                    job.setLocation(l);
-                }
-            }
+            // for (Location l : c.getLocations()) {
+            //     if (l.getDeleted_at() == null) {
+            //         job.setLocation(l);
+            //     }
+            // }
 
             if (requestJob.getJob_type_id() != 0) {
                 JobType jt = _jobTypeRepo.findIdJobType(requestJob.getJob_type_id());

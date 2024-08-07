@@ -52,10 +52,6 @@ public class Seeding implements CommandLineRunner {
     LevelJobRepo _LevelJobRepo;
 
     @Autowired
-    LocationRepo _LocationRepo;
-
-
-    @Autowired
     SkillRepo _SkillRepo;
 
     @Autowired
@@ -78,11 +74,11 @@ public class Seeding implements CommandLineRunner {
         LoadCurriculumData();
         LoadIndustryData();
         // LoadEmployerData();
+        LoadCityProvinceData();
         LoadCompanyData();
         LoadLevelData();
         LoadSkillData();
-        LoadCityProvinceData();
-        LoadLocationData();
+        // LoadLocationData();
         LoadJobTypeData();
         LoadSubcriptionPlanData();
 
@@ -132,7 +128,7 @@ public class Seeding implements CommandLineRunner {
     private void LoadCompanyData() {
         if (_CompanyRepo.count() == 0) {
 
-            List<Company> list = new CompanyData(_AccountRepo).Data();
+            List<Company> list = new CompanyData(_AccountRepo, _CityProvinceRepo).Data();
             for (Company l : list) {
                 _CompanyRepo.save(l);
             }
@@ -202,7 +198,7 @@ public class Seeding implements CommandLineRunner {
     private void LoadJobData() {
         if (_JobRepo.count() == 0) {
 
-            List<Jobs> list = new JobData(_CompanyRepo, _LocationRepo, _JobTypeRepo).Data();
+            List<Jobs> list = new JobData(_CompanyRepo, _JobTypeRepo).Data();
             for (Jobs j : list) {
                 _JobRepo.save(j);
             }
@@ -238,17 +234,6 @@ public class Seeding implements CommandLineRunner {
             }
         }
     }
-
-    private void LoadLocationData() {
-        if (_LocationRepo.count() == 0) {
-
-            List<Location> list = new LocationData(_CompanyRepo, _CityProvinceRepo).Data();
-            for (Location l : list) {
-                _LocationRepo.save(l);
-            }
-        }
-    }
-
 
     private void LoadSkillData() {
         if (_SkillRepo.count() == 0) {

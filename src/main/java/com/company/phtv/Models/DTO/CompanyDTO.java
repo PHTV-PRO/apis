@@ -35,8 +35,9 @@ public class CompanyDTO {
     private AccountDTO account;
     private SubcriptionPlanDTO subcriptionPlan;
 
-    private List<LocationDTO> locations;
+    private String location;
     private List<JobDTO> jobs;
+    private CityProvinceDTO city_provence;
     private List<SkillDTO> skills;
 
 }

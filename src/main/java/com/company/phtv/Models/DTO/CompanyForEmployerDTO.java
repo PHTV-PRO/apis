@@ -32,7 +32,7 @@ public class CompanyForEmployerDTO {
     private AccountDTO account;
     private SubcriptionPlanDTO subcriptionPlan;
 
-    private List<LocationDTO> locations;
+    private String location;
     private List<JobDTO> jobsNotOpen;
     private List<JobDTO> jobsOpening;
     private List<JobDTO> jobsOpened;

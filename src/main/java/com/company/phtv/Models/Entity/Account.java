@@ -58,7 +58,6 @@ public class Account extends BaseModel implements UserDetails {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     private List<ViewedJob> viewedJobs;
 
-
     public Account(int id, String name, String email, String password, int gender, String address, String image,
             Role role) {
         this.id = id;

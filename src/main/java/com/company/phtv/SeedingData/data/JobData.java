@@ -3,7 +3,7 @@ package com.company.phtv.SeedingData.data;
 import com.company.phtv.Models.Entity.*;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.JobTypeRepo;
-import com.company.phtv.Repository.LocationRepo;
+// import com.company.phtv.Repository.LocationRepo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,12 +12,11 @@ import java.util.List;
 public class JobData {
 
         private final CompanyRepo _CompanyRepo;
-        private final LocationRepo _LocationRepo;
+        // private final LocationRepo _LocationRepo;
         private final JobTypeRepo _JobTypeRepo;
 
-        public JobData(CompanyRepo _CompanyRepo, LocationRepo _LocationRepo, JobTypeRepo _JobTypeRepo) {
+        public JobData(CompanyRepo _CompanyRepo , JobTypeRepo _JobTypeRepo) {
                 this._CompanyRepo = _CompanyRepo;
-                this._LocationRepo = _LocationRepo;
                 this._JobTypeRepo = _JobTypeRepo;
         }
 
@@ -61,7 +60,7 @@ public class JobData {
                                 true,
                                 0,
                                 _CompanyRepo.getOne(2),
-                                _LocationRepo.getOne(1),
+                                // _LocationRepo.getOne(1),
                                 _JobTypeRepo.getOne(1)));
                 data.add(new Jobs(
                                 2,
@@ -102,7 +101,7 @@ public class JobData {
                                 true,
                                 0,
                                 _CompanyRepo.getOne(3),
-                                _LocationRepo.getOne(2),
+                                // _LocationRepo.getOne(2),
                                 _JobTypeRepo.getOne(2)));
 
                 data.add(new Jobs(
@@ -148,7 +147,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(1),
-                        _LocationRepo.getOne(3),
+                        // _LocationRepo.getOne(3),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -211,7 +210,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(4),
-                        _LocationRepo.getOne(4),
+                        // _LocationRepo.getOne(4),
                         _JobTypeRepo.getOne(1)));
 
 
@@ -250,7 +249,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(5),
-                        _LocationRepo.getOne(5),
+                        // _LocationRepo.getOne(5),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -294,7 +293,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(6),
-                        _LocationRepo.getOne(6),
+                        // _LocationRepo.getOne(6),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -339,7 +338,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(7),
-                        _LocationRepo.getOne(7),
+                        // _LocationRepo.getOne(7),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -388,7 +387,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(8),
-                        _LocationRepo.getOne(8),
+                        // _LocationRepo.getOne(8),
                         _JobTypeRepo.getOne(1)));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
@@ -434,7 +433,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(9),
-                        _LocationRepo.getOne(9),
+                        // _LocationRepo.getOne(9),
                         _JobTypeRepo.getOne(1)));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -475,7 +474,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(10),
-                        _LocationRepo.getOne(10),
+                        // _LocationRepo.getOne(10),
                         _JobTypeRepo.getOne(1)));
 
                 //  Jobs Available
@@ -538,7 +537,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(2),
-                        _LocationRepo.getOne(1),
+                        // _LocationRepo.getOne(1),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -582,7 +581,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(3),
-                        _LocationRepo.getOne(2),
+                        // _LocationRepo.getOne(2),
                         _JobTypeRepo.getOne(2)));
                 //senior
                 data.add(new Jobs(
@@ -641,7 +640,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(1),
-                        _LocationRepo.getOne(3),
+                        // _LocationRepo.getOne(3),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -707,7 +706,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(4),
-                        _LocationRepo.getOne(4),
+                        // _LocationRepo.getOne(4),
                         _JobTypeRepo.getOne(1)));
 
 
@@ -743,7 +742,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(5),
-                        _LocationRepo.getOne(5),
+                        // _LocationRepo.getOne(5),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -791,7 +790,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(6),
-                        _LocationRepo.getOne(6),
+                        // _LocationRepo.getOne(6),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -831,7 +830,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(7),
-                        _LocationRepo.getOne(7),
+                        // _LocationRepo.getOne(7),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -896,7 +895,7 @@ public class JobData {
                         true,
                         1,
                         _CompanyRepo.getOne(8),
-                        _LocationRepo.getOne(8),
+                        // _LocationRepo.getOne(8),
                         _JobTypeRepo.getOne(1)));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
@@ -934,7 +933,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(9),
-                        _LocationRepo.getOne(9),
+                        // _LocationRepo.getOne(9),
                         _JobTypeRepo.getOne(1)));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -977,7 +976,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(10),
-                        _LocationRepo.getOne(10),
+                        // _LocationRepo.getOne(10),
                         _JobTypeRepo.getOne(1)));
 
                 //  Jobs Upcoming
@@ -1034,7 +1033,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(2),
-                        _LocationRepo.getOne(1),
+                        // _LocationRepo.getOne(1),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -1079,7 +1078,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(3),
-                        _LocationRepo.getOne(2),
+                        // _LocationRepo.getOne(2),
                         _JobTypeRepo.getOne(2)));
                 //senior
                 data.add(new Jobs(
@@ -1130,7 +1129,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(1),
-                        _LocationRepo.getOne(3),
+                        // _LocationRepo.getOne(3),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -1198,7 +1197,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(4),
-                        _LocationRepo.getOne(4),
+                        // _LocationRepo.getOne(4),
                         _JobTypeRepo.getOne(1)));
 
 
@@ -1238,7 +1237,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(5),
-                        _LocationRepo.getOne(5),
+                        // _LocationRepo.getOne(5),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -1290,7 +1289,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(6),
-                        _LocationRepo.getOne(6),
+                        // _LocationRepo.getOne(6),
                         _JobTypeRepo.getOne(3)));
 
                 data.add(new Jobs(
@@ -1358,7 +1357,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(7),
-                        _LocationRepo.getOne(7),
+                        // _LocationRepo.getOne(7),
                         _JobTypeRepo.getOne(1)));
 
                 data.add(new Jobs(
@@ -1433,7 +1432,7 @@ public class JobData {
                         true,
                         1,
                         _CompanyRepo.getOne(8),
-                        _LocationRepo.getOne(8),
+                        // _LocationRepo.getOne(8),
                         _JobTypeRepo.getOne(1)));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
@@ -1512,7 +1511,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(9),
-                        _LocationRepo.getOne(9),
+                        // _LocationRepo.getOne(9),
                         _JobTypeRepo.getOne(1)));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -1568,7 +1567,7 @@ public class JobData {
                         true,
                         0,
                         _CompanyRepo.getOne(10),
-                        _LocationRepo.getOne(10),
+                        // _LocationRepo.getOne(10),
                         _JobTypeRepo.getOne(1)));
                 return data;
         }

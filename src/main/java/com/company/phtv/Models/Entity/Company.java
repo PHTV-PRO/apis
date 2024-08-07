@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Entity
 @Getter
 @Setter
@@ -38,13 +37,15 @@ public class Company extends BaseModel {
     private String logo_image;
     @Column(name = "background_image")
     private String background_image;
-    @Column(name = "list_image",columnDefinition = "TEXT")
+    @Column(name = "list_image", columnDefinition = "TEXT")
     private String list_image;
     @Column(name = "enable")
     private int enable;
     @Column(name = "contract")
     private int contract;
-    
+    @Column(name = "lcoation")
+    private String location;
+
     @Column(name = "count_job")
     private int count_job = 0;
 
@@ -52,17 +53,15 @@ public class Company extends BaseModel {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<ImageCompany> imageCompany;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_province_id")
+    private CityProvince cityProvince;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<FollowCompany> followCompany;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Jobs> jobs;
-
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<Location> locations;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SubcriptionPlanCompany> subcritionPlanCompanies;
@@ -75,8 +74,9 @@ public class Company extends BaseModel {
     }
 
     public Company(int id, String name, String introduction, String benefit, String profession,
-            String size,  String link_website, String nationnality, String logo_image,
-            String background_image,String list_image, int enable, int contract, Account account) {
+            String size, String link_website, String nationnality, String logo_image,
+            String background_image, String list_image, int enable, int contract, Account account, String locatiton,
+            CityProvince cityProvince) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
@@ -92,5 +92,7 @@ public class Company extends BaseModel {
         this.enable = enable;
         this.contract = contract;
         this.account = account;
+        this.location = locatiton;
+        this.cityProvince = cityProvince;
     }
 }

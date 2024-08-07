@@ -26,6 +26,7 @@ public class RequestCompanyRegister {
     @Nullable
     public String link_website;
     public String nationnality;
+    public String location;
     @Nullable
     public MultipartFile background_image;
     // need

@@ -21,12 +21,15 @@ public class CompanyMapping {
         companyDTO.setLogo_image(c.getLogo_image());
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setList_image(c.getList_image());
+        companyDTO.setLocation(c.getLocation());
         companyDTO.setEnable(c.getEnable());
         companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
+        companyDTO.setCity_provence(CityProvinceMapping.cityProvinceDTO(c.getCityProvince()));
 
         return companyDTO;
 
     }
+
     public static CompanyForEmployerDTO CompanyForEmployerDTO(Company c) {
         CompanyForEmployerDTO companyDTO = new CompanyForEmployerDTO();
         companyDTO.setId(c.getId());
@@ -41,6 +44,7 @@ public class CompanyMapping {
         companyDTO.setLogo_image(c.getLogo_image());
         companyDTO.setBackground_image(c.getBackground_image());
         companyDTO.setList_image(c.getList_image());
+        companyDTO.setLocation(c.getLocation());
         companyDTO.setEnable(c.getEnable());
 
         return companyDTO;
@@ -57,8 +61,9 @@ public class CompanyMapping {
         company.setSize(c.getSize());
         company.setLink_website(c.getLink_website());
         company.setNationnality(c.getNationnality());
-//        company.setLogo_image(c.getLogo_image());
-//        company.setBackground_image(c.getBackground_image());
+        // company.setLogo_image(c.getLogo_image());
+        // company.setBackground_image(c.getBackground_image());
+        company.setLocation(c.getLocation());
         company.setEnable(c.getEnable());
         return company;
     }
@@ -97,8 +102,11 @@ public class CompanyMapping {
         if (rc.getAccount_id() != 0) {
             c.setAccount(new Account(0));
         }
-        if(rc.getList_image() !=null){
+        if (rc.getList_image() != null) {
             c.setList_image(c.getList_image());
+        }
+        if (rc.getLocation() != null) {
+            c.setLocation(c.getLocation());
         }
         return c;
     }

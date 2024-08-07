@@ -54,9 +54,6 @@ public class Jobs extends BaseModel{
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
-    private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "job_type_id")
@@ -81,7 +78,7 @@ public class Jobs extends BaseModel{
         this.id = id;
     }
 
-    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, Date start_date, Date end_date, boolean is_active, int gender, Company company, Location location, JobType jobType) {
+    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, Date start_date, Date end_date, boolean is_active, int gender, Company company,JobType jobType) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -98,7 +95,6 @@ public class Jobs extends BaseModel{
         this.is_active = is_active;
         this.gender = gender;
         this.company = company;
-        this.location = location;
         this.jobType = jobType;
     }
 }

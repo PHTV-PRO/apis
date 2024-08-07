@@ -32,7 +32,6 @@ public class JobDTO {
     private  boolean job_is_save =false;
 
     private CompanyDTO company;
-    private LocationDTO location;
     private JobTypeDTO jobType;
 
     private List<SkillDTO> skills;

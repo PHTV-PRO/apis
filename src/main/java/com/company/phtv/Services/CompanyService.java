@@ -4,7 +4,6 @@ import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
@@ -12,14 +11,11 @@ import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
-import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
-import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
-import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestCompanyRegister;
@@ -27,7 +23,6 @@ import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
-import com.company.phtv.Repository.CompanyImageRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
@@ -39,14 +34,12 @@ import com.company.phtv.Utils.HandleDate;
 import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -73,8 +66,6 @@ public class CompanyService implements ICompanyService {
     ApplicationRepo _applicationRepo;
     @Autowired
     FollowJobRepo _followJobRepo;
-    @Autowired
-    CompanyImageRepo _companyImageRepo;
 
     // call service
     @Autowired
@@ -142,14 +133,14 @@ public class CompanyService implements ICompanyService {
         companyDTO.setList_image_mobile(list_image_mobile);
 
         // get location
-        List<LocationDTO> locationDTO = new ArrayList<>();
-        for (Location l : company.getLocations()) {
-            boolean checkLocationDeleted = l.getDeleted_at() != null;
-            if (checkLocationDeleted) {
-                continue;
-            }
-            locationDTO.add(LocationMapping.LocationDTO(l));
-        }
+        // List<LocationDTO> locationDTO = new ArrayList<>();
+        // for (Location l : company.getLocations()) {
+        // boolean checkLocationDeleted = l.getDeleted_at() != null;
+        // if (checkLocationDeleted) {
+        // continue;
+        // }
+        // locationDTO.add(LocationMapping.LocationDTO(l));
+        // }
         // get skill
         List<SkillDTO> skillDTOs = new ArrayList<>();
         for (SkillCompany s : company.getSkillCompanies()) {
@@ -159,6 +150,7 @@ public class CompanyService implements ICompanyService {
             }
             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
         }
+        
         List<JobDTO> jobDTOS = new ArrayList<>();
         int count = 0;
         // STEP 3: get job
@@ -203,7 +195,7 @@ public class CompanyService implements ICompanyService {
         // STEP 4: set final data for dto
         companyDTO.setOpening_jobs(count);
         companyDTO.setSkills(skillDTOs);
-        companyDTO.setLocations(locationDTO);
+        // companyDTO.setLocations(locationDTO);
         companyDTO.setJobs(jobDTOS);
         return companyDTO;
     }
@@ -348,14 +340,13 @@ public class CompanyService implements ICompanyService {
                     if (getCompanies.get(i).getDeleted_at() != null) {
                         continue;
                     }
-                    for (Location l : getCompanies.get(i).getLocations()) {
-                        boolean checkLocationDeleted = l.getCity_provence().getDeleted_at() == null;
-                        boolean checkLocationTrue = requestFilterCompany.province_city_id == l.getCity_provence()
-                                .getId();
-                        if (checkLocationDeleted && checkLocationTrue) {
-                            companies.add(getCompanies.get(i));
-                            break;
-                        }
+
+                    boolean checkDeleted = companies.get(i).getCityProvince().getDeleted_at() == null;
+                    boolean checkCityProvenceTrue = requestFilterCompany.province_city_id == companies.get(i)
+                            .getCityProvince().getId();
+                    if (checkDeleted && checkCityProvenceTrue) {
+                        companies.add(getCompanies.get(i));
+                        break;
                     }
                 }
                 return pagination.pagination(size, page, companyDTOMapping(companies));
@@ -385,12 +376,10 @@ public class CompanyService implements ICompanyService {
                     }
                     // get company by province_city for check Industry (step next)
                     boolean checkIndustryConstainId = false;
-                    for (Location l : getCompanies.get(i).getLocations()) {
-                        boolean checkLocation = requestFilterCompany.province_city_id == l.getCity_provence()
-                                .getId();
-                        if (checkLocation && l.getCity_provence().getDeleted_at() == null) {
-                            checkIndustryConstainId = true;
-                        }
+                    boolean checkProvence = requestFilterCompany.province_city_id == companies.get(i).getCityProvince()
+                            .getId();
+                    if (checkProvence && companies.get(i).getCityProvince().getDeleted_at() == null) {
+                        checkIndustryConstainId = true;
                     }
                     // check by industry
                     for (SkillCompany s : getCompanies.get(i).getSkillCompanies()) {
@@ -692,6 +681,9 @@ public class CompanyService implements ICompanyService {
         if (requestCompanyRegister.getNationnality() != null) {
             company.setNationnality(requestCompanyRegister.getNationnality());
         }
+        if (requestCompanyRegister.getLocation() != null) {
+            company.setLocation(requestCompanyRegister.getLocation());
+        }
         _companyRepo.save(company);
 
         // STEP 5: save
@@ -797,13 +789,13 @@ public class CompanyService implements ICompanyService {
                         skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
                     }
                 }
-                List<LocationDTO> locationDTOs = new ArrayList<>();
-                for (Location l : companies.get(i).getLocations()) {
-                    if (l.getDeleted_at() == null) {
-                        locationDTOs.add(LocationMapping.LocationDTO(l));
-                    }
-                }
-                companyDTO.setLocations(locationDTOs);
+                // List<LocationDTO> locationDTOs = new ArrayList<>();
+                // for (Location l : companies.get(i).getLocations()) {
+                // if (l.getDeleted_at() == null) {
+                // locationDTOs.add(LocationMapping.LocationDTO(l));
+                // }
+                // }
+                // companyDTO.setLocations(locationDTOs);
                 companyDTO.setSkills(skillDTOs);
                 // set count job opening for company and add all job opening
                 int count = 0;

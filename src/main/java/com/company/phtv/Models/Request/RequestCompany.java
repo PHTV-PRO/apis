@@ -44,4 +44,7 @@ public class RequestCompany {
     public String list_image;
     @Nullable
     public int account_id;
+    @Nullable
+    public String location;
+
 }

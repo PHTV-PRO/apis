@@ -1,9 +1,13 @@
 package com.company.phtv.Models.Map;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.company.phtv.Models.DTO.*;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.Skill;
+import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Request.RequestJob;
 
 public class JobMapping {
@@ -24,6 +28,10 @@ public class JobMapping {
         jobDTO.setEnd_date(jobs.getEnd_date());
         jobDTO.set_active(jobs.is_active());
         jobDTO.setGender(jobs.getGender());
+        List<SkillDTO> skillDTOs = new ArrayList<>();
+        for (SkillCompany sc : jobs.getCompany().getSkillCompanies()) {
+            skillDTOs.add(SkillMapping.getSkill(sc.getSkill()));
+        }
         jobDTO.setCompany(
                 new CompanyDTO(jobs.getCompany().getId(), jobs.getCompany().getName(),
                         jobs.getCompany().getIntroduction(), jobs.getCompany().getBenefit(),
@@ -32,15 +40,19 @@ public class JobMapping {
                         jobs.getCompany().getLink_website(), jobs.getCompany().getNationnality(),
                         jobs.getCompany().getLogo_image(), jobs.getCompany().getBackground_image(),
                         jobs.getCompany().getList_image(), null,
-                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), false, 0, null, null, null,
+                        jobs.getCompany().getEnable(), jobs.getCompany().getContract(), false, 0, null, null,
+                        jobs.getCompany().getLocation(),
                         null,
-                        null));
-        if (jobs.getLocation() != null) {
-            jobDTO.setLocation(
-                    new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(), null,
-                            jobs.getLocation().getCity_provence() == null ? null
-                                    : CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
-        }
+                        CityProvinceMapping.cityProvinceDTO(jobs.getCompany().getCityProvince()),
+                        skillDTOs));
+        // if (jobs.getLocation() != null) {
+        // jobDTO.setLocation(
+        // new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(),
+        // null,
+        // jobs.getLocation().getCity_provence() == null ? null
+        // :
+        // CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
+        // }
         if (jobs.getJobType() != null) {
             jobDTO.setJobType(
                     new JobTypeDTO(jobs.getJobType().getId(), jobs.getJobType().getName()));

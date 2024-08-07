@@ -1,13 +1,8 @@
 package com.company.phtv.Services;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,28 +12,22 @@ import com.company.phtv.Models.DTO.ChartForAdmin;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.LevelDTO;
-import com.company.phtv.Models.DTO.LocationDTO;
 import com.company.phtv.Models.DTO.SearchAll;
 import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
-import com.company.phtv.Models.Entity.Application;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
-import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.LevelJob;
-import com.company.phtv.Models.Entity.Location;
 import com.company.phtv.Models.Entity.Skill;
 import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Entity.SkillJob;
 import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
-import com.company.phtv.Models.Entity.ViewedJob;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.LevelMapping;
-import com.company.phtv.Models.Map.LocationMapping;
 import com.company.phtv.Models.Map.SkillMapping;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
@@ -168,12 +157,12 @@ public class AdminService implements IAdminService {
                     CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
                     List<JobDTO> jobs = new ArrayList<>();
                     companyDTO.setJobs(jobs);
-                    List<LocationDTO> lDtos = new ArrayList<>();
-                    for (Location l : company.getLocations()) {
-                        if (l.getDeleted_at() == null) {
-                            lDtos.add(LocationMapping.LocationDTO(l));
-                        }
-                    }
+                    // List<LocationDTO> lDtos = new ArrayList<>();
+                    // for (Location l : company.getLocations()) {
+                    //     if (l.getDeleted_at() == null) {
+                    //         lDtos.add(LocationMapping.LocationDTO(l));
+                    //     }
+                    // }
                     List<SkillDTO> skillDTOs = new ArrayList<>();
                     for (SkillCompany s : company.getSkillCompanies()) {
                         if (s.getSkill().getDeleted_at() == null) {
@@ -205,7 +194,7 @@ public class AdminService implements IAdminService {
                     // STEP 3: set to dto
                     companyDTO.setOpening_jobs(count);
                     companyDTO.setJobs(jobs);
-                    companyDTO.setLocations(lDtos);
+                    // companyDTO.setLocations(lDtos);
                     companyDTO.setSkills(skillDTOs);
                     companyDTOs.add(companyDTO);
                 }
