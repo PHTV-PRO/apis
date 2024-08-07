@@ -166,6 +166,18 @@ public class CompanyService implements ICompanyService {
         int count = 0;
         // STEP 3: get job
         for (Jobs j : company.getJobs()) {
+
+            Account currentAccount = _currentAccount.getAccount();
+        
+            if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+                if (j.getCompany().getEnable() == 0) {
+                    continue;
+                }
+            }
+            boolean checkSubcriptionPlan = checkDateSubcriptionPlan(j.getCompany());
+            if (!checkSubcriptionPlan) {
+                continue;
+            }
             boolean checkJobDeleted = j.getDeleted_at() != null;
             if (checkJobDeleted) {
                 continue;
@@ -206,6 +218,13 @@ public class CompanyService implements ICompanyService {
         List<Company> companies = _companyRepo.findCompanyByContract();
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
+            Account currentAccount = _currentAccount.getAccount();
+        
+            if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+                if (companies.get(i).getEnable() == 0) {
+                    continue;
+                }
+            }
             boolean checkNotDeleted = companies.get(i).getDeleted_at() == null;
             boolean checkContract = companies.get(i).getContract() == 1;
             if (checkNotDeleted && checkContract) {
@@ -232,6 +251,10 @@ public class CompanyService implements ICompanyService {
                 // STEP 3: set number job opening
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
+                    boolean checkSubcriptionPlan = checkDateSubcriptionPlan(j.getCompany());
+                    if (!checkSubcriptionPlan) {
+                        continue;
+                    }
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
                     boolean checkDateJob = j.getStart_date().before(new Date())
                             && j.getEnd_date().after(new Date());
@@ -781,10 +804,10 @@ public class CompanyService implements ICompanyService {
             if (companies.get(i).getDeleted_at() == null) {
                 Account currentAccount = _currentAccount.getAccount();
                 if (currentAccount == null || currentAccount.getRole() != Role.ADMIN) {
-                    boolean checkSubcriptionPlan = checkDateSubcriptionPlan(companies.get(i));
-                    if (!checkSubcriptionPlan) {
-                        continue;
-                    }
+                    // boolean checkSubcriptionPlan = checkDateSubcriptionPlan(companies.get(i));
+                    // if (!checkSubcriptionPlan) {
+                    // continue;
+                    // }
                 }
                 if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
                     if (companies.get(i).getEnable() == 0) {
@@ -823,6 +846,10 @@ public class CompanyService implements ICompanyService {
                 // set count job opening for company and add all job opening
                 int count = 0;
                 for (Jobs j : companies.get(i).getJobs()) {
+                    boolean checkSubcriptionPlan = checkDateSubcriptionPlan(companies.get(i));
+                    if (!checkSubcriptionPlan) {
+                        continue;
+                    }
                     boolean checkJobNotDeleted = j.getDeleted_at() == null;
                     boolean checkDateJob = j.getStart_date().before(new Date())
                             && j.getEnd_date().after(new Date());
@@ -863,5 +890,4 @@ public class CompanyService implements ICompanyService {
         }
         return false;
     }
-
 }
