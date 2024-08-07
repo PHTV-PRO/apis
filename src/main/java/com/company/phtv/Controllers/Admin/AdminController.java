@@ -68,35 +68,35 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/approve_company/{id}")
-    public ResponseEntity<?> approveCompany(@PathVariable int id) {
-        try {
-            return _baseControllers_string.success(_companyService.approveCompany(id));
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
+    // @PostMapping("/approve_company/{id}")
+    // public ResponseEntity<?> approveCompany(@PathVariable int id) {
+    //     try {
+    //         return _baseControllers_string.success(_companyService.approveCompany(id));
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
 
-    @PostMapping("/reject_company/{id}")
-    public ResponseEntity<?> rejectCompany(@PathVariable int id) {
-        try {
-            return _baseControllers_string.success(_companyService.rejectCompany(id));
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
-    @GetMapping("/get_company_pending")
-    public ResponseEntity<?> getComapanyPending() {
-        try {
-            return _baseControllers_companies.success(_companyService.getCompanyPending());
-        } catch (HttpException e) {
-            return _baseController.error(null, e.StatusCode, e.message);
-        } catch (Exception e) {
-            return _baseController.error(null, 500, e.getMessage());
-        }
-    }
+    // @PostMapping("/reject_company/{id}")
+    // public ResponseEntity<?> rejectCompany(@PathVariable int id) {
+    //     try {
+    //         return _baseControllers_string.success(_companyService.rejectCompany(id));
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
+    // @GetMapping("/get_company_pending")
+    // public ResponseEntity<?> getComapanyPending() {
+    //     try {
+    //         return _baseControllers_companies.success(_companyService.getCompanyPending());
+    //     } catch (HttpException e) {
+    //         return _baseController.error(null, e.StatusCode, e.message);
+    //     } catch (Exception e) {
+    //         return _baseController.error(null, 500, e.getMessage());
+    //     }
+    // }
 }

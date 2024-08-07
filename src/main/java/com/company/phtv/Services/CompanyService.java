@@ -9,7 +9,6 @@ import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
 import com.company.phtv.Models.Entity.Company;
-import com.company.phtv.Models.Entity.CompanyPendingApproval;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
@@ -29,7 +28,6 @@ import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
 import com.company.phtv.Repository.CompanyImageRepo;
-import com.company.phtv.Repository.CompanyPendingApprovalRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
@@ -77,8 +75,6 @@ public class CompanyService implements ICompanyService {
     FollowJobRepo _followJobRepo;
     @Autowired
     CompanyImageRepo _companyImageRepo;
-    @Autowired
-    CompanyPendingApprovalRepo _companyPendingApprovalRepo;
 
     // call service
     @Autowired
@@ -98,25 +94,26 @@ public class CompanyService implements ICompanyService {
         return pagination.pagination(size, page, companyDTOMapping(companies));
     }
 
-    public List<CompanyDTO> getCompanyPending() {
-        List<CompanyDTO> companyDTOs = new ArrayList<>();
-        List<CompanyPendingApproval> companyPendingApproval = _companyPendingApprovalRepo.findAll();
-        for (CompanyPendingApproval cp : companyPendingApproval) {
-            if (cp.getDeleted_at() == null) {
-                CompanyDTO companyDTO = new CompanyDTO();
-                companyDTO.setAccount(AccountMapping.accountDTO(_accountRepo.findById(cp.getAccount_id()).get()));
-                companyDTO.setName(cp.getName());
-                companyDTO.setIntroduction(cp.getIntroduction());
-                companyDTO.setLogo_image(cp.getLogo_image());
-                companyDTO.setBenefit(cp.getBenefit());
-                companyDTO.setLink_website(cp.getLink_website());
-                companyDTO.setNationnality(cp.getNationnality());
-                companyDTO.setId(cp.getId());
-                companyDTOs.add(companyDTO);
-            }
-        }
-        return companyDTOs;
-    }
+    // public List<CompanyDTO> getCompanyPending() {
+    // List<CompanyDTO> companyDTOs = new ArrayList<>();
+    // List<CompanyPendingApproval> companyPendingApproval =
+    // _companyPendingApprovalRepo.findAll();
+    // for (CompanyPendingApproval cp : companyPendingApproval) {
+    // if (cp.getDeleted_at() == null) {
+    // CompanyDTO companyDTO = new CompanyDTO();
+    // companyDTO.setAccount(AccountMapping.accountDTO(_accountRepo.findById(cp.getAccount_id()).get()));
+    // companyDTO.setName(cp.getName());
+    // companyDTO.setIntroduction(cp.getIntroduction());
+    // companyDTO.setLogo_image(cp.getLogo_image());
+    // companyDTO.setBenefit(cp.getBenefit());
+    // companyDTO.setLink_website(cp.getLink_website());
+    // companyDTO.setNationnality(cp.getNationnality());
+    // companyDTO.setId(cp.getId());
+    // companyDTOs.add(companyDTO);
+    // }
+    // }
+    // return companyDTOs;
+    // }
 
     @Override
     public CompanyDTO getById(int id) {
@@ -168,7 +165,7 @@ public class CompanyService implements ICompanyService {
         for (Jobs j : company.getJobs()) {
 
             Account currentAccount = _currentAccount.getAccount();
-        
+
             if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
                 if (j.getCompany().getEnable() == 0) {
                     continue;
@@ -219,7 +216,7 @@ public class CompanyService implements ICompanyService {
         List<CompanyDTO> companyDTOS = new ArrayList<>();
         for (int i = 0; i < companies.size(); i++) {
             Account currentAccount = _currentAccount.getAccount();
-        
+
             if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
                 if (companies.get(i).getEnable() == 0) {
                     continue;
@@ -627,7 +624,7 @@ public class CompanyService implements ICompanyService {
 
     }
 
-    public CompanyPendingApproval registerCompany(RequestCompanyRegister requestCompanyRegister) {
+    public CompanyDTO registerCompany(RequestCompanyRegister requestCompanyRegister) {
         // STEP 1: get account
         Account account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
         if (account == null) {
@@ -649,91 +646,56 @@ public class CompanyService implements ICompanyService {
             // login fail;
             throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
+        if (account.getRole() == Role.CANDIDATE) {
+            account.setRole(Role.EMPLOYER);
+            _accountRepo.save(account);
+        }
+        if (account.getRole() == Role.EMPLOYER) {
+            for (Company c : account.getCompanies()) {
+                if (c.getDeleted_at() == null) {
+                    throw Variable.COMPANY_ACCOUNT_EXISTING;
+                }
+            }
+        }
 
         // STEP 4: add data from client to entity for save database
-        CompanyPendingApproval companyPendingApproval = new CompanyPendingApproval();
+        Company company = new Company();
         // data not null
-        companyPendingApproval.setAccount_id(account.getId());
-        companyPendingApproval.setName(requestCompanyRegister.getName_company());
+        company.setName(requestCompanyRegister.getName_company());
         if (requestCompanyRegister.getLogo_image() != null) {
             try {
                 @SuppressWarnings("rawtypes")
                 Map check = _cloudinaryService.uploadImage(requestCompanyRegister.getLogo_image(),
                         requestCompanyRegister.getLogo_image().getName());
-                companyPendingApproval.setLogo_image(check.get("url").toString());
+                company.setLogo_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
         // data can null
+        company.setAccount(account);
         if (requestCompanyRegister.getIntroduction() != null) {
-            companyPendingApproval.setIntroduction(requestCompanyRegister.getIntroduction());
+            company.setIntroduction(requestCompanyRegister.getIntroduction());
         }
         if (requestCompanyRegister.getBenefit() != null) {
-            companyPendingApproval.setBenefit(requestCompanyRegister.getBenefit());
+            company.setBenefit(requestCompanyRegister.getBenefit());
         }
         if (requestCompanyRegister.getProfession() != null) {
-            companyPendingApproval.setProfession(requestCompanyRegister.getProfession());
+            company.setProfession(requestCompanyRegister.getProfession());
         }
         if (requestCompanyRegister.getSize() != null) {
-            companyPendingApproval.setSize(requestCompanyRegister.getSize());
+            company.setSize(requestCompanyRegister.getSize());
         }
         if (requestCompanyRegister.getLink_website() != null) {
-            companyPendingApproval.setLink_website(requestCompanyRegister.getLink_website());
+            company.setLink_website(requestCompanyRegister.getLink_website());
         }
         if (requestCompanyRegister.getNationnality() != null) {
-            companyPendingApproval.setNationnality(requestCompanyRegister.getNationnality());
-        }
-
-        _companyPendingApprovalRepo.save(companyPendingApproval);
-
-        // STEP 5: save
-        return companyPendingApproval;
-    }
-
-    public String approveCompany(int id) {
-        CompanyPendingApproval companyPendingApproval = _companyPendingApprovalRepo.findById(id).get();
-        if (companyPendingApproval == null) {
-            throw Variable.NOT_FOUND;
-        }
-        Account account = _accountRepo.findIdAccount(companyPendingApproval.getAccount_id());
-        if (account == null || account.getDeleted_at() != null) {
-            throw Variable.ACCOUNT_NOT_FOUND;
-        }
-        Company company = new Company();
-        company.setAccount(account);
-        company.setName(companyPendingApproval.getName());
-        company.setLogo_image(companyPendingApproval.getLogo_image());
-
-        if (company.getIntroduction() != null) {
-            company.setIntroduction(companyPendingApproval.getIntroduction());
-        }
-        if (company.getBenefit() != null) {
-            company.setBenefit(companyPendingApproval.getBenefit());
-        }
-        if (company.getProfession() != null) {
-            company.setProfession(companyPendingApproval.getProfession());
-        }
-        if (company.getSize() != null) {
-            company.setSize(companyPendingApproval.getSize());
-        }
-        if (company.getLink_website() != null) {
-            company.setLink_website(companyPendingApproval.getLink_website());
-        }
-        if (company.getNationnality() != null) {
-            company.setNationnality(companyPendingApproval.getNationnality());
+            company.setNationnality(requestCompanyRegister.getNationnality());
         }
         _companyRepo.save(company);
-        return "Success";
-    }
 
-    public String rejectCompany(int id) {
-        CompanyPendingApproval companyPendingApproval = _companyPendingApprovalRepo.findById(id).get();
-        if (companyPendingApproval == null) {
-            throw Variable.NOT_FOUND;
-        }
-        _companyPendingApprovalRepo.delete(companyPendingApproval);
-        return "Success";
+        // STEP 5: save
+        return CompanyMapping.CompanyDTO(company);
     }
 
     // for method put
