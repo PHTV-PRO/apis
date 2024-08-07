@@ -25,6 +25,7 @@ import com.company.phtv.Utils.Variable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -273,5 +274,25 @@ public class AccountService implements IAccountService {
         accountDTO.setCount_jobs(company.getCount_job());
 
         return accountDTO;
+    }
+
+    public String putImage(MultipartFile image) {
+        Account account = _currentAccount.getAccount();
+        if (account == null) {
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
+        if (image != null) {
+            try {
+                // create image in cloudinary
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(image, image.getName());
+                account.setImage(check.get("url").toString());
+                _accountRepo.save(account);
+                return "Success";
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        return "Success";
     }
 }
