@@ -54,8 +54,6 @@ public class Seeding implements CommandLineRunner {
     @Autowired
     LocationRepo _LocationRepo;
 
-    @Autowired
-    NotificationRepo _NotificationRepo;
 
     @Autowired
     SkillRepo _SkillRepo;
@@ -92,7 +90,6 @@ public class Seeding implements CommandLineRunner {
         LoadJobData();
         LoadLevelJobData();
 
-        LoadNotificationData();
         LoadSubcriptionPlanCompanyData();
         LoadFollowJobData();
         LoadViewedJobData();
@@ -252,15 +249,6 @@ public class Seeding implements CommandLineRunner {
         }
     }
 
-    private void LoadNotificationData() {
-        if (_NotificationRepo.count() == 0) {
-
-            List<Notification> list = new NotificationData(_AccountRepo, _JobRepo, _CompanyRepo).Data();
-            for (Notification n : list) {
-                _NotificationRepo.save(n);
-            }
-        }
-    }
 
     private void LoadSkillData() {
         if (_SkillRepo.count() == 0) {
