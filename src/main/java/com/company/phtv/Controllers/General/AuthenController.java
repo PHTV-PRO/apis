@@ -83,7 +83,7 @@ public class AuthenController {
         }
     }
 
-    @PutMapping(value = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
+    @PutMapping(value = "/account/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }, produces = {
             MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> Put(@RequestParam MultipartFile image) {
         try {
