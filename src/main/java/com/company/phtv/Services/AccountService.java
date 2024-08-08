@@ -211,10 +211,15 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public AccountDTOForEmployer getAccountCompanyJob() {
+    public AccountDTOForEmployer getAccountCompanyJob(int id) {
         // contemporaneous get company, job, subcription plan by account
         // STEP 1: get and check not delete account
-        Account account = _currentAccount.getAccount();
+        Account account = new Account();
+        if (id == 0) {
+            account = _currentAccount.getAccount();
+        } else {
+            account = _accountRepo.getAccountById(id);
+        }
         AccountDTOForEmployer accountDTO = new AccountDTOForEmployer();
         accountDTO = AccountMapping.accountDTOForEmployer(account);
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;

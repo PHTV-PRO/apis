@@ -23,7 +23,7 @@ public class EmployerAccountController {
     @GetMapping("")
     public ResponseEntity<?> get() {
         try {
-            return _baseController.success(_accountService.getAccountCompanyJob());
+            return _baseController.success(_accountService.getAccountCompanyJob(0));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
