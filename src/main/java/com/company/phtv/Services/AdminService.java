@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.stereotype.Service;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.ChartForAdmin;
 import com.company.phtv.Models.DTO.CompanyDTO;
@@ -141,8 +143,11 @@ public class AdminService implements IAdminService {
         List<CompanyDTO> companyDTOs = new ArrayList<>();
         if (companies != null) {
             for (Company company : companies) {
+                if (company.getDeleted_at() != null || company.getEnable() == 0) {
+                    continue;
+                }
                 if (searchAll.getCompanies() != null && searchAll.getCompanies().size() >= 30) {
-                    break;
+                    continue;
                 }
                 boolean checkCompanyNotDeleted = company.getDeleted_at() == null;
                 if (checkCompanyNotDeleted) {
@@ -156,12 +161,11 @@ public class AdminService implements IAdminService {
                     }
                     CompanyDTO companyDTO = CompanyMapping.CompanyDTO(company);
                     List<JobDTO> jobs = new ArrayList<>();
-                    companyDTO.setJobs(jobs);
                     // List<LocationDTO> lDtos = new ArrayList<>();
                     // for (Location l : company.getLocations()) {
-                    //     if (l.getDeleted_at() == null) {
-                    //         lDtos.add(LocationMapping.LocationDTO(l));
-                    //     }
+                    // if (l.getDeleted_at() == null) {
+                    // lDtos.add(LocationMapping.LocationDTO(l));
+                    // }
                     // }
                     List<SkillDTO> skillDTOs = new ArrayList<>();
                     for (SkillCompany s : company.getSkillCompanies()) {
@@ -176,6 +180,9 @@ public class AdminService implements IAdminService {
                         boolean checkDateJob = j.getStart_date().before(new Date())
                                 && j.getEnd_date().after(new Date());
                         if (checkJobNotDeleted && checkDateJob) {
+                            if (checkDateSubcriptionPlan(j)) {
+                                continue;
+                            }
                             JobDTO jobDTO = JobMapping.getJob(j);
                             jobDTO = setAppliedAndSaved(j, jobDTO);
                             jobDTO = setSkill_level(j, jobDTO);
@@ -202,7 +209,9 @@ public class AdminService implements IAdminService {
             searchAll.setCompanies(companyDTOs);
         }
 
-        Skill getOneSkill = _skillRepo.findSkillByNameContaining(name).get(0);
+        Skill getOneSkill = _skillRepo.findSkillByNameContaining(name).size() > 0
+                ? _skillRepo.findSkillByNameContaining(name).get(0)
+                : null;
         if (getOneSkill != null) {
 
             for (SkillCompany sc : getOneSkill.getSkillCompanies()) {
@@ -219,6 +228,9 @@ public class AdminService implements IAdminService {
                     }
                 }
                 if (checkExist == false) {
+                    if (sc.getCompany().getEnable() == 0) {
+                        continue;
+                    }
                     CompanyDTO companyDTO = CompanyMapping.CompanyDTO(sc.getCompany());
                     List<SkillDTO> skillDTOs = new ArrayList<>();
                     for (SkillCompany s : sc.getCompany().getSkillCompanies()) {
@@ -237,6 +249,9 @@ public class AdminService implements IAdminService {
         List<JobDTO> jobDTOs = new ArrayList<>();
         if (jobs != null) {
             for (Jobs job : jobs) {
+                if (checkDateSubcriptionPlan(job)) {
+                    continue;
+                }
                 if (searchAll.getJobs() != null && searchAll.getJobs().size() >= 30) {
                     break;
                 }
@@ -258,41 +273,58 @@ public class AdminService implements IAdminService {
                 jobDTOs.add(jobDTO);
             }
             searchAll.setJobs(jobDTOs);
-            for (SkillJob s : getOneSkill.getSkillJobs()) {
-                if (searchAll.getJobs().size() >= 30) {
-                    break;
-                }
-                if (s.getDeleted_at() != null) {
-                    continue;
-                }
-                boolean checkExist = false;
-
-                for (JobDTO j : searchAll.getJobs()) {
-                    if (j.getId() == s.getJobs().getId()) {
-                        checkExist = true;
+            if (getOneSkill != null) {
+                for (SkillJob s : getOneSkill.getSkillJobs()) {
+                    if (s.getDeleted_at() != null) {
+                        continue;
                     }
-                }
-                if (checkExist == false) {
-                    JobDTO jobDTO = JobMapping.getJob(s.getJobs());
-
-                    List<SkillDTO> skillDTOs = new ArrayList<>();
-                    for (SkillJob sj : s.getJobs().getSkillJobs()) {
-                        if (sj.getSkills().getDeleted_at() == null) {
-                            skillDTOs.add(SkillMapping.getSkill(sj.getSkills()));
+                    boolean checkJobAdded = false;
+                    for (JobDTO j : jobDTOs) {
+                        if (s.getJobs().getId() == j.getId()) {
+                            checkJobAdded = true;
                         }
                     }
-                    List<LevelDTO> levelDTOs = new ArrayList<>();
-                    for (LevelJob l : s.getJobs().getLevelJobs()) {
-                        if (l.getLevel().getDeleted_at() == null) {
-                            levelDTOs.add(LevelMapping.levelDTO(l.getLevel()));
+                    if (checkJobAdded) {
+                        continue;
+                    }
+                    if (checkDateSubcriptionPlan(s.getJobs())) {
+                        continue;
+                    }
+                    if (searchAll.getJobs().size() >= 30) {
+                        continue;
+                    }
+
+                    boolean checkExist = false;
+
+                    for (JobDTO j : searchAll.getJobs()) {
+                        if (j.getId() == s.getJobs().getId()) {
+                            checkExist = true;
                         }
                     }
-                    jobDTO.setSkills(skillDTOs);
-                    jobDTO.setLevels(levelDTOs);
-                    searchAll.getJobs().add(jobDTO);
+                    if (checkExist == false) {
+                        JobDTO jobDTO = JobMapping.getJob(s.getJobs());
+
+                        List<SkillDTO> skillDTOs = new ArrayList<>();
+                        for (SkillJob sj : s.getJobs().getSkillJobs()) {
+                            if (sj.getSkills().getDeleted_at() == null) {
+                                skillDTOs.add(SkillMapping.getSkill(sj.getSkills()));
+                            }
+                        }
+                        List<LevelDTO> levelDTOs = new ArrayList<>();
+                        for (LevelJob l : s.getJobs().getLevelJobs()) {
+                            if (l.getLevel().getDeleted_at() == null) {
+                                levelDTOs.add(LevelMapping.levelDTO(l.getLevel()));
+                            }
+                        }
+                        jobDTO.setSkills(skillDTOs);
+                        jobDTO.setLevels(levelDTOs);
+                        jobDTOs.add(jobDTO);
+                    }
                 }
             }
+
         }
+        searchAll.setJobs(jobDTOs);
         searchAll.setQuantity(searchAll.getCompanies().size() + searchAll.getJobs().size());
         return searchAll;
     }
@@ -614,5 +646,39 @@ public class AdminService implements IAdminService {
             }
         }
         return jobDTO;
+    }
+
+    boolean checkDateSubcriptionPlan(Jobs job) {
+        if (job == null) {
+            return true;
+        }
+        Account currentAccount = _currentAccount.getAccount();
+        if (currentAccount != null && currentAccount.getRole() == Role.ADMIN) {
+            return false;
+        }
+        if (currentAccount != null && currentAccount.getRole() == Role.EMPLOYER) {
+            return false;
+        }
+
+        if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
+            if ((job.getStart_date().before(new Date()) && job.getEnd_date().after(new Date()))) {
+                return false;
+            }
+            if (job.getCompany().getEnable() == 0) {
+                return true;
+            }
+            for (SubcriptionPlanCompany sp : job.getCompany().getSubcritionPlanCompanies()) {
+                boolean checkDeleted = sp.getDeleted_at() != null;
+                boolean checkDate = sp.getStart_date().before(new Date())
+                        && sp.getEnd_date().after(new Date());
+                if (checkDeleted || !checkDate) {
+                    continue;
+                }
+                if (checkDate) {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }
