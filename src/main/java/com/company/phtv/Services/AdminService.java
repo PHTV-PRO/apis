@@ -661,8 +661,8 @@ public class AdminService implements IAdminService {
         }
 
         if (currentAccount == null || currentAccount.getRole() == Role.CANDIDATE) {
-            if ((job.getStart_date().before(new Date()) && job.getEnd_date().after(new Date()))) {
-                return false;
+            if ((job.getStart_date().after(new Date()) || job.getEnd_date().before(new Date()))) {
+                return true;
             }
             if (job.getCompany().getEnable() == 0) {
                 return true;
