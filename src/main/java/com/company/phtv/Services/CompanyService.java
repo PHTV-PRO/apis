@@ -402,8 +402,12 @@ public class CompanyService implements ICompanyService {
     }
 
     public ChartForEmployer chartByCompany(int id) {
+        Account account = _accountRepo.getAccountById(id);
+        if(account==null){
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
         // STEP 1: get data
-        Company company = _companyRepo.findById(id).get();
+        Company company = _companyRepo.findOneCompanyWithAccount(account);
 
         ChartForEmployer chart = new ChartForEmployer();
 
