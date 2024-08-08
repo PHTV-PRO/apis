@@ -24,7 +24,7 @@ public class EmployerController {
     BaseController<List<ApplicationDTO>> _baseControllers = new BaseController<List<ApplicationDTO>>();
 
     @GetMapping("/chart/{id}")
-    public ResponseEntity<?> getCompanyChart(@RequestParam int id) {
+    public ResponseEntity<?> getCompanyChart(@PathVariable int id) {
         try {
             return _baseController.success(_companyService.chartByCompany(id));
         } catch (HttpException e) {
