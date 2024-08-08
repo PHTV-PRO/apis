@@ -24,7 +24,7 @@ public class EmployerSubcriptionPlanController {
     public ResponseEntity<?> getByAccount() {
         //auto
         try {
-            return _baseController.success(_subcriptionPlanService.getByAccountAuto());
+            return _baseController.success(_subcriptionPlanService.getByAccount(0));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

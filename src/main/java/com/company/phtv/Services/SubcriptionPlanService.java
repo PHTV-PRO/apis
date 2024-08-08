@@ -8,6 +8,7 @@ import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestSubcriptionPlan;
+import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.SubcriptionPlanCompanyRepo;
 import com.company.phtv.Repository.SubcriptionPlanRepo;
@@ -41,6 +42,8 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
 
     @Autowired
     CurrentAccount _currentAccount;
+    @Autowired
+    AccountRepo _accountRepo;
 
     @Override
     public List<SubcriptionPlanDTO> getAll() {
@@ -105,8 +108,13 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         return subcriptionPlanDTO;
     }
 
-    public SubcriptionPlanForEmployer getByAccountAuto() {
-        Account account = _currentAccount.getAccount();
+    public SubcriptionPlanForEmployer getByAccount(int id) {
+        Account account = new Account();
+        if (id == 0) {
+            account = _currentAccount.getAccount();
+        } else {
+            account = _accountRepo.findIdAccount(id);
+        }
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (account == null || checkAccountNotFound) {
             throw Variable.NOT_FOUND;
