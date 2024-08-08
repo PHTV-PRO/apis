@@ -74,7 +74,7 @@ public class AdminController {
     }
 
     @GetMapping("/employer_account/{id}")
-    public ResponseEntity<?> get(@RequestParam int id) {
+    public ResponseEntity<?> get(@PathVariable int id) {
         try {
             return _baseController_chart_employer.success(_accountService.getAccountCompanyJob(id));
         } catch (HttpException e) {
