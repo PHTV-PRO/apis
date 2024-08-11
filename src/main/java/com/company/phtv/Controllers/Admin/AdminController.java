@@ -87,7 +87,7 @@ public class AdminController {
      @PutMapping("/company/on_or_off/{id}")
     public ResponseEntity<?> obOnOrOff(@PathVariable int id) {
         try {
-            return _baseControllers_string.success(_companyService.editJobOnOrOff(id));
+            return _baseControllers_string.success(_companyService.editCompanyOnOrOff(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
