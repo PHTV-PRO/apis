@@ -5,6 +5,7 @@ import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.SkillDTO;
+import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
 import com.company.phtv.Models.Entity.Company;
@@ -17,6 +18,8 @@ import com.company.phtv.Models.Entity.ViewedJob;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.SkillMapping;
+import com.company.phtv.Models.Map.SubcriptionPlanCompanyMapping;
+import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestCompany;
 import com.company.phtv.Models.Request.RequestCompanyRegister;
 import com.company.phtv.Models.Request.RequestFilterCompany;
@@ -774,7 +777,17 @@ public class CompanyService implements ICompanyService {
                 }
                 // STEP 1: map entity to dto for return
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
-
+                if (currentAccount == null || currentAccount.getRole() != Role.ADMIN) {
+                    for (SubcriptionPlanCompany spc : companies.get(i).getSubcritionPlanCompanies()) {
+                        boolean checkNotDeleted = spc.getDeleted_at() == null;
+                        boolean checkDate = spc.getStart_date().before(new Date())
+                                && spc.getEnd_date().after(new Date());
+                        if (checkNotDeleted && checkDate) {
+                            companyDTO.setSubcriptionPlan(
+                                    SubcriptionPlanMapping.subcriptionPlanDTO(spc.getSubscription_plan()));
+                        }
+                    }
+                }
                 //// STEP 2: handle and add dto (image, location, skill, count job, job, company
                 //// is_save ?);
                 // : handle string image to array path image.
