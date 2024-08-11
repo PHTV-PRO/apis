@@ -866,7 +866,7 @@ public class CompanyService implements ICompanyService {
 
     public String editJobOnOrOff(int id) {
         Company company = _companyRepo.findCompanyById(id);
-        if (company == null || company.getDeleted_at() == null) {
+        if (company == null || company.getDeleted_at() != null) {
             throw Variable.COMPANY_NOT_FOUND;
         }
         company.setEnable(company.getEnable() == 1 ? 0 : 1);
