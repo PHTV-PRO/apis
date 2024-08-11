@@ -195,7 +195,7 @@ public class AdminService implements IAdminService {
                         FollowCompany followCompany = _followCompanyRepo
                                 .findByAccountAndCompany(_currentAccount.getAccount(), company);
                         if (followCompany != null) {
-                            companyDTO.setCompany_is_save(true);
+                            companyDTO.setCompany_is_follow(true);
                         }
                     }
                     // STEP 3: set to dto

@@ -185,40 +185,43 @@ public class JobService implements IJobService {
             throw Variable.NOT_SIGNED_IN;
         }
         // STEP 2: get data jobview by account
-        ViewedJob viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount()).get(0);
-        List<Skill> skills = new ArrayList<>();
-        for (SkillJob skillJob : viewedJobs.getJobs().getSkillJobs()) {
-            // STEP 3: get list skill job nearest viewed
-            if (!skills.contains(skillJob.getSkills())) {
-                skills.add(skillJob.getSkills());
+        List<ViewedJob> viewedJobs = _ViewedJobRepo.findJobByAccount(_currentAccount.getAccount());
+        if (viewedJobs.size() > 0) {
+            ViewedJob viewedJob = viewedJobs.get(0);
+            List<Skill> skills = new ArrayList<>();
+            for (SkillJob skillJob : viewedJob.getJobs().getSkillJobs()) {
+                // STEP 3: get list skill job nearest viewed
+                if (!skills.contains(skillJob.getSkills())) {
+                    skills.add(skillJob.getSkills());
+                }
             }
-        }
-        List<Jobs> listJob = new ArrayList<>();
-        for (Skill s : skills) {
-            for (SkillJob sj : s.getSkillJobs()) {
-                // STEP 4: add job by skill
-                Jobs j = sj.getJobs();
-                listJob.add(j);
+            List<Jobs> listJob = new ArrayList<>();
+            for (Skill s : skills) {
+                for (SkillJob sj : s.getSkillJobs()) {
+                    // STEP 4: add job by skill
+                    Jobs j = sj.getJobs();
+                    listJob.add(j);
+                }
             }
-        }
-        for (Jobs j : listJob) {
-            if (checkDateSubcriptionPlan(j)) {
-                continue;
-            }
-            // STEP 5: map dto and check saved, aplication,
-            JobDTO jobDTO = JobMapping.getJob(j);
-            jobDTO = setAppliedAndSaved(j, jobDTO);
-            boolean checkOpening = (j.getStart_date()).before(new Date())
-                    && (j.getEnd_date()).after(new Date());
+            for (Jobs j : listJob) {
+                if (checkDateSubcriptionPlan(j)) {
+                    continue;
+                }
+                // STEP 5: map dto and check saved, aplication,
+                JobDTO jobDTO = JobMapping.getJob(j);
+                jobDTO = setAppliedAndSaved(j, jobDTO);
+                boolean checkOpening = (j.getStart_date()).before(new Date())
+                        && (j.getEnd_date()).after(new Date());
 
-            boolean checkSizeJob = jobDTOs.size() <= 30;
-            if (!checkSizeJob) {
-                break;
-            }
-            if (checkOpening && checkSizeJob) {
-                // add skill and level detail job
-                jobDTO = setSkill_level(j, jobDTO);
-                jobDTOs.add(jobDTO);
+                boolean checkSizeJob = jobDTOs.size() <= 30;
+                if (!checkSizeJob) {
+                    break;
+                }
+                if (checkOpening && checkSizeJob) {
+                    // add skill and level detail job
+                    jobDTO = setSkill_level(j, jobDTO);
+                    jobDTOs.add(jobDTO);
+                }
             }
         }
         return pagination.pagination(size, page, jobDTOs);

@@ -835,7 +835,7 @@ public class CompanyService implements ICompanyService {
                     FollowCompany followCompany = _followCompanyRepo
                             .findByAccountAndCompany(_currentAccount.getAccount(), companies.get(i));
                     if (followCompany != null) {
-                        companyDTO.setCompany_is_save(true);
+                        companyDTO.setCompany_is_follow(true);
                     }
                 }
                 // STEP 3: set to dto
@@ -872,5 +872,20 @@ public class CompanyService implements ICompanyService {
         company.setEnable(company.getEnable() == 1 ? 0 : 1);
         _companyRepo.save(company);
         return "Success!!";
+    }
+
+    public List<CompanyDTO> listCompanyFollowByAccount(int size, int page) {
+        Account account = _currentAccount.getAccount();
+        if (account == null || account.getDeleted_at() != null) {
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
+        List<Company> companies = new ArrayList<>();
+        List<FollowCompany> followCompany = _followCompanyRepo.findByAccount(account);
+        for (FollowCompany fc : followCompany) {
+            if (fc.getDeleted_at() == null) {
+                companies.add(fc.getCompany());
+            }
+        }
+        return pagination.pagination(size, page, companyDTOMapping(companies));
     }
 }

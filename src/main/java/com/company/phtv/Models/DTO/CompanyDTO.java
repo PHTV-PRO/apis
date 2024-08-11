@@ -27,7 +27,7 @@ public class CompanyDTO {
     private List<String> list_image_mobile ;
     private int enable;
     private int contract;
-    private  boolean company_is_save =false;
+    private  boolean company_is_follow =false;
 
 
     private int opening_jobs;

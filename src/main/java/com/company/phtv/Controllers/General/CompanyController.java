@@ -33,7 +33,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable int id) {
+    public ResponseEntity<?> getById(@PathVariable int id) {
         try {
             return _baseController.success(_companyService.getById(id));
         } catch (HttpException e) {
@@ -84,6 +84,16 @@ public class CompanyController {
         try {
             return _baseController
                     .success(_companyService.registerCompany(requestCompanyRegister));
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
+    @GetMapping("company_follow")
+    public ResponseEntity<?> getCompanyFollowByAccount(@RequestParam int size, @RequestParam int page) {
+        try {
+            return _baseControllers.success(_companyService.listCompanyFollowByAccount(size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
