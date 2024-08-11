@@ -130,7 +130,7 @@ public interface Html {
                                 "\r\n" + //
                                 "<div style=\"width: 690px; margin: auto;\">\r\n" + //
                                 (account == null || account.getImage() == null ? ""
-                                                : ("<image  style=\\\"width: 200px; height:200px;\\\" src=\"" + account.getImage() + "\" />"))
+                                                : ("<image  style=\"width: 200px; height:200px;\" src=\"" + account.getImage() + "\" />"))
                                 +
                                 "  <div  >\r\n" + //
                                 "    <span  style=\" width: 800px;\">\r\n" + //
