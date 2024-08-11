@@ -103,10 +103,10 @@ public class CompanyMapping {
             c.setAccount(new Account(0));
         }
         if (rc.getList_image() != null) {
-            c.setList_image(c.getList_image());
+            c.setList_image(rc.getList_image());
         }
         if (rc.getLocation() != null) {
-            c.setLocation(c.getLocation());
+            c.setLocation(rc.getLocation());
         }
         return c;
     }
