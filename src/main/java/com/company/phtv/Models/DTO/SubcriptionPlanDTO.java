@@ -20,7 +20,7 @@ public class SubcriptionPlanDTO {
     private int expiry;
     private Date start_date;
     private Date end_date;
-
+    private SubcriptionPlanCompanyDTO subcriptionPlanCompany;
     private List<SubcriptionPlanCompanyDTO> subcriptionPlanCompanies;
 }
 

@@ -783,8 +783,10 @@ public class CompanyService implements ICompanyService {
                         boolean checkDate = spc.getStart_date().before(new Date())
                                 && spc.getEnd_date().after(new Date());
                         if (checkNotDeleted && checkDate) {
-                            companyDTO.setSubcriptionPlan(
-                                    SubcriptionPlanMapping.subcriptionPlanDTO(spc.getSubscription_plan()));
+                            SubcriptionPlanDTO sp = SubcriptionPlanMapping
+                                    .subcriptionPlanDTO(spc.getSubscription_plan());
+                            sp.setSubcriptionPlanCompany(SubcriptionPlanCompanyMapping.getSubcriptionPlanCompany(spc));
+                            companyDTO.setSubcriptionPlan(sp);
                         }
                     }
                 }
