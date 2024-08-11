@@ -68,6 +68,9 @@ public class Seeding implements CommandLineRunner {
     @Autowired
     PasswordEncoder _PasswordEncoder;
 
+    @Autowired
+    AdvertisementRepo _AdvertisementRepo;
+
     @Override
     public void run(String... args) throws Exception {
         LoadAccountData();
@@ -92,6 +95,7 @@ public class Seeding implements CommandLineRunner {
         LoadApplicationData();
         LoadSkillJobData();
         LoadSkillCompanyData();
+        LoadAdvertisementData();
 
     }
 
@@ -281,6 +285,16 @@ public class Seeding implements CommandLineRunner {
             List<SubcriptionPlan> list = new SubcriptionPlanData().Data();
             for (SubcriptionPlan s : list) {
                 _SubcriptionPlanRepo.save(s);
+            }
+        }
+    }
+
+    private void LoadAdvertisementData() {
+        if (_AdvertisementRepo.count() == 0) {
+
+            List<Advertisement> list = new AdvertisementData().Data();
+            for (Advertisement ad : list) {
+                _AdvertisementRepo.save(ad);
             }
         }
     }
