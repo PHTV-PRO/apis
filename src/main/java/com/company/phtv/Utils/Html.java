@@ -130,7 +130,7 @@ public interface Html {
                                 "\r\n" + //
                                 "<div style=\"width: 690px; margin: auto;\">\r\n" + //
                                 (account == null || account.getImage() == null ? ""
-                                                : ("<image src=\"" + account.getImage() + "\" />"))
+                                                : ("<image  style=\\\"width: 200px; height:200px;\\\" src=\"" + account.getImage() + "\" />"))
                                 +
                                 "  <div  >\r\n" + //
                                 "    <span  style=\" width: 800px;\">\r\n" + //
@@ -182,8 +182,8 @@ public interface Html {
                                 "  </div>\r\n" + //
                                 "  <hr style=\"margin: 8px 0\" />\r\n" + //
                                 "  <div style=\"margin-top: 10px;\">\r\n" + //
-                                "    <div class=\"d-flex align-items-baseline\">\r\n" + //
-                                "      <h3><b>Work Experience</b></h3>\r\n" + //
+                                "    <div class=\"d-flex align-items-baseline\">\r\n" //
+                                + (data.work_experiences.size() > 0 ? "    <h3><b>Work Experience</b></h3>\r\n" : "") +
                                 "    </div>\r\n" + //
                                 "\r\n" //
                                 + wordExperiences +

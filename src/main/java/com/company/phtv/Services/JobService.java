@@ -73,7 +73,7 @@ public class JobService implements IJobService {
     @Override
     public List<JobDTO> getAll(Long lotId, Long indId) {
         // STEP 1: get data
-        List<Jobs> jobs = _jobRepo.getAllJob( indId);
+        List<Jobs> jobs = _jobRepo.getAllJob(indId);
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (checkDateSubcriptionPlan(jobs.get(i))) {
@@ -334,9 +334,9 @@ public class JobService implements IJobService {
         // get location
         // Location location = new Location();
         // for (Location l : c.getLocations()) {
-        //     if (l.getDeleted_at() == null) {
-        //         location = l;
-        //     }
+        // if (l.getDeleted_at() == null) {
+        // location = l;
+        // }
         // }
         // job.setLocation(location);
         // get job type
@@ -513,9 +513,9 @@ public class JobService implements IJobService {
             Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
             job.setCompany(c);
             // for (Location l : c.getLocations()) {
-            //     if (l.getDeleted_at() == null) {
-            //         job.setLocation(l);
-            //     }
+            // if (l.getDeleted_at() == null) {
+            // job.setLocation(l);
+            // }
             // }
 
             if (requestJob.getJob_type_id() != 0) {
@@ -536,10 +536,7 @@ public class JobService implements IJobService {
         if (checkJobNotFound || getJob == null) {
             throw Variable.NOT_FOUND;
         }
-        if (getJob.is_active() == true) {
-            getJob.set_active(false);
-        }
-        getJob.set_active(true);
+        getJob.set_active(getJob.is_active() == true ? false : true);
         _jobRepo.save(getJob);
         return JobMapping.getJob(getJob);
     }

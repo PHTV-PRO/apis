@@ -77,7 +77,7 @@ public class EmployerJobController {
     }
 
     @PutMapping("/on_or_off/{id}")
-    public ResponseEntity<?> JobOnOrOff(@PathVariable int id) {
+    public ResponseEntity<?> jobOnOrOff(@PathVariable int id) {
         try {
             return _baseController.success(_jobService.editJobOnOrOff(id));
         } catch (HttpException e) {

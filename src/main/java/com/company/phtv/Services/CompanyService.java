@@ -150,7 +150,7 @@ public class CompanyService implements ICompanyService {
             }
             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
         }
-        
+
         List<JobDTO> jobDTOS = new ArrayList<>();
         int count = 0;
         // STEP 3: get job
@@ -403,7 +403,7 @@ public class CompanyService implements ICompanyService {
 
     public ChartForEmployer chartByCompany(int id) {
         Account account = _accountRepo.getAccountById(id);
-        if(account==null){
+        if (account == null) {
             throw Variable.ACCOUNT_NOT_FOUND;
         }
         // STEP 1: get data
@@ -847,5 +847,15 @@ public class CompanyService implements ICompanyService {
             }
         }
         return false;
+    }
+
+    public String editJobOnOrOff(int id) {
+        Company company = _companyRepo.findCompanyById(id);
+        if (company == null || company.getDeleted_at() == null) {
+            throw Variable.COMPANY_NOT_FOUND;
+        }
+        company.setEnable(company.getEnable() == 1 ? 0 : 1);
+        _companyRepo.save(company);
+        return "Success!!";
     }
 }

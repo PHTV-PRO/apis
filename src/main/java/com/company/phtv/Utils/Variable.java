@@ -21,6 +21,7 @@ public interface Variable {
         public static HttpException EMAIL_EXISTING = new HttpException(409,
                         "Email existing in database. please change email!!");
         public static HttpException SUBCRIPTION_PLAN_EXIST = new HttpException(409, "SubScription plan existing");
+        public static HttpException COMPANY_NOT_FOUND = new HttpException(400, "Company not found!!");
         public static HttpException COMPANY_CONFLIG = new HttpException(409, "Company is follow!!");
         public static HttpException CONFLIG = new HttpException(409, "Action Confliig data!!");
         // 500

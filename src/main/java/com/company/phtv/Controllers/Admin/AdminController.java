@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/admin")
@@ -77,6 +78,16 @@ public class AdminController {
     public ResponseEntity<?> get(@PathVariable int id) {
         try {
             return _baseController_chart_employer.success(_accountService.getAccountCompanyJob(id));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+     @PutMapping("/company/on_or_off/{id}")
+    public ResponseEntity<?> obOnOrOff(@PathVariable int id) {
+        try {
+            return _baseControllers_string.success(_companyService.editJobOnOrOff(id));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {
