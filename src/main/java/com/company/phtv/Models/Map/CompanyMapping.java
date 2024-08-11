@@ -96,7 +96,7 @@ public class CompanyMapping {
         if (c.getBackground_image() != null) {
             c.setBackground_image(c.getBackground_image());
         }
-        if (rc.getEnable() != 0) {
+        if (rc.getEnable() != -1) {
             c.setEnable(rc.getEnable());
         }
         if (rc.getAccount_id() != 0) {
