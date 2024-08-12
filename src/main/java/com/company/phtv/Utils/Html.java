@@ -129,8 +129,7 @@ public interface Html {
                                 "</head>\r\n" + //
                                 "\r\n" + //
                                 "<div style=\"width: 690px; margin: auto;\">\r\n" + //
-                                (account == null || account.getImage() == null ? ""
-                                                : ("<image  style=\"width: 200px; height:200px;\" src=\"" + account.getImage() + "\" />"))
+                                "<img width=\"100\" height=\"100\" style=\"object-fit: cover; border-radius: 200px\" src=\"" + account.getImage() +  "\"/>"
                                 +
                                 "  <div  >\r\n" + //
                                 "    <span  style=\" width: 800px;\">\r\n" + //
