@@ -431,6 +431,9 @@ public class CompanyService implements ICompanyService {
         for (int i = 0; i < 12; i++) {
             // get by month 1, 2, 3, 4, 5, 6, .....; (lấy thông tin theo từng tháng)
 
+            if (company == null) {
+                continue;
+            }
             // Variable contain by month
             int number_of_job_applicated = 0;
             int number_of_job_saved = 0;
