@@ -154,6 +154,13 @@ public class CompanyService implements ICompanyService {
             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
         }
 
+        if (_currentAccount.getAccount() != null) {
+            FollowCompany followCompany = _followCompanyRepo
+                    .findByAccountAndCompany(_currentAccount.getAccount(), company);
+            if (followCompany != null) {
+                companyDTO.setCompany_is_follow(true);
+            }
+        }
         List<JobDTO> jobDTOS = new ArrayList<>();
         int count = 0;
         // STEP 3: get job
