@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.phtv.Models.DTO.ApplicationDTO;
+import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
+import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CVMapping;
@@ -34,6 +36,9 @@ public class ApplicationService implements IApplicationService {
     @Autowired
     CurrentAccount _currentAccount;
 
+    @Autowired
+    MailService _mailService;
+
     Pagination<ApplicationDTO> pagination = new Pagination<>();
 
     @Override
@@ -56,9 +61,28 @@ public class ApplicationService implements IApplicationService {
             applicationDTO.setId(application.getId());
             applicationDTO.setNote(application.getNote());
             applicationDTO.setCv(CVMapping.CVDTO(application.getCurriculumVitae()));
+
             listApplications.add(applicationDTO);
         }
         return pagination.pagination(size, page, listApplications);
+
+    }
+
+    public String sendMailToCandidate(int application_id) {
+        Account account = _currentAccount.getAccount();
+        if (account == null || account.getDeleted_at() != null) {
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
+        for (Company c : account.getCompanies()) {
+            if (c.getDeleted_at() == null) {
+                @SuppressWarnings("deprecation")
+                Application application = _applicationRepo.getOne(application_id);
+                _mailService.SendMailForApplication(account.getEmail(), c, application.getJobs());
+                _applicationRepo.save(application);
+                return "Success!!";
+            }
+        }
+        throw Variable.ACTION_FAIL;
 
     }
 }

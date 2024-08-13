@@ -66,6 +66,23 @@ public class MailService implements IMailService {
 		}
 	}
 
+	public void SendMailForApplication(String email, Company c, Jobs jobs) {
+		try {
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			helper.setSubject("PHTV4: FROM " + c.getName() + "");
+
+			String html = "";
+
+			helper.setText(html, true);
+			helper.setTo(email);
+			helper.setFrom(sender);
+			javaMailSender.send(mimeMessage);
+		} catch (Exception e) {
+		}
+	}
+
 	public void SendMailForCreateJob(String email, Company c, Jobs job) {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();

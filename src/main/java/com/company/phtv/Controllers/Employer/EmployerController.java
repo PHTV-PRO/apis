@@ -21,6 +21,7 @@ public class EmployerController {
     @Autowired
     ApplicationService _appplicationService;
     BaseController<ChartForEmployer> _baseController = new BaseController<ChartForEmployer>();
+    BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<ApplicationDTO>> _baseControllers = new BaseController<List<ApplicationDTO>>();
 
     @GetMapping("/chart/{id}")
@@ -46,4 +47,15 @@ public class EmployerController {
         }
     }
 
+    @GetMapping("/send_mail")
+    public ResponseEntity<?> sendMailToCandidate(@RequestParam int application_id, @RequestParam int size,
+            @RequestParam int page) {
+        try {
+            return _baseController_string.success(_appplicationService.sendMailToCandidate(application_id));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
 }
