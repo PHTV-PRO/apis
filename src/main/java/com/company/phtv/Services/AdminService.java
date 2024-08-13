@@ -349,6 +349,7 @@ public class AdminService implements IAdminService {
         // List<Integer> listViewed = new ArrayList<>();
         // List<Integer> listSaved = new ArrayList<>();
         List<Integer> listJobs = new ArrayList<>();
+        List<Integer> listNumberSubcriptionPlan = new ArrayList<>();
         List<Float> listPrice = new ArrayList<>();
         List<List<Integer>> listNumberSubscriptionPlanByMonthAndBySubcription = new ArrayList<>();
         List<String> listScriptionPlan = new ArrayList<>();
@@ -368,11 +369,13 @@ public class AdminService implements IAdminService {
             // int number_of_job_saved = 0;
             // int number_of_job_viewed = 0;
             int number_jobs = 0;
+            int number_of_subcription_plan = 0;
 
             Float price_for_subcription_plan = (float) 0;
 
             // STEP 3: handle data
             for (Company company : companys) {
+
                 for (Jobs job : company.getJobs()) {
                     // count job
                     if (handleDate.getYear(job.getCreated_at()) == currentYear
@@ -445,6 +448,7 @@ public class AdminService implements IAdminService {
                         continue;
                     }
                     price_for_subcription_plan += spc.getSubscription_plan().getPrice();
+                    number_of_subcription_plan += 1;
 
                 }
             }
@@ -454,6 +458,7 @@ public class AdminService implements IAdminService {
             listMonth.add(i + 1);
             listJobs.add(number_jobs);
             listPrice.add(price_for_subcription_plan);
+            listNumberSubcriptionPlan.add(number_of_subcription_plan);
         }
         // STEP 4: set dto
         // thống kê theo từng tháng (là những thông tin ở giữa trong DTO)
@@ -609,7 +614,8 @@ public class AdminService implements IAdminService {
             listNumberSubscriptionPlanByMonthAndBySubcription.add(list_number_subcription_by_month);
         }
         chart.setName_subcription_plan(listScriptionPlan);
-        chart.setNumber_subcription_by_month_subcription_plan(listNumberSubscriptionPlanByMonthAndBySubcription);
+        chart.setArray_list_number_subcription_plan_by_month(listNumberSubscriptionPlanByMonthAndBySubcription);
+        chart.setNumber_of_all_subcription_plan_by_month(listNumberSubcriptionPlan);
         return chart;
     }
 

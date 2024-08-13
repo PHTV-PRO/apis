@@ -31,8 +31,9 @@ public class ChartForAdmin {
     // thống kê số job được tạo theo tháng
     List<Integer> jobs;
     List<Float> price_for_subcription_plan;
+    List<Integer> number_of_all_subcription_plan_by_month;
 
-    List<List<Integer>> number_subcription_by_month_subcription_plan;
+    List<List<Integer>> array_list_number_subcription_plan_by_month;
     List<String> name_subcription_plan;
     // // (table) thông tin top 3 company có appli, save cao nhất
     // List<CompanyDTO> top_3_company_by_application;
