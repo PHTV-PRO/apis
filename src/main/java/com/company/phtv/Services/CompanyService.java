@@ -372,6 +372,7 @@ public class CompanyService implements ICompanyService {
                                 && s.getSkill().getIndustry().getDeleted_at() == null;
                         if (checkIndustryNotDeleted && checkIndustryTrue) {
                             companies.add(getCompanies.get(i));
+                            break;
                         }
                     }
                 }
@@ -398,6 +399,7 @@ public class CompanyService implements ICompanyService {
                                 && s.getSkill().getIndustry().getDeleted_at() == null
                                 && checkIndustryConstainId == true) {
                             companies.add(getCompanies.get(i));
+                            break;
                         }
                     }
                 }
