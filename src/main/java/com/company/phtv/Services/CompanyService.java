@@ -351,12 +351,11 @@ public class CompanyService implements ICompanyService {
                         continue;
                     }
 
-                    boolean checkDeleted = companies.get(i).getCityProvince().getDeleted_at() == null;
-                    boolean checkCityProvenceTrue = requestFilterCompany.province_city_id == companies.get(i)
+                    boolean checkDeleted = getCompanies.get(i).getCityProvince().getDeleted_at() == null;
+                    boolean checkCityProvenceTrue = requestFilterCompany.province_city_id == getCompanies.get(i)
                             .getCityProvince().getId();
                     if (checkDeleted && checkCityProvenceTrue) {
                         companies.add(getCompanies.get(i));
-                        break;
                     }
                 }
                 return pagination.pagination(size, page, companyDTOMapping(companies));
@@ -373,7 +372,6 @@ public class CompanyService implements ICompanyService {
                                 && s.getSkill().getIndustry().getDeleted_at() == null;
                         if (checkIndustryNotDeleted && checkIndustryTrue) {
                             companies.add(getCompanies.get(i));
-                            break;
                         }
                     }
                 }
@@ -386,9 +384,10 @@ public class CompanyService implements ICompanyService {
                     }
                     // get company by province_city for check Industry (step next)
                     boolean checkIndustryConstainId = false;
-                    boolean checkProvence = requestFilterCompany.province_city_id == companies.get(i).getCityProvince()
+                    boolean checkProvence = requestFilterCompany.province_city_id == getCompanies.get(i)
+                            .getCityProvince()
                             .getId();
-                    if (checkProvence && companies.get(i).getCityProvince().getDeleted_at() == null) {
+                    if (checkProvence && getCompanies.get(i).getCityProvince().getDeleted_at() == null) {
                         checkIndustryConstainId = true;
                     }
                     // check by industry
@@ -399,7 +398,6 @@ public class CompanyService implements ICompanyService {
                                 && s.getSkill().getIndustry().getDeleted_at() == null
                                 && checkIndustryConstainId == true) {
                             companies.add(getCompanies.get(i));
-                            break;
                         }
                     }
                 }
