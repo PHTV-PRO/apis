@@ -77,7 +77,7 @@ public class ApplicationService implements IApplicationService {
             if (c.getDeleted_at() == null) {
                 @SuppressWarnings("deprecation")
                 Application application = _applicationRepo.getOne(application_id);
-                _mailService.SendMailForApplication(account.getEmail(), c, application.getJobs());
+                _mailService.SendMailForApplication(application.getAccount().getEmail(), c, application.getJobs());
                 _applicationRepo.save(application);
                 return "Success!!";
             }
