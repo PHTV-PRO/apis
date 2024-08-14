@@ -77,6 +77,7 @@ public class AuthenticateService implements IAuthenticateService {
         }
         Account user = new Account();
         user.setEmail(requestLogin.getEmail());
+        user.setName(requestLogin.getFull_name());
         user.setRole(Role.CANDIDATE);
         user.setPassword(_passwordEncoder.encode(requestLogin.getPassword()));
         return _userRepo.save(user);
