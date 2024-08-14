@@ -92,6 +92,11 @@ public class JobService implements IJobService {
                 jobDTO = setAppliedAndSaved(jobs.get(i), jobDTO);
                 jobDTO = setSkill_level(jobs.get(i), jobDTO);
                 // STEP 4: add final data dto
+                if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                    if (jobs.get(i).is_active() == false) {
+                        continue;
+                    }
+                }
                 jobDTOS.add(jobDTO);
 
             }
@@ -115,6 +120,11 @@ public class JobService implements IJobService {
         // STEP 3: call function check application and saved; set skill
         jobDTO = setAppliedAndSaved(job, jobDTO);
         jobDTO = setSkill_level(job, jobDTO);
+        if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+            if (job.is_active() == false) {
+                throw Variable.NOT_FOUND;
+            }
+        }
         // STEP 4: add final data dto
         return jobDTO;
     }
@@ -144,6 +154,11 @@ public class JobService implements IJobService {
                     jobDTO = setAppliedAndSaved(jobs.get(i), jobDTO);
                     jobDTO = setSkill_level(jobs.get(i), jobDTO);
                     // STEP 4: add final data dto
+                    if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                        if (jobs.get(i).is_active() == false) {
+                            continue;
+                        }
+                    }
                     jobDTOS.add(jobDTO);
 
                 }
@@ -169,6 +184,11 @@ public class JobService implements IJobService {
                 // STEP 3: call function set skill
                 jobDTO = setSkill_level(jobs.get(i), jobDTO);
                 // STEP 4: add final data dto
+                if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                    if (jobs.get(i).is_active() == false) {
+                        continue;
+                    }
+                }
                 jobDTOS.add(jobDTO);
             }
 
@@ -220,6 +240,11 @@ public class JobService implements IJobService {
                 if (checkOpening && checkSizeJob) {
                     // add skill and level detail job
                     jobDTO = setSkill_level(j, jobDTO);
+                    if (_currentAccount.getAccount() == null && _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                        if (j.is_active() == false) {
+                            continue;
+                        }
+                    }
                     jobDTOs.add(jobDTO);
                 }
             }

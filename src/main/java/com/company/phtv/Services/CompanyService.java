@@ -185,7 +185,6 @@ public class CompanyService implements ICompanyService {
                     && j.getEnd_date().after(new Date());
             JobDTO job = new JobDTO();
             if (checkDateJob) {
-                count++;
                 job = JobMapping.getJob(j);
 
                 // set job have save and applicatin ( yes or no) by account
@@ -199,6 +198,12 @@ public class CompanyService implements ICompanyService {
                         job.setJob_is_save(true);
                     }
                 }
+                if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                    if (j.is_active() == false) {
+                        continue;
+                    }
+                }
+                count++;
                 jobDTOS.add(job);
             }
         }
@@ -837,6 +842,12 @@ public class CompanyService implements ICompanyService {
                     boolean checkDateJob = j.getStart_date().before(new Date())
                             && j.getEnd_date().after(new Date());
                     if (checkJobNotDeleted && checkDateJob) {
+                        if (_currentAccount.getAccount() == null
+                                || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                            if (j.is_active() == false) {
+                                continue;
+                            }
+                        }
                         count++;
                         jobs.add(JobMapping.getJob(j));
                     }
