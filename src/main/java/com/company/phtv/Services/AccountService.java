@@ -300,4 +300,21 @@ public class AccountService implements IAccountService {
         }
         return "Success";
     }
+
+    public List<AccountDTO> getNonCompanyAccount() {
+        List<Account> accounts = _accountRepo.findAllEmployer();
+        List<AccountDTO> accountDTOS = new ArrayList<>();
+        for (int i = 0; i < accounts.size(); i++) {
+            boolean checkCompany = false;
+            for (Company company : accounts.get(i).getCompanies()) {
+                if (company.getDeleted_at() == null) {
+                    checkCompany = true;
+                }
+            }
+            if (accounts.get(i).getDeleted_at() == null && checkCompany == false) {
+                accountDTOS.add(AccountMapping.accountDTO(accounts.get(i)));
+            }
+        }
+        return accountDTOS;
+    }
 }

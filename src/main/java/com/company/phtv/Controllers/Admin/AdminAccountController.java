@@ -41,6 +41,16 @@ public class AdminAccountController {
             return _baseControllers.error(null, 500, e.getMessage());
         }
     }
+    @GetMapping("/non_company_account")
+    public ResponseEntity<?> nonCompanyAccount() {
+        try {
+            return _baseControllers.success(_accountService.getNonCompanyAccount());
+        } catch (HttpException e) {
+            return _baseControllers.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseControllers.error(null, 500, e.getMessage());
+        }
+    }
 
     @GetMapping("/candidate")
     public ResponseEntity<?> getCandidate() {

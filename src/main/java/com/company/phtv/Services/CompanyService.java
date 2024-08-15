@@ -645,7 +645,7 @@ public class CompanyService implements ICompanyService {
         for (Company c : account.getCompanies()) {
             // STEP 2: check company existing
             if (c.getDeleted_at() == null) {
-                throw Variable.COMPANY_ACCOUNT_EXISTING;
+                throw Variable.COMPANY_CONFLIG;
             }
         }
         try {
