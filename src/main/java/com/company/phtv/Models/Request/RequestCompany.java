@@ -45,5 +45,7 @@ public class RequestCompany {
     public int account_id;
     @Nullable
     public String location;
+    @Nullable
+    public int city_provence_id;
 
 }

@@ -73,7 +73,13 @@ public class AccountService implements IAccountService {
         List<AccountDTO> accountDTOS = new ArrayList<>();
         for (int i = 0; i < accounts.size(); i++) {
             if (accounts.get(i).getDeleted_at() == null) {
-                accountDTOS.add(AccountMapping.accountDTO(accounts.get(i)));
+                AccountDTO accountDTO = AccountMapping.accountDTO(accounts.get(i));
+                for (Company c : accounts.get(i).getCompanies()) {
+                    if (c.getDeleted_at() == null) {
+                        accountDTO.setCompany(CompanyMapping.CompanyDTO(c));
+                    }
+                }
+                accountDTOS.add(accountDTO);
             }
         }
         return accountDTOS;

@@ -26,6 +26,7 @@ import com.company.phtv.Models.Request.RequestFilterCompany;
 import com.company.phtv.Models.Request.RequestFollowCompany;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.ApplicationRepo;
+import com.company.phtv.Repository.CityProvinceRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
@@ -69,6 +70,8 @@ public class CompanyService implements ICompanyService {
     ApplicationRepo _applicationRepo;
     @Autowired
     FollowJobRepo _followJobRepo;
+    @Autowired
+    CityProvinceRepo _cityProvinceRepo;
 
     // call service
     @Autowired
@@ -611,6 +614,7 @@ public class CompanyService implements ICompanyService {
         company.setList_image(requestCompany.getList_image());
         company.setCount_job(-1);
         // STEP 3: save database
+        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_provence_id()));
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
@@ -751,6 +755,7 @@ public class CompanyService implements ICompanyService {
         }
         company.setList_image(requestCompany.getList_image());
         company.setId(id);
+        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_provence_id()));
         // STEP 4
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
