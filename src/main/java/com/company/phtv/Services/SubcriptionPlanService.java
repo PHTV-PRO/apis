@@ -165,7 +165,10 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
             }
             boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
             if (checkDate) {
-                throw Variable.SUBCRIPTION_PLAN_EXIST;
+                // if having subcription plan
+                SubcriptionPlanCompany subcriptionPlanCompany = _SubcriptionPlanCompanyRepo.getOne(sp.getId());
+                subcriptionPlanCompany.setEnd_date(new Date());
+                _SubcriptionPlanCompanyRepo.save(subcriptionPlanCompany);
             }
         }
         if (company != null) {

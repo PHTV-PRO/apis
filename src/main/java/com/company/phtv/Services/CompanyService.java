@@ -797,7 +797,7 @@ public class CompanyService implements ICompanyService {
                 }
                 // STEP 1: map entity to dto for return
                 CompanyDTO companyDTO = CompanyMapping.CompanyDTO(companies.get(i));
-                if (currentAccount == null || currentAccount.getRole() != Role.ADMIN) {
+                if (currentAccount != null && currentAccount.getRole() == Role.ADMIN) {
                     for (SubcriptionPlanCompany spc : companies.get(i).getSubcritionPlanCompanies()) {
                         boolean checkNotDeleted = spc.getDeleted_at() == null;
                         boolean checkDate = spc.getStart_date().before(new Date())
