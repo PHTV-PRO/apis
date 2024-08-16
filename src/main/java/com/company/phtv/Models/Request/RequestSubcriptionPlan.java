@@ -14,6 +14,8 @@ public class RequestSubcriptionPlan {
     @Nullable
     public String name;
     @Nullable
+    public String description;
+    @Nullable
     public Float price;
     @Nullable
     public int expiry;
