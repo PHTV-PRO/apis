@@ -479,6 +479,16 @@ public class CompanyService implements ICompanyService {
                 if (!checkYearJob) {
                     continue;
                 }
+                // get applicated by job
+                for (Application app : job.getApplications()) {
+                    // get month applicated
+                    int monthApplicated = handleDate.getMonth(app.getCreated_at());
+                    // check month part 2
+                    boolean checkMonthApplicated = monthApplicated == (i + 1) ? true:false;
+                    if (checkMonthApplicated) {
+                        number_of_job_applicated += 1;
+                    }
+                }
                 // get month start date
                 int month_start = handleDate.getMonth(job.getStart_date());
                 // get month end date
@@ -491,16 +501,6 @@ public class CompanyService implements ICompanyService {
                     continue;
                 }
 
-                // get applicated by job
-                for (Application app : job.getApplications()) {
-                    // get month applicated
-                    int monthApplicated = handleDate.getMonth(app.getCreated_at());
-                    // check month part 2
-                    boolean checkMonthApplicated = monthApplicated == i + 1;
-                    if (checkMonthApplicated) {
-                        number_of_job_applicated += 1;
-                    }
-                }
                 // get applicated by job
                 for (ViewedJob viewed : job.getViewedJobs()) {
                     // get month applicated
