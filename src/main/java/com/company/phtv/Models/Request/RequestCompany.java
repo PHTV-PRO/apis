@@ -46,6 +46,6 @@ public class RequestCompany {
     @Nullable
     public String location;
     @Nullable
-    public int city_provence_id;
+    public int city_province_id;
 
 }

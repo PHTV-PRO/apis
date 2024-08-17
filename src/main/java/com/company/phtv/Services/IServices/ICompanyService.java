@@ -19,6 +19,6 @@ public interface ICompanyService {
 
     List<CompanyDTO> companyContractAll(int size, int page);
 
-    List<CompanyDTO> CompanyByProvenceAndIndustry(RequestFilterCompany requestFilterCompany, int size, int page);
+    List<CompanyDTO> CompanyByProvinceAndIndustry(RequestFilterCompany requestFilterCompany, int size, int page);
 
 }

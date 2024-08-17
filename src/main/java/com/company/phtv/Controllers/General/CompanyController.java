@@ -70,7 +70,7 @@ public class CompanyController {
             @RequestParam int size, @RequestParam int page) {
         try {
             return _baseControllers
-                    .success(_companyService.CompanyByProvenceAndIndustry(requestFilterCompany, size, page));
+                    .success(_companyService.CompanyByProvinceAndIndustry(requestFilterCompany, size, page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

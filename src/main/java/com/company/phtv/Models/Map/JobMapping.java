@@ -49,9 +49,9 @@ public class JobMapping {
         // jobDTO.setLocation(
         // new LocationDTO(jobs.getLocation().getId(), jobs.getLocation().getName(),
         // null,
-        // jobs.getLocation().getCity_provence() == null ? null
+        // jobs.getLocation().getCity_province() == null ? null
         // :
-        // CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_provence())));
+        // CityProvinceMapping.cityProvinceDTO(jobs.getLocation().getCity_province())));
         // }
         if (jobs.getJobType() != null) {
             jobDTO.setJobType(

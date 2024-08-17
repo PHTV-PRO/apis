@@ -24,7 +24,7 @@ public class CompanyMapping {
         companyDTO.setLocation(c.getLocation());
         companyDTO.setEnable(c.getEnable());
         companyDTO.setAccount(AccountMapping.accountDTO(c.getAccount()));
-        companyDTO.setCity_provence(CityProvinceMapping.cityProvinceDTO(c.getCityProvince()));
+        companyDTO.setCity_province(CityProvinceMapping.cityProvinceDTO(c.getCityProvince()));
 
         return companyDTO;
 

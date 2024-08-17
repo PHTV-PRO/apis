@@ -329,7 +329,7 @@ public class CompanyService implements ICompanyService {
 
     }
 
-    public List<CompanyDTO> CompanyByProvenceAndIndustry(RequestFilterCompany requestFilterCompany, int size,
+    public List<CompanyDTO> CompanyByProvinceAndIndustry(RequestFilterCompany requestFilterCompany, int size,
             int page) {
         // STEP 1: get data
         List<Company> getCompanies = _companyRepo.findCompanyByIndustryAndProvinceCity();
@@ -360,9 +360,9 @@ public class CompanyService implements ICompanyService {
                     }
 
                     boolean checkDeleted = getCompanies.get(i).getCityProvince().getDeleted_at() == null;
-                    boolean checkCityProvenceTrue = requestFilterCompany.province_city_id == getCompanies.get(i)
+                    boolean checkCityProvinceTrue = requestFilterCompany.province_city_id == getCompanies.get(i)
                             .getCityProvince().getId();
-                    if (checkDeleted && checkCityProvenceTrue) {
+                    if (checkDeleted && checkCityProvinceTrue) {
                         companies.add(getCompanies.get(i));
                     }
                 }
@@ -393,10 +393,10 @@ public class CompanyService implements ICompanyService {
                     }
                     // get company by province_city for check Industry (step next)
                     boolean checkIndustryConstainId = false;
-                    boolean checkProvence = requestFilterCompany.province_city_id == getCompanies.get(i)
+                    boolean checkProvince = requestFilterCompany.province_city_id == getCompanies.get(i)
                             .getCityProvince()
                             .getId();
-                    if (checkProvence && getCompanies.get(i).getCityProvince().getDeleted_at() == null) {
+                    if (checkProvince && getCompanies.get(i).getCityProvince().getDeleted_at() == null) {
                         checkIndustryConstainId = true;
                     }
                     // check by industry
@@ -614,7 +614,7 @@ public class CompanyService implements ICompanyService {
         company.setList_image(requestCompany.getList_image());
         company.setCount_job(-1);
         // STEP 3: save database
-        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_provence_id()));
+        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_province_id()));
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
@@ -755,7 +755,7 @@ public class CompanyService implements ICompanyService {
         }
         company.setList_image(requestCompany.getList_image());
         company.setId(id);
-        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_provence_id()));
+        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_province_id()));
         // STEP 4
         _companyRepo.save(company);
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);

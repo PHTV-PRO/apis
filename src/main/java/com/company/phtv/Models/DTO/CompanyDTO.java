@@ -37,7 +37,7 @@ public class CompanyDTO {
 
     private String location;
     private List<JobDTO> jobs;
-    private CityProvinceDTO city_provence;
+    private CityProvinceDTO city_province;
     private List<SkillDTO> skills;
 
 }
