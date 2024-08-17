@@ -154,7 +154,8 @@ public class JobService implements IJobService {
                     jobDTO = setAppliedAndSaved(jobs.get(i), jobDTO);
                     jobDTO = setSkill_level(jobs.get(i), jobDTO);
                     // STEP 4: add final data dto
-                    if (_currentAccount.getAccount() == null || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                    if (_currentAccount.getAccount() == null
+                            || _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
                         if (jobs.get(i).is_active() == false) {
                             continue;
                         }
@@ -240,7 +241,8 @@ public class JobService implements IJobService {
                 if (checkOpening && checkSizeJob) {
                     // add skill and level detail job
                     jobDTO = setSkill_level(j, jobDTO);
-                    if (_currentAccount.getAccount() == null && _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
+                    if (_currentAccount.getAccount() == null
+                            && _currentAccount.getAccount().getRole() == Role.CANDIDATE) {
                         if (j.is_active() == false) {
                             continue;
                         }
@@ -335,29 +337,30 @@ public class JobService implements IJobService {
         Company c = _companyRepo.findCompanyById(requestJob.getCompany_id());
         // STEP 3: check company have subcription planing
         boolean checkSubcritionplanExist = false;
-        for (SubcriptionPlanCompany sp : c.getSubcritionPlanCompanies()) {
-            if (sp.getDeleted_at() != null) {
-                continue;
+        if (_currentAccount.getAccount().getRole() == Role.EMPLOYER) {
+            for (SubcriptionPlanCompany sp : c.getSubcritionPlanCompanies()) {
+                if (sp.getDeleted_at() != null) {
+                    continue;
+                }
+                boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
+                if (!checkDate) {
+                    continue;
+                }
+                if (checkDate) {
+                    // have subcription plan
+                    checkSubcritionplanExist = true;
+                }
+                boolean checkCountJob = sp.getSubscription_plan().getExpiry() <= c.getCount_job();
+                if (checkCountJob) {
+                    // full slot create job -> return
+                    throw Variable.LIMIT_JOB;
+                }
             }
-            boolean checkDate = sp.getStart_date().before(new Date()) && sp.getEnd_date().after(new Date());
-            if (!checkDate) {
-                continue;
-            }
-            if (checkDate) {
-                // have subcription plan
-                checkSubcritionplanExist = true;
-            }
-            boolean checkCountJob = sp.getSubscription_plan().getExpiry() <= c.getCount_job();
-            if (checkCountJob) {
-                // full slot create job -> return
-                throw Variable.LIMIT_JOB;
+            if (checkSubcritionplanExist == false) {
+                // company not have subcription plan -> return
+                throw Variable.SUBCRIPTION_PLAN_NOT_FOUND;
             }
         }
-        if (checkSubcritionplanExist == false) {
-            // company not have subcription plan -> return
-            throw Variable.SUBCRIPTION_PLAN_NOT_FOUND;
-        }
-
         job.setCompany(c);
         // get location
         // Location location = new Location();
@@ -394,7 +397,9 @@ public class JobService implements IJobService {
             }
         }
         // STEP 6: -1 slot create of subcription plan for company
-        c.setCount_job(c.getCount_job() + 1);
+        if (_currentAccount.getAccount().getRole() == Role.EMPLOYER) {
+            c.setCount_job(c.getCount_job() + 1);
+        }
         _companyRepo.save(c);
         // STEP 7: send mail for all account saved company
         for (FollowCompany fl : c.getFollowCompany()) {
