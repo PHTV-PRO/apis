@@ -623,7 +623,8 @@ public class CompanyService implements ICompanyService {
         company.setList_image(requestCompany.getList_image());
         company.setCount_job(-1);
         // STEP 3: save database
-        company.setCityProvince(_cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id()));
+        CityProvince cityProvince= _cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id());
+        company.setCityProvince(cityProvince);
         _companyRepo.save(company);
         if (requestCompany.getSkill_id() != "") {
             // handle string skill -> array skill for create by ","
