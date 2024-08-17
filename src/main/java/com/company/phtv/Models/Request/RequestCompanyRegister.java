@@ -35,6 +35,8 @@ public class RequestCompanyRegister {
     @Nullable
     public String location;
     @Nullable
+    public int city_province_id;
+    @Nullable
     public MultipartFile background_image;
     // need
     @Nullable

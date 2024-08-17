@@ -8,6 +8,7 @@ import com.company.phtv.Models.DTO.SkillDTO;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Application;
+import com.company.phtv.Models.Entity.CityProvince;
 import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
@@ -705,6 +706,7 @@ public class CompanyService implements ICompanyService {
                 throw Variable.ADD_IMAGE_FAIL;
             }
         }
+        company.setCityProvince(_cityProvinceRepo.findIdCityProvince(requestCompanyRegister.getCity_province_id()));
         // data can null
         company.setAccount(account);
         if (requestCompanyRegister.getIntroduction() != null) {
