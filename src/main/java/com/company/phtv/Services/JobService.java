@@ -509,36 +509,7 @@ public class JobService implements IJobService {
             throw Variable.JOB_OFF;
         }
         // STEP 2: handle level and skill (Intermediate table)
-        if (requestJob.getLevel_id() != null) {
-            if (requestJob.getLevel_id() != "") {
-                String[] levelId = requestJob.getLevel_id().split(",");
-                for (String i : levelId) {
-                    int idLevel = Integer.parseInt(i);
-                    Level l = _levelRepo.findById(idLevel).get();
-                    boolean checkExist = _levelJobRepo.findByJobAndLevel(getJob, l) != null;
-                    if (checkExist) {
-                        continue;
-                    }
-                    LevelJob levelJob = new LevelJob(l, getJob);
-                    _levelJobRepo.save(levelJob);
-                }
-            }
-        }
-        if (requestJob.getSkill_id() != null) {
-            if (requestJob.getSkill_id() != "") {
-                String[] skillId = requestJob.getSkill_id().split(",");
-                for (String i : skillId) {
-                    int idLevel = Integer.parseInt(i);
-                    Skill s = _skillRepo.findById(idLevel).get();
-                    boolean checkExist = _skillJobRepo.findByJobAndSkill(getJob, s) != null;
-                    if (checkExist) {
-                        continue;
-                    }
-                    SkillJob skillJob = new SkillJob(s, getJob);
-                    _skillJobRepo.save(skillJob);
-                }
-            }
-        }
+        
 
         // STEP 3: add request to entity for save
         Jobs job = JobMapping.jobPut(requestJob, getJob);
@@ -558,6 +529,36 @@ public class JobService implements IJobService {
             job.setId(id);
             // STEP 4: save
             _jobRepo.save(job);
+        }
+        List<LevelJob> levelJobs = _levelJobRepo.findByJob(job);
+        for (LevelJob levelJob : levelJobs) {
+            _levelJobRepo.delete(levelJob);
+        }
+        if (requestJob.getLevel_id() != null) {
+            if (requestJob.getLevel_id() != "") {
+                String[] levelId = requestJob.getLevel_id().split(",");
+                for (String i : levelId) {
+                    int idLevel = Integer.parseInt(i);
+                    Level l = _levelRepo.findById(idLevel).get();
+                    LevelJob levelJob = new LevelJob(l, getJob);
+                    _levelJobRepo.save(levelJob);
+                }
+            }
+        }
+        List<SkillJob> skillJobs = _skillJobRepo.findByJob(job);
+        for (SkillJob skillJob : skillJobs) {
+            _skillJobRepo.delete(skillJob);
+        }
+        if (requestJob.getSkill_id() != null) {
+            if (requestJob.getSkill_id() != "") {
+                String[] skillId = requestJob.getSkill_id().split(",");
+                for (String i : skillId) {
+                    int idLevel = Integer.parseInt(i);
+                    Skill s = _skillRepo.findById(idLevel).get();
+                    SkillJob skillJob = new SkillJob(s, getJob);
+                    _skillJobRepo.save(skillJob);
+                }
+            }
         }
         return (JobDTO) JobMapping.getJob(job);
 
