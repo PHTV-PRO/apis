@@ -12,7 +12,10 @@ import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Entity.FollowCompany;
 import com.company.phtv.Models.Entity.FollowJob;
 import com.company.phtv.Models.Entity.Jobs;
+import com.company.phtv.Models.Entity.LevelJob;
+import com.company.phtv.Models.Entity.Skill;
 import com.company.phtv.Models.Entity.SkillCompany;
+import com.company.phtv.Models.Entity.SkillJob;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
 import com.company.phtv.Models.Map.CompanyMapping;
@@ -30,6 +33,8 @@ import com.company.phtv.Repository.CityProvinceRepo;
 import com.company.phtv.Repository.CompanyRepo;
 import com.company.phtv.Repository.FollowCompanyRepo;
 import com.company.phtv.Repository.FollowJobRepo;
+import com.company.phtv.Repository.SkillCompanyRepo;
+import com.company.phtv.Repository.SkillRepo;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.ICompanyService;
 import com.company.phtv.Utils.Convert;
@@ -72,7 +77,10 @@ public class CompanyService implements ICompanyService {
     FollowJobRepo _followJobRepo;
     @Autowired
     CityProvinceRepo _cityProvinceRepo;
-
+    @Autowired
+    SkillRepo _skillRepo;
+    @Autowired
+    SkillCompanyRepo _SkillCompanyRepo;
     // call service
     @Autowired
     CloudinaryService _cloudinaryService;
@@ -614,8 +622,18 @@ public class CompanyService implements ICompanyService {
         company.setList_image(requestCompany.getList_image());
         company.setCount_job(-1);
         // STEP 3: save database
-        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_province_id()));
+        company.setCityProvince(_cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id()));
         _companyRepo.save(company);
+        if (requestCompany.getSkill_id() != "") {
+            // handle string skill -> array skill for create by ","
+            String[] skillId = requestCompany.getSkill_id().split(",");
+            for (String i : skillId) {
+                Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
+                SkillCompany skillCompany = new SkillCompany(s, company);
+                // save skillCompany (Intermediate table)
+                _SkillCompanyRepo.save(skillCompany);
+            }
+        }
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 
@@ -755,9 +773,24 @@ public class CompanyService implements ICompanyService {
         }
         company.setList_image(requestCompany.getList_image());
         company.setId(id);
-        company.setCityProvince(_cityProvinceRepo.getOne(requestCompany.getCity_province_id()));
+        company.setCityProvince(_cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id()));
         // STEP 4
         _companyRepo.save(company);
+
+        List<SkillCompany> skillCompanies = _SkillCompanyRepo.findByCompany(company);
+        for (SkillCompany i : skillCompanies) {
+            _SkillCompanyRepo.delete(i);
+        }
+        if (requestCompany.getSkill_id() != "") {
+            // handle string skill -> array skill for create by ","
+            String[] skillId = requestCompany.getSkill_id().split(",");
+            for (String i : skillId) {
+                Skill s = _skillRepo.findById(Integer.parseInt(i)).get();
+                SkillCompany skillCompany = new SkillCompany(s, company);
+                // save skillCompany (Intermediate table)
+                _SkillCompanyRepo.save(skillCompany);
+            }
+        }
         return (CompanyDTO) CompanyMapping.CompanyDTO(company);
     }
 

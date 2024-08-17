@@ -19,13 +19,17 @@ public class SkillCompany extends BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "skill_id")
     private Skill skill;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "company_id")
     private Company company;
+    public SkillCompany(Skill s, Company c){
+        this.skill = s;
+        this.company = c;
+    }
 }
