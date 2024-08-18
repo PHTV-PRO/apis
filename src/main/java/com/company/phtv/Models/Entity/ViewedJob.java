@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 
 @Entity
 @Getter
@@ -28,9 +30,10 @@ public class ViewedJob extends BaseModel{
     @JoinColumn(name = "account_id")
     private Account account;
 
-    public ViewedJob(int id, Jobs jobs, Account account) {
+    public ViewedJob(int id, Jobs jobs, Account account, Date create_at) {
         this.id = id;
         this.jobs = jobs;
         this.account = account;
+        this.setCreated_at(create_at);
     }
 }

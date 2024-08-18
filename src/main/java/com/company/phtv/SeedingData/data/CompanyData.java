@@ -54,7 +54,8 @@ public class CompanyData {
                                 0,
                                 _AccountRepo.getOne(2),
                                 "Số 5 Lê Trung Nghĩa, Phường 12, Quận Tân Bình, Thành phố Hồ Chí Minh, Việt Nam",
-                                _CityProvinceRepo.getOne(1)));
+                                _CityProvinceRepo.getOne(1),
+                                3));
                 data.add(new Company(2,
                                 "Company Mission Useful SPRAYWAY-TPR",
                                 "About Sprayway-TPR\\n\" +\n" +
@@ -78,7 +79,8 @@ public class CompanyData {
                                 0,
                                 _AccountRepo.getOne(3),
                                 "Tầng 25, Tòa nhà Lim Tower, 9 - 11 Tôn Đức Thắng, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh",
-                                _CityProvinceRepo.getOne(2)));
+                                _CityProvinceRepo.getOne(2),
+                                3));
                 data.add(new Company(3,
                                 "COMPANY Mission Useful LIKELION",
                                 "100% funded by the Korean Government, this is the first project to connect jobs for Vietnamese students with Korean Start-up Enterprises. You will undergo practical training and experience living and working in major cities in Korea.",
@@ -100,7 +102,8 @@ public class CompanyData {
                                 1, 0,
                                 _AccountRepo.getOne(4),
                                 "Tòa nhà LPB, số 210 Trần Quang Khải, Phường Tràng Tiền, Quận Hoàn Kiếm, Thành phố Hà Nội",
-                                _CityProvinceRepo.getOne(4)));
+                                _CityProvinceRepo.getOne(4),
+                                3));
 
                 // Ngân Hàng
                 data.add(new Company(4,
@@ -132,7 +135,8 @@ public class CompanyData {
                                 1, 0,
                                 _AccountRepo.getOne(5),
                                 "Tầng 14, Tháp A Vincom, 191 Bà Triệu, Phường Lê Đại Hành, Quận Hai Bà Trưng, Thành phố Hà Nội",
-                                _CityProvinceRepo.getOne(1)));
+                                _CityProvinceRepo.getOne(1),
+                                3));
 
                 // Phần Mền
                 data.add(new Company(5,
@@ -182,7 +186,8 @@ public class CompanyData {
                                 1, 0,
                                 _AccountRepo.getOne(6),
                                 "Văn phòng Hà Nội: Tầng 9-10, tòa nhà Thái Nam, đường Dương Đình Nghệ, Phường Yên Hoà, Quận Cầu Giấy, Thành phố Hà Nội",
-                                _CityProvinceRepo.getOne(1)));
+                                _CityProvinceRepo.getOne(1),
+                                3));
                 // Dịch Vụ Doanh Nghiệp
                 data.add(new Company(6,
                                 "TopDev's Client",
@@ -205,7 +210,8 @@ public class CompanyData {
                                 1, 1,
                                 _AccountRepo.getOne(7),
                                 "Tầng 12A, Toà nhà AP Tower, 518B Điện Biên Phủ, Phường 21, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
-                                _CityProvinceRepo.getOne(3)));
+                                _CityProvinceRepo.getOne(3),
+                                3));
                 // Finance
 
                 data.add(new Company(7,
@@ -230,7 +236,8 @@ public class CompanyData {
                                 1, 1,
                                 _AccountRepo.getOne(8),
                                 "67B phố Hàm Long, Phường Hàng Bài, Quận Hoàn Kiếm, Thành phố Hà Nội",
-                                _CityProvinceRepo.getOne(2)));
+                                _CityProvinceRepo.getOne(2),
+                                3));
                 // Ecomerce Platforms
                 data.add(new Company(
                                 8,
@@ -261,7 +268,8 @@ public class CompanyData {
                                 1, 1,
                                 _AccountRepo.getOne(9),
                                 "Tòa nhà Bitexco, Ho Chi Minh City, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh",
-                                _CityProvinceRepo.getOne(8)));
+                                _CityProvinceRepo.getOne(8),
+                                3));
 
                 // B2b
                 data.add(new Company(9,
@@ -306,7 +314,8 @@ public class CompanyData {
                                 1, 1,
                                 _AccountRepo.getOne(10),
                                 "The Sun Avenue 28 Mai Chí Thọ, An Phú, Quận 2, Phường An Phú, Thành phố Thủ Đức, Thành phố Hồ Chí Minh",
-                                _CityProvinceRepo.getOne(8)));
+                                _CityProvinceRepo.getOne(8),
+                                3));
                 // Phần Cứng
                 data.add(new Company(10,
                                 "Traphaco Joint Stock Company",
@@ -327,7 +336,8 @@ public class CompanyData {
                                 1, 1,
                                 _AccountRepo.getOne(11),
                                 "Số 75 phố Yên Ninh, Phường Quán Thánh, Quận Ba Đình, Thành phố Hà Nội",
-                                _CityProvinceRepo.getOne(4)));
+                                _CityProvinceRepo.getOne(4),
+                                3));
                 return data;
         }
 }

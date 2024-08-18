@@ -429,7 +429,8 @@ public class JobService implements IJobService {
             return true;
         }
         // STEP 3: save
-        _followJobRepo.save(new FollowJob(0, job, account));
+//        Change
+        _followJobRepo.save(new FollowJob(0, job, account,new Date("11/11/2024")));
         return true;
     }
 
@@ -461,7 +462,8 @@ public class JobService implements IJobService {
             }
         }
         // viewedJobBetween have job -> update create_at job
-        _ViewedJobRepo.save(new ViewedJob(0, job, account));
+//        Change
+        _ViewedJobRepo.save(new ViewedJob(0, job, account,new Date("11/11/2024")));
         // finished
         return true;
     }
@@ -491,7 +493,8 @@ public class JobService implements IJobService {
             }
         }
         // STEP 4: save application
-        _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv));
+        //Change
+        _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv,new Date("11/11/2024")));
         return "Success";
     }
 

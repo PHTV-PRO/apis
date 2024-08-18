@@ -78,7 +78,13 @@ public class Jobs extends BaseModel{
         this.id = id;
     }
 
-    public Jobs(int id, String title, String description, String reponsibility, String skill_required, String benefit, String interview_steps, int amount, String experience_required, String salary_max, String salary_min, Date start_date, Date end_date, boolean is_active, int gender, Company company,JobType jobType) {
+    public Jobs(
+            int id, String title, String description, String reponsibility,
+                String skill_required, String benefit, String interview_steps,
+                int amount, String experience_required,
+                String salary_max, String salary_min, Date start_date, Date end_date, boolean is_active,
+                int gender, Company company,JobType jobType, Date create_at
+    ) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -96,5 +102,6 @@ public class Jobs extends BaseModel{
         this.gender = gender;
         this.company = company;
         this.jobType = jobType;
+        this.setCreated_at(create_at);
     }
 }

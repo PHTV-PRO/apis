@@ -43,7 +43,7 @@ public class Company extends BaseModel {
     private int enable;
     @Column(name = "contract")
     private int contract;
-    @Column(name = "lcoation")
+    @Column(name = "location")
     private String location;
 
     @Column(name = "count_job")
@@ -76,7 +76,7 @@ public class Company extends BaseModel {
     public Company(int id, String name, String introduction, String benefit, String profession,
             String size, String link_website, String nationnality, String logo_image,
             String background_image, String list_image, int enable, int contract, Account account, String locatiton,
-            CityProvince cityProvince) {
+            CityProvince cityProvince,int count_job) {
         this.id = id;
         this.name = name;
         this.introduction = introduction;
@@ -94,5 +94,6 @@ public class Company extends BaseModel {
         this.account = account;
         this.location = locatiton;
         this.cityProvince = cityProvince;
+        this.count_job = count_job;
     }
 }
