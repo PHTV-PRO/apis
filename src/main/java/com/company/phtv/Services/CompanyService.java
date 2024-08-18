@@ -681,6 +681,9 @@ public class CompanyService implements ICompanyService {
             // login fail;
             throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
+        if(requestCompanyRegister.getCity_province_id()==0){
+            throw Variable.ACTION_FAIL;
+        }
         if (account.getRole() == Role.CANDIDATE) {
             account.setRole(Role.EMPLOYER);
             _accountRepo.save(account);

@@ -3,6 +3,8 @@ package com.company.phtv.Models.Request;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +36,7 @@ public class RequestCompanyRegister {
     public String nationnality;
     @Nullable
     public String location;
-    @Nullable
+    @NotNull
     public int city_province_id;
     @Nullable
     public MultipartFile background_image;
