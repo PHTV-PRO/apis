@@ -504,10 +504,10 @@ public class JobService implements IJobService {
         if (checkJobNotFound) {
             throw Variable.NOT_FOUND;
         }
-        boolean checkJobOff = getJob.is_active() == false;
-        if (checkJobOff) {
-            throw Variable.JOB_OFF;
-        }
+        // boolean checkJobOff = getJob.is_active() == false;
+        // if (checkJobOff) {
+        //     throw Variable.JOB_OFF;
+        // }
         // STEP 2: handle level and skill (Intermediate table)
         
 
