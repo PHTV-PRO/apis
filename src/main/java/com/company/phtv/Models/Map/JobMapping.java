@@ -122,11 +122,6 @@ public class JobMapping {
         if (rj.getEnd_date() != null) {
             j.setEnd_date(new Date(rj.getEnd_date()));
         }
-        if (rj.is_active != "false") {
-            j.set_active(false);
-        } else {
-            j.set_active(true);
-        }
         if (rj.getGender() != 0) {
             j.setGender(rj.getGender());
         }
