@@ -21,6 +21,9 @@ public class ChartForEmployer {
     //tatol price in current year
     Float overall_payment;
 
+    int opening_jobs;
+
+
     List<Integer> number_of_job_applicated;
     List<Integer> number_of_job_saved;
     List<Integer> number_of_job_viewed;
