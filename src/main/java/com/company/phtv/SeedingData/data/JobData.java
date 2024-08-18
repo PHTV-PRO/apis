@@ -25,7 +25,6 @@ public class JobData {
                 List<Jobs> data = new ArrayList<>();
                 //  Job Expired
                 data.add(new Jobs(
-
                         1,
                         "Designer - Salary 12 - 18 Million (Experienced)",
                         "- Receive design requests; products of beds, cabinets, tables and chairs... (disassembled goods)\n" +
@@ -54,14 +53,17 @@ public class JobData {
                                 "5 years",
                                 "18 millions",
                                 "12 millions",
-                                new Date("03/06/2024"),
+                                new Date("03/01/2024"),
                                 //month/day/year
-                                new Date("07/06/2024"),
+                                new Date("07/01/2024"),
                                 true,
                                 0,
                                 _CompanyRepo.getOne(2),
                                 // _LocationRepo.getOne(1),
-                                _JobTypeRepo.getOne(1)));
+                                _JobTypeRepo.getOne(1),
+                                new Date("02/29/2024")
+                ));
+
                 data.add(new Jobs(
                                 2,
                         "FREE TRAINING AND WORKING OPPORTUNITY IN KOREA FOR FRESHERS (5 months of training + E-7 Engineer visa)",
@@ -96,13 +98,14 @@ public class JobData {
                                 "No Required",
                                 null,
                                 null,
-                                new Date("02/06/2024"),
-                                new Date("04/07/2024"),
+                                new Date("02/10/2024"),
+                                new Date("04/11/2024"),
                                 true,
                                 0,
                                 _CompanyRepo.getOne(3),
                                 // _LocationRepo.getOne(2),
-                                _JobTypeRepo.getOne(2)));
+                                _JobTypeRepo.getOne(2),
+                                new Date("02/08/2024")));
 
                 data.add(new Jobs(
                         3,
@@ -142,13 +145,14 @@ public class JobData {
                                 "Priority is given to candidates who know banking operations: payment connection, reconciliation, kpi, credit rating...",
                         null,
                         "Negotiate",
-                        new Date("02/05/2024"),
-                        new Date("06/07/2024"),
+                        new Date("02/15/2024"),
+                        new Date("06/17/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(1),
                         // _LocationRepo.getOne(3),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("02/09/2024")));
 
                 data.add(new Jobs(
                         4,
@@ -211,7 +215,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(4),
                         // _LocationRepo.getOne(4),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("03/05/2024")));
 
 
                 data.add(new Jobs(
@@ -250,7 +255,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(5),
                         // _LocationRepo.getOne(5),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("05/01/2024")));
 
                 data.add(new Jobs(
                         6,
@@ -294,7 +300,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(6),
                         // _LocationRepo.getOne(6),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("03/12/2024")));
 
                 data.add(new Jobs(
                         7,
@@ -333,13 +340,14 @@ public class JobData {
                         "From 2 years",
                         null,
                         "Negotiate",
-                        new Date("03/07/2024"),
-                        new Date("05/08/2024"),
+                        new Date("03/17/2024"),
+                        new Date("05/18/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(7),
                         // _LocationRepo.getOne(7),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("03/13/2024")));
 
                 data.add(new Jobs(
                         8,
@@ -382,13 +390,14 @@ public class JobData {
                         "From 5 years",
                         "2000 VND",
                         "1200 VND",
-                        new Date("02/07/2024"),
-                        new Date("05/08/2024"),
+                        new Date("02/27/2024"),
+                        new Date("05/28/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(8),
                         // _LocationRepo.getOne(8),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("02/14/2024")));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -428,13 +437,15 @@ public class JobData {
                         "No Required",
                         "900",
                         "720",
-                        new Date("05/7/2024"),
-                        new Date("07/8/2024"),
+                        new Date("05/27/2024"),
+                        new Date("07/28/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(9),
                         // _LocationRepo.getOne(9),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("05/15/2024")
+                        ));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
                         10,
@@ -469,13 +480,14 @@ public class JobData {
                         "From 1 year",
                         "800 USD",
                         "500 USD",
-                        new Date("04/7/2024"),
-                        new Date("07/9/2024"),
+                        new Date("04/17/2024"),
+                        new Date("07/19/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(10),
                         // _LocationRepo.getOne(10),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("04/16/2024")));
 
                 //  Jobs Available
                 // fresher
@@ -538,7 +550,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(2),
                         // _LocationRepo.getOne(1),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/18/2024")));
 
                 data.add(new Jobs(
                         12,
@@ -576,13 +589,14 @@ public class JobData {
                         "From 3 years",
                         "Negotiable",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/11/2024"),
+                        new Date("11/11/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(3),
                         // _LocationRepo.getOne(2),
-                        _JobTypeRepo.getOne(2)));
+                        _JobTypeRepo.getOne(2),
+                        new Date("07/19/2024")));
                 //senior
                 data.add(new Jobs(
                         13,
@@ -635,13 +649,14 @@ public class JobData {
                         "From 5 years",
                         "Negotiate",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("10/07/2024"),
+                        new Date("08/12/2024"),
+                        new Date("10/12/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(1),
                         // _LocationRepo.getOne(3),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("07/19/2024")));
 
                 data.add(new Jobs(
                         14,
@@ -707,7 +722,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(4),
                         // _LocationRepo.getOne(4),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/20/2024")));
 
 
                 data.add(new Jobs(
@@ -737,13 +753,14 @@ public class JobData {
                         "From 1 year"
                         ,"Negotiate",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/13/2024"),
+                        new Date("11/13/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(5),
                         // _LocationRepo.getOne(5),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/21/2024")));
 
                 data.add(new Jobs(
                         16,
@@ -785,13 +802,14 @@ public class JobData {
                         "From 2 years"
                         ,"Negotiate",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/14/2024"),
+                        new Date("11/14/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(6),
                         // _LocationRepo.getOne(6),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("07/22/2024")));
 
                 data.add(new Jobs(
                         17,
@@ -825,13 +843,14 @@ public class JobData {
                         "From 1 year",
                         "1500",
                         "500",
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/15/2024"),
+                        new Date("11/15/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(7),
                         // _LocationRepo.getOne(7),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/23/2024")));
 
                 data.add(new Jobs(
                         18,
@@ -890,13 +909,14 @@ public class JobData {
                         "From 2 years",
                         "2000",
                         "1000",
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/16/2024"),
+                        new Date("11/16/2024"),
                         true,
                         1,
                         _CompanyRepo.getOne(8),
                         // _LocationRepo.getOne(8),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/18/2024")));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -928,13 +948,14 @@ public class JobData {
                         "From 2 years",
                         "Negotiable",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("11/07/2024"),
+                        new Date("08/19/2024"),
+                        new Date("11/19/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(9),
                         // _LocationRepo.getOne(9),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/19/2024")));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
                         20,
@@ -971,13 +992,14 @@ public class JobData {
                         "From 5 years",
                         "Negotiable",
                         null,
-                        new Date("08/07/2024"),
-                        new Date("11/08/2024"),
+                        new Date("08/22/2024"),
+                        new Date("11/22/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(10),
                         // _LocationRepo.getOne(10),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("07/20/2024")));
 
                 //  Jobs Upcoming
                 // fresher
@@ -1034,7 +1056,8 @@ public class JobData {
                         0,
                         _CompanyRepo.getOne(2),
                         // _LocationRepo.getOne(1),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/12/2024")));
 
                 data.add(new Jobs(
                         22,
@@ -1073,13 +1096,14 @@ public class JobData {
                         "From 2 years",
                         "3.000 USD",
                         "1.000 USD",
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/11/2024"),
+                        new Date("12/11/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(3),
                         // _LocationRepo.getOne(2),
-                        _JobTypeRepo.getOne(2)));
+                        _JobTypeRepo.getOne(2),
+                        new Date("08/21/2024")));
                 //senior
                 data.add(new Jobs(
                         23,
@@ -1124,13 +1148,14 @@ public class JobData {
                         "From 4 years",
                         "1.500 ",
                         "2000",
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("11/23/2024"),
+                        new Date("12/23/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(1),
                         // _LocationRepo.getOne(3),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("08/22/2024")));
 
                 data.add(new Jobs(
                         24,
@@ -1192,13 +1217,14 @@ public class JobData {
                         "From 1 year",
                         "Negotiable",
                         null,
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/25/2024"),
+                        new Date("12/25/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(4),
                         // _LocationRepo.getOne(4),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/25/2024")));
 
 
                 data.add(new Jobs(
@@ -1232,13 +1258,14 @@ public class JobData {
                         "From 1 year"
                         ,"Negotiate",
                         null,
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/13/2024"),
+                        new Date("12/13/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(5),
                         // _LocationRepo.getOne(5),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/20/2024")));
 
                 data.add(new Jobs(
                         26,
@@ -1284,13 +1311,14 @@ public class JobData {
                         "From 1 year"
                         ,"Negotiate",
                         null,
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/15/2024"),
+                        new Date("12/15/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(6),
                         // _LocationRepo.getOne(6),
-                        _JobTypeRepo.getOne(3)));
+                        _JobTypeRepo.getOne(3),
+                        new Date("08/15/2024")));
 
                 data.add(new Jobs(
                         27,
@@ -1352,13 +1380,14 @@ public class JobData {
                         "From 4 years",
                         "2300",
                         "1000",
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/16/2024"),
+                        new Date("12/16/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(7),
                         // _LocationRepo.getOne(7),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/16/2024")));
 
                 data.add(new Jobs(
                         28,
@@ -1427,13 +1456,14 @@ public class JobData {
                         "From 5 years",
                         "Negotiable",
                         null,
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/10/2024"),
+                        new Date("12/10/2024"),
                         true,
                         1,
                         _CompanyRepo.getOne(8),
                         // _LocationRepo.getOne(8),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/10/2024")));
 
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
@@ -1506,13 +1536,14 @@ public class JobData {
                         "From 2 years",
                         "Negotiable",
                         null,
-                        new Date("09/07/2024"),
-                        new Date("12/07/2024"),
+                        new Date("09/21/2024"),
+                        new Date("12/21/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(9),
                         // _LocationRepo.getOne(9),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/21/2024")));
                 // cái này c description riêng => nên kham khảo trên phone ròi đưa ra phương án thích hợp
                 data.add(new Jobs(
                         30,
@@ -1562,13 +1593,14 @@ public class JobData {
                         "From 1 year",
                         "2000",
                         "5000",
-                        new Date("09/07/2024"),
-                        new Date("12/08/2024"),
+                        new Date("09/09/2024"),
+                        new Date("12/09/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(10),
                         // _LocationRepo.getOne(10),
-                        _JobTypeRepo.getOne(1)));
+                        _JobTypeRepo.getOne(1),
+                        new Date("08/09/2024")));
                 return data;
         }
 

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -26,9 +28,10 @@ public class FollowJob extends BaseModel {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    public FollowJob(int id, Jobs jobs, Account account) {
+    public FollowJob(int id, Jobs jobs, Account account, Date create_at) {
         this.id = id;
         this.jobs = jobs;
         this.account = account;
+        this.setCreated_at(create_at);
     }
 }
