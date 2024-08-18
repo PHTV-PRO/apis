@@ -45,6 +45,7 @@ import com.company.phtv.Utils.Pagination;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -435,12 +436,16 @@ public class CompanyService implements ICompanyService {
         }
         // STEP 1: get data
         Company company = _companyRepo.findOneCompanyWithAccount(account);
+        if (company == null || company.getDeleted_at() != null) {
+            throw Variable.COMPANY_NOT_FOUND;
+        }
 
         ChartForEmployer chart = new ChartForEmployer();
 
         // detail notes in class dto ( Ghi chú chi tiết trong class dto)
         // STEP 2:create variable contain
         int jobs_has_been_created = 0;
+        int opening_job = 0;
         Float overall_payment = (float) 0;
 
         List<Integer> listMonth = new ArrayList<>();
@@ -449,7 +454,18 @@ public class CompanyService implements ICompanyService {
         List<Integer> listSaved = new ArrayList<>();
         List<Integer> listJobs = new ArrayList<>();
         List<Float> listPrice = new ArrayList<>();
-
+        for (Jobs job : company.getJobs()) {
+            boolean checkDeleted = job.getDeleted_at() != null;
+            if (checkDeleted) {
+                continue;
+            }
+            boolean checkOpening = (job.getStart_date().before(new Date())
+                    && job.getEnd_date().after(new Date()));
+            if (checkOpening) {
+                opening_job += 1;
+            }
+        }
+        chart.setOpening_jobs(opening_job);
         // get current year (2024) (sài nhiều chỗ)
         int currentYear = handleDate.getYear(new Date());
         for (int i = 0; i < 12; i++) {
@@ -485,7 +501,7 @@ public class CompanyService implements ICompanyService {
                     // get month applicated
                     int monthApplicated = handleDate.getMonth(app.getCreated_at());
                     // check month part 2
-                    boolean checkMonthApplicated = monthApplicated == (i + 1) ? true:false;
+                    boolean checkMonthApplicated = monthApplicated == (i + 1) ? true : false;
                     if (checkMonthApplicated) {
                         number_of_job_applicated += 1;
                     }
@@ -623,7 +639,7 @@ public class CompanyService implements ICompanyService {
         company.setList_image(requestCompany.getList_image());
         company.setCount_job(-1);
         // STEP 3: save database
-        CityProvince cityProvince= _cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id());
+        CityProvince cityProvince = _cityProvinceRepo.findIdCityProvince(requestCompany.getCity_province_id());
         company.setCityProvince(cityProvince);
         _companyRepo.save(company);
         if (requestCompany.getSkill_id() != "") {
@@ -681,7 +697,7 @@ public class CompanyService implements ICompanyService {
             // login fail;
             throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
         }
-        if(requestCompanyRegister.getCity_province_id()==0){
+        if (requestCompanyRegister.getCity_province_id() == 0) {
             throw Variable.ACTION_FAIL;
         }
         if (account.getRole() == Role.CANDIDATE) {
