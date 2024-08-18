@@ -10,7 +10,9 @@ import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.TokenUser;
 import com.company.phtv.Models.Entity.Account;
+import com.company.phtv.Models.Entity.Company;
 import com.company.phtv.Models.Map.AccountMapping;
+import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Request.RequestLogin;
 import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAuthenticateService;
@@ -58,7 +60,14 @@ public class AuthenticateService implements IAuthenticateService {
         }
         // STEP 4: create token
         var token = _jwtservice.generateToken(user);
-        return new TokenUser(token, AccountMapping.accountDTO(_userRepo.getAccountByEmail(requestLogin.getEmail())));
+        Account account = _userRepo.getAccountByEmail(requestLogin.getEmail());
+        AccountDTO accountDTO = AccountMapping.accountDTO(account);
+        for (Company c : account.getCompanies()) {
+            if (c.getDeleted_at() == null) {
+                accountDTO.setCompanyForEmployer(CompanyMapping.CompanyForEmployerDTO(c));
+            }
+        }
+        return new TokenUser(token, accountDTO);
     }
 
     @Override
