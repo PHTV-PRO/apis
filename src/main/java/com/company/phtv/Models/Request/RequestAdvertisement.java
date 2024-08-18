@@ -14,6 +14,5 @@ import lombok.Setter;
 public class RequestAdvertisement {
     @Nullable
     public MultipartFile image;
-    @Nullable
     public String path;
 }
