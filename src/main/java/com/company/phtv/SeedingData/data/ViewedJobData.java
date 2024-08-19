@@ -43,13 +43,12 @@ public class ViewedJobData {
         data.add(new ViewedJob(20, _JobRepo.getOne(20), _AccountRepo.getAccountById(21),new Date("08/10/2024")));
 
         // view job cho 1 emp : 2 com : 1
-        data.add(new ViewedJob(21, _JobRepo.getOne(13), _AccountRepo.getAccountById(14),new Date("08/15/2024")));
+        data.add(new ViewedJob(21, _JobRepo.getOne(13), _AccountRepo.getAccountById(13),new Date("08/15/2024")));
         data.add(new ViewedJob(22, _JobRepo.getOne(13), _AccountRepo.getAccountById(16),new Date("08/16/2024")));
         data.add(new ViewedJob(23, _JobRepo.getOne(13), _AccountRepo.getAccountById(21),new Date("08/17/2024")));
         data.add(new ViewedJob(24, _JobRepo.getOne(13), _AccountRepo.getAccountById(20),new Date("08/18/2024")));
         data.add(new ViewedJob(25, _JobRepo.getOne(13), _AccountRepo.getAccountById(19),new Date("08/11/2024")));
-        data.add(new ViewedJob(24, _JobRepo.getOne(13), _AccountRepo.getAccountById(15),new Date("08/18/2024")));
-        data.add(new ViewedJob(25, _JobRepo.getOne(13), _AccountRepo.getAccountById(17),new Date("08/11/2024")));
+
 
         data.add(new ViewedJob(26, _JobRepo.getOne(3), _AccountRepo.getAccountById(21),new Date("03/15/2024")));
         data.add(new ViewedJob(27, _JobRepo.getOne(3), _AccountRepo.getAccountById(19),new Date("03/16/2024")));
@@ -104,6 +103,9 @@ public class ViewedJobData {
         data.add(new ViewedJob(64, _JobRepo.getOne(35), _AccountRepo.getAccountById(14),new Date("01/21/2024")));
         data.add(new ViewedJob(65, _JobRepo.getOne(35), _AccountRepo.getAccountById(12),new Date("01/18/2024")));
         data.add(new ViewedJob(66, _JobRepo.getOne(35), _AccountRepo.getAccountById(15),new Date("01/20/2024")));
+
+        data.add(new ViewedJob(67, _JobRepo.getOne(13), _AccountRepo.getAccountById(15),new Date("08/18/2024")));
+        data.add(new ViewedJob(68, _JobRepo.getOne(13), _AccountRepo.getAccountById(17),new Date("08/11/2024")));
 
         return data;
     }

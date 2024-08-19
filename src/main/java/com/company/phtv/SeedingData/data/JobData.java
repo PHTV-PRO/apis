@@ -846,7 +846,7 @@ public class JobData {
                         "1500",
                         "500",
                         new Date("08/05/2024"),
-                        new Date("11/15/2024"),
+                        new Date("10/15/2024"),
                         true,
                         0,
                         _CompanyRepo.getOne(7),
