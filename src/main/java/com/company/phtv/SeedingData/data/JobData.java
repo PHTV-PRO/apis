@@ -489,6 +489,8 @@ public class JobData {
                         _JobTypeRepo.getOne(1),
                         new Date("04/16/2024")));
 
+
+
                 //  Jobs Available
                 // fresher
                 data.add(new Jobs(
@@ -649,7 +651,7 @@ public class JobData {
                         "From 5 years",
                         "Negotiate",
                         null,
-                        new Date("08/12/2024"),
+                        new Date("08/01/2024"),
                         new Date("10/12/2024"),
                         true,
                         0,
@@ -1601,6 +1603,296 @@ public class JobData {
                         // _LocationRepo.getOne(10),
                         _JobTypeRepo.getOne(1),
                         new Date("08/09/2024")));
+
+                //seeding more data for employer id 2 , company id 1
+                data.add(new Jobs(
+                        31,
+                        "Software Engineer(Senior/ Leader Software Engineer)",
+                        null,
+                        "Programming assigned functions according to detailed solution documents\n" +
+                                "Perform coding according to solution documents\n" +
+                                "Can solve technical problems for lower level devs.\n" +
+                                "Write and perform unit tests.\n" +
+                                "Optimize program performance\n" +
+                                "Perform upcoding of upgrade requests according to available processes and scenarios.\n" +
+                                "Perform troubleshooting tasks discovered during development and deployment\n" +
+                                "Find the cause of errors in other members, fix errors during deployment and software development.\n" +
+                                "Understand and analyze the logic of code segments according to the project's business",
+                        "Graduated from a university with a good degree or higher in the fields of Information Technology, Electronics and Telecommunications, Computer Science, Applied Mathematics or other related technical fields\n" +
+                                "Have at least 3 years of experience working as a programmer; experience in team management.\n" +
+                                "Have the ability to read and understand English documents. Priority is given to those with TOEIC, TOEFL or IELTS certificates equivalent to TOEIC scores of 650 points or higher.\n" +
+                                "Proficiency in Java programming languages... (according to specific job requirements)\n" +
+                                "Advanced knowledge of object-oriented programming: object-oriented class design, understanding the principles of object-oriented programming\n" +
+                                "Detailed understanding of structured data types (eg string, record, object collection)\n" +
+                                "Understanding of multi-language processing (localisation)\n" +
+                                "Understanding of basic I/O processing\n" +
+                                "Understanding of database-related operations such as query/change (commit/abort)\n" +
+                                "Ability to program Multithreading, concurrency handling, Connection pooling\n" +
+                                "Ability to use log analysis tools to find the cause of errors.",
+                        "Attractive income.\n" +
+                                "Lunch allowance: 730,000 VND/month. Phone: 200,000 VND/month.\n" +
+                                "Quarterly and annual bonuses; gifts on holidays, Tet, and the Group's founding day; annual vacation cost support...\n" +
+                                "Enjoy Social Insurance and Health Insurance according to the Labor Law and the Group's regulations\n" +
+                                "Health insurance (Pay 100% of actual costs incurred within the scope of insurance, not exceeding the insurance limit)\n" +
+                                "Professional, creative, competitive, developing, dynamic environment with many opportunities for advancement.\n" +
+                                "Opportunities to study, research, and work domestically and internationally.",
+                        "Round 1: IQ and TOEIC Test (if required)\n" +
+                                "Round 2: Functional interview",
+                        3,
+                        "From 3 years",null,
+                        "Negotiate",
+                        new Date("03/15/2024"),
+                        new Date("07/17/2024"),
+                        true,
+                        0,
+                        _CompanyRepo.getOne(1),
+                        _JobTypeRepo.getOne(3),
+                        new Date("02/29/2024")));
+
+                data.add(new Jobs(32,
+                        "Senior .NET Developer (French speaking)",
+                        "As a Senior .NET Developer, you will play a key role in every phase of the software development process, from initial concept to final deployment. You will work closely with fellow developers, business analysts, and technical leads to understand project requirements and deliver effective technical solutions. Additionally, you will mentor junior developers, offering guidance on best practices and coding standards.",
+                        "Design, develop, and maintain high-performing software applications using the .NET framework.\n" +
+                                "Collaborate with business stakeholders and technical teams to gather requirements and outline project scope.\n" +
+                                "Engage in all stages of the software development lifecycle, including requirement analysis, design, coding, testing, and deployment.\n" +
+                                "Write clean, maintainable, and reusable code that adheres to industry best practices and coding standards.",
+                        "Essential Skills:\n" +
+                                "\n" +
+                                "Strong understanding of Object-Oriented Programming (OOP).\n" +
+                                "Over 5 years of experience with C#, .NET, ASP.NET Core, Web API, Entity Framework Core, Azure SQL, and CosmoDB.\n" +
+                                "Familiarity with N-tier and Microservices architectures, database design, transaction processing, distributed systems, dependency injection, Test-Driven Development (TDD), Behavior-Driven Development (BDD), xUnit, and SpecFlow.\n" +
+                                "Proficient in cloud technologies, such as Azure and AWS.\n" +
+                                "Experience working in Agile Software Development environments, specifically using the Scrum framework.\n" +
+                                "Knowledgeable in Azure/AWS DevOps practices, including Continuous Integration/Continuous Deployment (CI/CD).\n" +
+                                "Proficient in GIT for source code management.\n" +
+                                "Strong understanding of security and performance optimization.\n" +
+                                "Ability to write clean, maintainable code and refactor when necessary.\n" +
+                                "Language Requirement: French (at least B1 level)\n" +
+                                "Additional Skills:\n" +
+                                "\n" +
+                                "Experience in developing workflows.\n" +
+                                "Familiarity with Clean Architecture principles.\n" +
+                                "Hands-on experience with any JavaScript front-end framework, such as Angular, React, or Vue.\n" +
+                                "Strong understanding of containerization.\n" +
+                                "Soft Skills:\n" +
+                                "\n" +
+                                "Excellent problem-solving abilities.\n" +
+                                "Proactive with strong self-learning and research capabilities.\n" +
+                                "Effective spoken French, particularly in video conferences and face-to-face interactions.",
+                        "Attractive compensation package, including a 13th-month salary.\n" +
+                                "Comprehensive social insurance in accordance with legal requirements.\n" +
+                                "Health insurance coverage extended to three family members.\n" +
+                                "Special holiday and Tet gifts ad annual company retreat.\n" +
+                                "Opportunity to work on international projects in a professional and dynamic environment.\n" +
+                                "Gain valuable experience by working on diverse projects with cutting-edge technologies and talented professionals.\n" +
+                                "Access to training opportunities, including technical seminars and soft skills workshops.\n" +
+                                "Excellent prospects for career advancement through a regular performance review system.",
+                        "Round 1: 1 round offline interview",
+                        2,
+                        "From 5 years",
+                        null,
+                        "Negotiate",
+                        new Date("04/15/2024"),
+                        new Date("06/17/2024"),
+                        true,
+                        0,
+                        _CompanyRepo.getOne(1),
+                        // _LocationRepo.getOne(3),
+                        _JobTypeRepo.getOne(3),
+                        new Date("03/29/2024")));
+
+                data.add(new Jobs(
+                        33,
+                        "Application Operations Specialist",
+                        null,
+                        "Operate managed systems: daily monitoring to ensure continuous and stable operation of the system, troubleshoot when problems occur, evaluate/propose (or coordinate with suppliers) optimal solutions for the system.\n" +
+                                "Directly participate in the process of building, deploying, upgrading the system with partners/contractors (inside & outside the company)\n" +
+                                "Conduct backup and data recovery according to the regulations of each software.\n" +
+                                "Participate in Onsite support for newly opened facilities.\n" +
+                                "Support users at level 1, 2\n" +
+                                "Participate in coordination with P&Ls to solve operational issues (security scanning, account review, etc.)\n" +
+                                "Support projects during the development process such as deploying new features or customizing existing basic functions.\n" +
+                                "Participate in internal/system training on deployment and operation",
+                        "Graduated from universities specializing in information technology\n" +
+                                "Experienced in functional testing, performance testing, service continuity testing. Priority is given to candidates who have worked as administrators and system operators for companies\n" +
+                                "Experience in operating database systems (MySQL, MS SQL), operating applications of enterprise management systems such as Budget Management, Data Analysis & Reporting (PowerBI), file management systems (eg Microsoft SharePoint), RPA, CRM (Salesforce Service Cloud) ...\n" +
+                                "Experience in programming full stack software with technologies: Java, .NET core and VueJS\n" +
+                                "Experience in managing systems related to Windows Server, Linux\n" +
+                                "Experience in deploying landing pages on CMS technology including WordPress/ Drupal\n" +
+                                "Understanding of cloud computing services such as Azure/GCP/AWS\n" +
+                                "Understanding of IT risk management, deploying new facilities & supporting users\n" +
+                                "Ability to work independently or in a team\n" +
+                                "Priority is given to candidates with English proficiency, reading and understanding specialized documents",
+                        "Competitive and attractive\n" +
+                                "Enjoy full benefits: social insurance, health insurance, unemployment insurance\n" +
+                                "Receive support for meals, holiday bonuses\n" +
+                                "Regular health check-ups, annual team building\n" +
+                                "Enjoy incentives when using high-end services of Vingroup\n" +
+                                "Professional training environment, many career development opportunities\n" +
+                                "Sign an official labor contract after the probationary period as prescribed.",
+                        "Round 1: 01 round only (direct/online)",
+                        0,
+                        "Round 1: Phone Interview with Recruitment Team\n" +
+                                "Round 2: Face-to-face Interview with Tech Lead\n" +
+                                "Round 3: Negotiation",
+                        null,
+                        "Negotiate",
+                        new Date("05/15/2024"),
+                        new Date("07/17/2024"),
+                        true,
+                        0,
+                        _CompanyRepo.getOne(1),
+                        // _LocationRepo.getOne(3),
+                        _JobTypeRepo.getOne(3),
+                        new Date("04/29/2024")));
+
+                data.add(new Jobs(
+                        34,
+                        "FULLSTACK ENGINEER (.Net 6, React, TypeScript)",
+                        "ABOUT THE TEAM \n" +
+                                "\n" +
+                                "Wellbarrier – A SLB Technology, the largest energy services company in the world.\n" +
+                                "\n" +
+                                "Wellbarrier is a very well-known product in the energy industry, which has been used by almost the largest oil & gas companies from 67 countries around the world.\n" +
+                                "\n" +
+                                "We provide the energy industry with unique web solutions for a sustainable future, using the most recent technology like .NET 6, ASP.NET Core, TypeScript, React, Nodejs, multi-tenant\n" +
+                                "\n" +
+                                "The solutions we deliver aim to satisfy the needs that no one else has seen, and we are good at it because we think differently. We are a proactive team that takes the initiative to deliver smart solutions and actively takes part in all areas of development. We, as a team, take more than one step outside the box to discover new ways and take advantage of technology to reach the outcome we want.\n" +
+                                "\n" +
+                                "Our success comes from mutual respect, we make the best choices by exploring many ways to reach the same goal. The management knows the best solutions appear when the team can perform their excellence. Our customers around the world call us.",
+                        "Work and collaborate in an Agile environment with experienced and skilled colleagues in Vietnam and Europe.\n" +
+                                "Participate in the entire software development life cycle of the Agile team (requirement analysis, planning, architectural design, documentation, implementation, code review, unit test…)\n" +
+                                "Build Web Applications using .NET 6, TypeScript, React, Nodejs.\n" +
+                                "Build RESTful API to connect with the integrated ecosystem.\n" +
+                                "Build SDK/libraries to share with other parties.\n" +
+                                "Research new technologies, techniques, and standards to improve the productivity of the dev team.\n" +
+                                "Participate in mentoring & code reviews.\n" +
+                                "Plan and organize your own work and accurately report issues and progress in a timely manner."
+                        ,"PERSONAL TRAITS \n" +
+                        "\n" +
+                        "You find motivation in opportunities, are constantly curious, and seek to learn new things.\n" +
+                        "You take initiative and have pride in your work.\n" +
+                        "To see the big picture is important to you, and never settle without understanding the purpose.\n" +
+                        "As a teammate, you contribute to the team's success and enjoy when a co-worker succeeds.\n" +
+                        "You have an extra-strong desire for some of your professional areas and skills.\n" +
+                        "You want to be a part of an Agile team, working with innovative products and technologies.\n" +
+                        "A POTENTIAL CANDIDATE WILL HAVE\n" +
+                        "\n" +
+                        "MUST HAVE:\n" +
+                        "\n" +
+                        "At least 4 years of working experience in web development using .NET/. NET core.\n" +
+                        "Proficient with React, TypeScript.\n" +
+                        "Strong experience with Restful API.\n" +
+                        "Familiar with MS SQL/Azure SQL / Entity framework.\n" +
+                        "Strong at software design SOLID, Design Patterns, etc.\n" +
+                        "Good at technical problem-solving & logical thinking.\n" +
+                        "Self-organizational, flexible, supportive, and multitasking.\n" +
+                        "Continuous learning attitude and growth mindset.\n" +
+                        "Confident with communication in English.\n" +
+                        "Good to have:\n" +
+                        "\n" +
+                        "Experienced with NodeJS.\n" +
+                        "Experienced with Integrated solutions, Docker, and Kubernetes.\n" +
+                        "Experienced with Agile/Scrum team.\n" +
+                        "Performance Optimization, Software Security, and UI/UX.\n" +
+                        "Unit test/ /CI/CD.\n" +
+                        "Experienced in European company.",
+                        "13th-month salary bonus provided to all staff members.\n" +
+                                "Comprehensive healthcare insurance package for you and your dependents.\n" +
+                                "Annual health check-up included.\n" +
+                                "12 days of annual leave per year, with the opportunity for 1 additional day per year, up to a maximum of 18 days. Additionally, 3 special Restaff holidays are granted on December 24th, 25th, and 26th.\n" +
+                                "Hybrid working model allowing for 1 day per week of remote work.\n" +
+                                "English-speaking working environment.\n" +
+                                "Overseas business trip opportunities available.\n" +
+                                "Sponsorship and encouragement for staff members to pursue further education through coverage of tuition fees and examination costs.\n" +
+                                "Product-oriented approach with an agile project management style, offering a dynamic work environment and the chance to gain expertise in the latest technologies.\n" +
+                                "Regular gathering parties and team-building activities.\n" +
+                                "Complimentary coffee (including cappuccino, cafe latte, latte macchiato, etc.), milk, and juice.\n" +
+                                "Working hours from 9 am to 6 pm, Monday to Friday, with a one-hour lunch break and a thirty-minute break in the afternoon.\n" +
+                                "Annual Performance Appraisal opportunities\n" +
+                                "And much more!",
+                        "Round 1: Team Interview (1 round only)",
+                        0,
+                        "From 4 years",
+                        null,
+                        "Negotiate",
+                        new Date("01/15/2024"),
+                        new Date("07/27/2024"),
+                        true,
+                        0,
+                        _CompanyRepo.getOne(1),
+                        // _LocationRepo.getOne(3),
+                        _JobTypeRepo.getOne(3),
+                        new Date("01/09/2024")));
+
+                data.add(new Jobs(
+                        35,
+                        "Principal Software Engineer (English required)",
+                        "Years of experience: Min 7 years \n" +
+                                "Education and qualifications: Bachelor of Engineering (Computer, Software, Electronics or Communications) or Computer Science degree.",
+                        "1. Platform architecture ownership\n" +
+                                "\n" +
+                                "Develop and communicate a clear architectural vision and strategy for the platform.\n" +
+                                "Align platform architecture with the company’s overall business goals and technology strategy.\n" +
+                                "Lead the design and development of the platform architecture, ensuring scalability, performance, and security.\n" +
+                                "Communicate architectural decisions and roadmaps to stakeholders at various levels within the organization.\n" +
+                                "2. Develop and deliver cloud applications\n" +
+                                "\n" +
+                                "Design, develop, and deploy cloud-based applications using modern development frameworks and tools.\n" +
+                                "Write clean, maintainable, and efficient code following best practices and coding standards. \n" +
+                                "Ensure cloud applications are designed for scalability, high availability, and optimal performance.\n" +
+                                "Implement monitoring and alerting systems to proactively manage application performance and health.\n" +
+                                "3. Refactor and improve existing solutions\n" +
+                                "\n" +
+                                "Conduct thorough code reviews to identify areas of improvement in existing solutions.\n" +
+                                "Analyse current codebase for inefficiencies, bugs, and potential performance bottlenecks.\n" +
+                                "Implement changes to optimize existing code for better performance, scalability, and maintainability.\n" +
+                                "Enhance the functionality of existing solutions by incorporating new features and technologies.\n" +
+                                "Apply best practices in refactoring, ensuring code quality and consistency.\n" +
+                                "Utilize automated testing and continuous integration tools to validate refactored code.\n" +
+                                "4. Mentor other team members\n" +
+                                "\n" +
+                                "Utilize automated testing and continuous integration tools to validate refactored code.\n" +
+                                "Provide Technical Guidance: Offer expertise and knowledge to team members to help solve complex technical issues and enhance their understanding of software development practices.\n" +
+                                "Conduct Code Reviews: Review code submissions from junior developers, providing constructive feedback to improve code quality, performance, and adherence to coding standards.",
+                        "English Proficiency: Solid written and spoken English skills are paramount.\n" +
+                                "Customer Interaction: Ability to work with English-speaking customers from Australia and Eastern Europe.\n" +
+                                "Advanced knowledge of C# and .NET/.NET Core frameworks.\n" +
+                                "Design and implementation of RESTful and GraphQL APIs.\n" +
+                                "Expertise in profiling and optimizing application performance.\n" +
+                                "AWS Expertise: Proficiency in AWS technologies, including EC2, RDS, S3, and Elastic Load Balancing.\n" +
+                                "Real-time Trading Platforms: Experience in supporting real-time trading platforms running on highly optimized servers.\n" +
+                                "PostgreSQL Expertise: Solid experience with PostgreSQL, preferably with exposure to AWS RDS and serverless Aurora.\n" +
+                                "CI/CD: Proficiency in Continuous Integration and Continuous Deployment methodologies and tools.\n" +
+                                "Web Development: Basic understanding of web development principles and best practices.\n" +
+                                "Team Collaboration: Ability to work closely with cross-functional teams and stakeholders.\n" +
+                                "Problem Solving: Strong troubleshooting and analytical skills.\n" +
+                                "[Preferred] RUST commercial/business programming experience.\n" +
+                                "Preferred Qualifications\n" +
+                                "\n" +
+                                "AWS Certification.\n" +
+                                "Previous experience in the financial and real-time trading industry.",
+                        "Competitive salary and bonus structure.\n" +
+                                "13th monthly salary is guaranteed\n" +
+                                "Flexible working hours and additional 12 paid leaves per year;\n" +
+                                "Young and active working environment.\n" +
+                                "Review Salary twice a year\n" +
+                                "Provide full of Equipment\n" +
+                                "Time working: 8.30-17.30 from Monday - Friday",
+                        "Round 1: Technical Interview (Skills & Qualifications Test)\n" +
+                                "Round 2: Culture Fit Interview",
+                        0,
+                        "From 7 years"
+                        ,null,
+                        "Negotiate",
+                        new Date("01/10/2024"),
+                        new Date("04/17/2024"),
+                        true,
+                        0,
+                        _CompanyRepo.getOne(1),
+                        // _LocationRepo.getOne(3),
+                        _JobTypeRepo.getOne(3),
+                        new Date("02/09/2024")));
                 return data;
         }
 
