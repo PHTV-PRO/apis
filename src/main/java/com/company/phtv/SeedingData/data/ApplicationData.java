@@ -122,30 +122,32 @@ public class ApplicationData {
         data.add(new Application(40, "Job application from Trần Minh Minh", _AccountRepo.getAccountById(13), _JobRepo.getOne(13),
                 _CurriculumRepo.getOne(2),new Date("08/17/2024")));
         data.add(new Application(41, "Job application from Từ Lê Diễm My", _AccountRepo.getAccountById(16), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(5),new Date("08/19/2024")));
+                _CurriculumRepo.getOne(5),new Date("08/11/2024")));
         data.add(new Application(42, "Job application from Từ Lê Văn Luyện", _AccountRepo.getAccountById(20), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(9),new Date("08/20/2024")));
+                _CurriculumRepo.getOne(9),new Date("08/12/2024")));
         data.add(new Application(43, "Job application from Trần Đại Nghĩa", _AccountRepo.getAccountById(14), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(3),new Date("08/18/2024")));
+                _CurriculumRepo.getOne(3),new Date("08/13/2024")));
         data.add(new Application(44, "Job application from Nguyễn Ngọc Trâm", _AccountRepo.getAccountById(15), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(4),new Date("01/21/2024")));
+                _CurriculumRepo.getOne(4),new Date("08/14/2024")));
+
+        // 34
+        data.add(new Application(45, "Job application from  Lê Minh Mẫn", _AccountRepo.getAccountById(12), _JobRepo.getOne(34),
+                _CurriculumRepo.getOne(10),new Date("02/15/2024")));
+        data.add(new Application(46, "Job application from Từ Lê Thành", _AccountRepo.getAccountById(18), _JobRepo.getOne(34),
+                _CurriculumRepo.getOne(8),new Date("02/16/2024")));
+        data.add(new Application(47, "Job application from Trinh Xuan Thanh", _AccountRepo.getAccountById(17), _JobRepo.getOne(34),
+                _CurriculumRepo.getOne(2),new Date("02/17/2024")));
 
         // 13
         // hidden data of Application By Month will be deleted
-        data.add(new Application(45, "Job application from  Lê Minh Mẫn", _AccountRepo.getAccountById(12), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(10),new Date("09/15/2024")));
-        data.add(new Application(46, "Job application from Từ Lê Thành", _AccountRepo.getAccountById(18), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(8),new Date("09/16/2024")));
-        data.add(new Application(47, "Job application from Trinh Xuan Thanh", _AccountRepo.getAccountById(17), _JobRepo.getOne(13),
-                _CurriculumRepo.getOne(2),new Date("09/17/2024")));
+//        data.add(new Application(48, "Job application from  Lê Minh Mẫn", _AccountRepo.getAccountById(12), _JobRepo.getOne(13),
+//                _CurriculumRepo.getOne(10),new Date("09/15/2024")));
+//        data.add(new Application(49, "Job application from Từ Lê Thành", _AccountRepo.getAccountById(18), _JobRepo.getOne(13),
+//                _CurriculumRepo.getOne(8),new Date("09/16/2024")));
+//        data.add(new Application(50, "Job application from Trinh Xuan Thanh", _AccountRepo.getAccountById(17), _JobRepo.getOne(13),
+//                _CurriculumRepo.getOne(2),new Date("09/17/2024")));
 
-        // 33
-        data.add(new Application(48, "Job application from  Lê Minh Mẫn", _AccountRepo.getAccountById(12), _JobRepo.getOne(34),
-                _CurriculumRepo.getOne(10),new Date("02/15/2024")));
-        data.add(new Application(49, "Job application from Từ Lê Thành", _AccountRepo.getAccountById(18), _JobRepo.getOne(34),
-                _CurriculumRepo.getOne(8),new Date("02/16/2024")));
-        data.add(new Application(50, "Job application from Trinh Xuan Thanh", _AccountRepo.getAccountById(17), _JobRepo.getOne(34),
-                _CurriculumRepo.getOne(2),new Date("02/17/2024")));
+
 
         return data;
     }
