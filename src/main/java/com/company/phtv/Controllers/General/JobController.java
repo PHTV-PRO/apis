@@ -21,9 +21,9 @@ public class JobController {
     BaseController<List<JobDTO>> _baseControllers = new BaseController<List<JobDTO>>();
 
     @GetMapping()
-    public ResponseEntity<?> getAll(@RequestParam(value = "lotId", required=false) Long lotId, @RequestParam(value = "indId", required=false) Long indId) {
+    public ResponseEntity<?> getAll(@RequestParam int size, @RequestParam int page) {
         try {
-            return _baseControllers.success(_jobService.getAll(lotId, indId));
+            return _baseControllers.success(_jobService.getAll(size,page));
         } catch (HttpException e) {
             return _baseControllers.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

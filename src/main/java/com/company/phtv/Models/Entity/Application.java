@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +32,9 @@ public class Application extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cv_id")
     private CurriculumVitae curriculumVitae;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL)
+    private List<SaveCV> saveCVs;
 
     public Application(int id, String note, Account account, Jobs jobs, CurriculumVitae curriculumVitae, Date create_at) {
         this.id = id;

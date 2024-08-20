@@ -49,11 +49,11 @@ public class Company extends BaseModel {
     @Column(name = "count_job")
     private int count_job = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_province_id")
     private CityProvince cityProvince;
 
@@ -68,6 +68,9 @@ public class Company extends BaseModel {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<SkillCompany> skillCompanies;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<SaveCV> saveCVs;
 
     public Company(int id) {
         this.id = id;

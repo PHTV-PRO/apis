@@ -71,9 +71,9 @@ public class JobService implements IJobService {
 
     // method for get
     @Override
-    public List<JobDTO> getAll(Long lotId, Long indId) {
+    public List<JobDTO> getAll(int size,int page) {
         // STEP 1: get data
-        List<Jobs> jobs = _jobRepo.getAllJob(indId);
+        List<Jobs> jobs = _jobRepo.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
         for (int i = 0; i < jobs.size(); i++) {
             if (checkDateSubcriptionPlan(jobs.get(i))) {
@@ -101,7 +101,7 @@ public class JobService implements IJobService {
 
             }
         }
-        return jobDTOS;
+        return pagination.pagination(size, page, jobDTOS);
     }
 
     @Override
