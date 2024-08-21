@@ -15,5 +15,6 @@ public class ApplicationDTO {
     private AccountDTO account;
     private JobDTO jobs;
     private CVDTO cv;
+    private boolean cv_is_save =false;
 
 }
