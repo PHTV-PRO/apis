@@ -1,5 +1,6 @@
 package com.company.phtv.Services;
 
+import com.company.phtv.Enums.Role;
 import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.AccountDTOForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
@@ -8,6 +9,7 @@ import com.company.phtv.Models.DTO.JobDTO;
 import com.company.phtv.Models.DTO.SubcriptionPlanDTO;
 import com.company.phtv.Models.Entity.Account;
 import com.company.phtv.Models.Entity.Company;
+import com.company.phtv.Models.Entity.CurriculumVitae;
 import com.company.phtv.Models.Entity.Jobs;
 import com.company.phtv.Models.Entity.SubcriptionPlan;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
@@ -162,6 +164,14 @@ public class AccountService implements IAccountService {
         boolean checkAccountNotFound = (account != null && account.getDeleted_at() == null) ? false : true;
         if (checkAccountNotFound) {
             throw Variable.NOT_FOUND;
+        }
+        if (account.getRole() == Role.EMPLOYER) {
+            for (Company c : account.getCompanies()) {
+                if (c.getDeleted_at() == null) {
+                    c.setDeleted_at(new Date());
+                    _companyRepo.save(c);
+                }
+            }
         }
         account.setDeleted_at(new Date());
         _accountRepo.save(account);
