@@ -1,6 +1,7 @@
 package com.company.phtv.Controllers.Employer;
 
 import com.company.phtv.Controllers.BaseController;
+import com.company.phtv.Models.DTO.AccountDTO;
 import com.company.phtv.Models.DTO.ApplicationDTO;
 import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Services.ApplicationService;
@@ -23,6 +24,7 @@ public class EmployerController {
     BaseController<ChartForEmployer> _baseController = new BaseController<ChartForEmployer>();
     BaseController<String> _baseController_string = new BaseController<String>();
     BaseController<List<ApplicationDTO>> _baseControllers = new BaseController<List<ApplicationDTO>>();
+    BaseController<List<AccountDTO>> _baseControllers_account = new BaseController<List<AccountDTO>>();
 
     @GetMapping("/chart/{id}")
     public ResponseEntity<?> getCompanyChart(@PathVariable int id) {
@@ -40,6 +42,16 @@ public class EmployerController {
             @RequestParam int page) {
         try {
             return _baseControllers.success(_appplicationService.getByJob(job_id, size, page));
+        } catch (HttpException e) {
+            return _baseController.error(null, e.StatusCode, e.message);
+        } catch (Exception e) {
+            return _baseController.error(null, 500, e.getMessage());
+        }
+    }
+    @GetMapping("/candidate_followed_by_company")
+    public ResponseEntity<?> getCandidateFollowedByCompany ( @RequestParam int size, @RequestParam int page) {
+        try {
+            return _baseControllers_account.success(_companyService.getCandidateFollowedByCompany(size, page));
         } catch (HttpException e) {
             return _baseController.error(null, e.StatusCode, e.message);
         } catch (Exception e) {

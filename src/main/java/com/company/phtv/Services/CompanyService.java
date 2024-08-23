@@ -1,6 +1,8 @@
 package com.company.phtv.Services;
 
 import com.company.phtv.Enums.Role;
+import com.company.phtv.Models.DTO.AccountDTO;
+import com.company.phtv.Models.DTO.ApplicationDTO;
 import com.company.phtv.Models.DTO.ChartForEmployer;
 import com.company.phtv.Models.DTO.CompanyDTO;
 import com.company.phtv.Models.DTO.JobDTO;
@@ -19,6 +21,7 @@ import com.company.phtv.Models.Entity.SkillCompany;
 import com.company.phtv.Models.Entity.SkillJob;
 import com.company.phtv.Models.Entity.SubcriptionPlanCompany;
 import com.company.phtv.Models.Entity.ViewedJob;
+import com.company.phtv.Models.Map.AccountMapping;
 import com.company.phtv.Models.Map.CompanyMapping;
 import com.company.phtv.Models.Map.JobMapping;
 import com.company.phtv.Models.Map.SkillMapping;
@@ -89,6 +92,8 @@ public class CompanyService implements ICompanyService {
 
     // call util
     Pagination<CompanyDTO> pagination = new Pagination<CompanyDTO>();
+    Pagination<AccountDTO> pagination_acc = new Pagination<AccountDTO>();
+
     Convert convert = new Convert();
     HandleDate handleDate = new HandleDate();
     @Autowired
@@ -584,7 +589,7 @@ public class CompanyService implements ICompanyService {
         // STEP 7: get job highest by application and save job
         int total_applicated_by_month = 0;
         for (int i = 0; i < listApplicated.size(); i++) {
-            if (handleDate.getMonth(new Date()) == i+1) {
+            if (handleDate.getMonth(new Date()) == i + 1) {
                 total_applicated_by_month = listApplicated.get(i);
 
             }
@@ -968,5 +973,26 @@ public class CompanyService implements ICompanyService {
             }
         }
         return pagination.pagination(size, page, companyDTOMapping(companies));
+    }
+
+    public List<AccountDTO> getCandidateFollowedByCompany(int size, int page) {
+        Account account = _currentAccount.getAccount();
+        if (account == null || account.getDeleted_at() != null) {
+            throw Variable.ACCOUNT_NOT_FOUND;
+        }
+        List<AccountDTO> accountDTOs = new ArrayList<>();
+        for (Company c : account.getCompanies()) {
+            if (c.getDeleted_at() != null) {
+                continue;
+            }
+            for (FollowCompany fc : c.getFollowCompany()) {
+                if (fc.getDeleted_at() != null) {
+                    continue;
+                }
+                accountDTOs.add(AccountMapping.accountDTO(fc.getAccount()));
+            }
+
+        }
+        return pagination_acc.pagination(size, page, accountDTOs);
     }
 }
