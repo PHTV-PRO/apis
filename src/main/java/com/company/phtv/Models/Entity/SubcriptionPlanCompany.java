@@ -30,11 +30,12 @@ public class SubcriptionPlanCompany extends BaseModel {
     @JoinColumn(name = "subscription_plan_id")
     private SubcriptionPlan subscription_plan;
 
-    public SubcriptionPlanCompany(int id, Date start_date, Date end_date, Company company, SubcriptionPlan subscription_plan) {
+    public SubcriptionPlanCompany(int id, Date start_date, Date end_date, Company company, SubcriptionPlan subscription_plan,Date create_at) {
         this.id = id;
         this.start_date = start_date;
         this.end_date = end_date;
         this.company = company;
         this.subscription_plan = subscription_plan;
+        this.setCreated_at(create_at);
     }
 }

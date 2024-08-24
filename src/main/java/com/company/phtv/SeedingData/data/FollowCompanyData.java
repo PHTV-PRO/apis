@@ -19,9 +19,14 @@ public class FollowCompanyData {
     @SuppressWarnings("deprecation")
     public List<FollowCompany> Data() {
         List<FollowCompany> data = new ArrayList<>();
-        data.add(new FollowCompany(1, _CompanyRepo.getOne(3), _AccountRepo.getAccountById(1)));
-        data.add(new FollowCompany(2, _CompanyRepo.getOne(2), _AccountRepo.getAccountById(2)));
-        data.add(new FollowCompany(3, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(3)));
+        // Company 1
+        data.add(new FollowCompany(1, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(13)));
+        data.add(new FollowCompany(2, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(16)));
+        data.add(new FollowCompany(3, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(21)));
+        data.add(new FollowCompany(4, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(20)));
+        data.add(new FollowCompany(5, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(19)));
+        data.add(new FollowCompany(6, _CompanyRepo.getOne(1), _AccountRepo.getAccountById(18)));
+
         return data;
     }
 }

@@ -78,10 +78,10 @@ public class AccountData {
                 data.add(new Account(19, "Phạm Phúc Hậu", "phamphuchau@gmail.com",
                         _passwordEncoder.encode("phuchau"), 1, "49 Điện Biên , Phường Hoà Bình , Điện Biên Phủ", "https://www.uit.edu.vn/sites/vi/files/uploads/images/thumbs/202111/hoang.png",
                         Role.CANDIDATE));
-                data.add(new Account(20, "Lê Văn Luyện", "levanluyen@gmail.com",
+                data.add(new Account(20, "Lê Văn Luyện", "binhnhi05102000@gmail.com",
                         _passwordEncoder.encode("vanluyen"), 1, "21A Bến Tre Tỉnh Châu Thành , Huyện Ba Tri ", "https://img2.thuthuatphanmem.vn/uploads/2019/05/06/anh-the-nam-sinh-dep_100828613.jpg",
                         Role.CANDIDATE));
-                data.add(new Account(21, "Nguyễn Lệ Nhi", "nguyenlenhi@gmail.com",
+                data.add(new Account(21, "Nguyễn Lệ Nhi", "trantoan1682016@gmail.com",
                         _passwordEncoder.encode("lenhi"), 2, "Đài Bắc , Trung Hoa", "https://haycafe.vn/wp-content/uploads/2021/12/mau-anh-the-dep-nu-toc-dai-den-chup-phong-nen-xanh.jpg",
                         Role.CANDIDATE));
 //                data.add(new Account(22, "Trần Gia Toàn", "trantoan1682016@gmail.com",
