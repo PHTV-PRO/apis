@@ -176,6 +176,9 @@ public class AdminService implements IAdminService {
                     int count = 0;
                     for (Jobs j : company.getJobs()) {
 
+                        if (j.is_active() == false) {
+                            continue;
+                        }
                         boolean checkJobNotDeleted = j.getDeleted_at() == null;
                         boolean checkDateJob = j.getStart_date().before(new Date())
                                 && j.getEnd_date().after(new Date());
