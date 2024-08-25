@@ -60,6 +60,63 @@ public class FollowJobData {
         data.add(new FollowJob(34, _JobRepo.getOne(3), _AccountRepo.getAccountById(17),new Date("03/03/2024")));
         data.add(new FollowJob(35, _JobRepo.getOne(3), _AccountRepo.getAccountById(18),new Date("03/08/2024")));
 
+        data.add(new FollowJob(36, _JobRepo.getOne(32), _AccountRepo.getAccountById(21),new Date("05/15/2024")));
+        data.add(new FollowJob(37, _JobRepo.getOne(32), _AccountRepo.getAccountById(19),new Date("05/16/2024")));
+        data.add(new FollowJob(38, _JobRepo.getOne(32), _AccountRepo.getAccountById(13),new Date("05/17/2024")));
+        data.add(new FollowJob(39, _JobRepo.getOne(32), _AccountRepo.getAccountById(16),new Date("05/18/2024")));
+        data.add(new FollowJob(40, _JobRepo.getOne(32), _AccountRepo.getAccountById(20),new Date("05/20/2024")));
+        data.add(new FollowJob(41, _JobRepo.getOne(32), _AccountRepo.getAccountById(18),new Date("05/21/2024")));
+        data.add(new FollowJob(42, _JobRepo.getOne(32), _AccountRepo.getAccountById(17),new Date("05/22/2024")));
+        data.add(new FollowJob(43, _JobRepo.getOne(32), _AccountRepo.getAccountById(15),new Date("05/23/2024")));
+        data.add(new FollowJob(44, _JobRepo.getOne(32), _AccountRepo.getAccountById(14),new Date("05/24/2024")));
+
+        data.add(new FollowJob(45, _JobRepo.getOne(33), _AccountRepo.getAccountById(21),new Date("06/15/2024")));
+        data.add(new FollowJob(46, _JobRepo.getOne(33), _AccountRepo.getAccountById(19),new Date("06/16/2024")));
+        data.add(new FollowJob(47, _JobRepo.getOne(33), _AccountRepo.getAccountById(13),new Date("06/17/2024")));
+        data.add(new FollowJob(48, _JobRepo.getOne(33), _AccountRepo.getAccountById(16),new Date("06/18/2024")));
+        data.add(new FollowJob(49, _JobRepo.getOne(33), _AccountRepo.getAccountById(20),new Date("06/20/2024")));
+        data.add(new FollowJob(50, _JobRepo.getOne(33), _AccountRepo.getAccountById(18),new Date("06/21/2024")));
+        data.add(new FollowJob(51, _JobRepo.getOne(33), _AccountRepo.getAccountById(17),new Date("06/22/2024")));
+
+        data.add(new FollowJob(52, _JobRepo.getOne(34), _AccountRepo.getAccountById(21),new Date("07/15/2024")));
+        data.add(new FollowJob(53, _JobRepo.getOne(34), _AccountRepo.getAccountById(19),new Date("07/16/2024")));
+        data.add(new FollowJob(54, _JobRepo.getOne(34), _AccountRepo.getAccountById(13),new Date("07/17/2024")));
+        data.add(new FollowJob(55, _JobRepo.getOne(34), _AccountRepo.getAccountById(16),new Date("07/18/2024")));
+        data.add(new FollowJob(56, _JobRepo.getOne(34), _AccountRepo.getAccountById(20),new Date("07/20/2024")));
+        data.add(new FollowJob(57, _JobRepo.getOne(34), _AccountRepo.getAccountById(18),new Date("07/21/2024")));
+        data.add(new FollowJob(58, _JobRepo.getOne(34), _AccountRepo.getAccountById(17),new Date("07/22/2024")));
+        data.add(new FollowJob(59, _JobRepo.getOne(34), _AccountRepo.getAccountById(14),new Date("07/24/2024")));
+
+
+        data.add(new FollowJob(60, _JobRepo.getOne(31), _AccountRepo.getAccountById(21),new Date("04/15/2024")));
+        data.add(new FollowJob(61, _JobRepo.getOne(31), _AccountRepo.getAccountById(19),new Date("04/16/2024")));
+        data.add(new FollowJob(62, _JobRepo.getOne(31), _AccountRepo.getAccountById(13),new Date("04/17/2024")));
+        data.add(new FollowJob(63, _JobRepo.getOne(31), _AccountRepo.getAccountById(16),new Date("04/18/2024")));
+        data.add(new FollowJob(64, _JobRepo.getOne(31), _AccountRepo.getAccountById(20),new Date("04/20/2024")));
+        data.add(new FollowJob(65, _JobRepo.getOne(31), _AccountRepo.getAccountById(18),new Date("04/21/2024")));
+        data.add(new FollowJob(66, _JobRepo.getOne(31), _AccountRepo.getAccountById(17),new Date("04/22/2024")));
+        data.add(new FollowJob(67, _JobRepo.getOne(31), _AccountRepo.getAccountById(15),new Date("04/23/2024")));
+        data.add(new FollowJob(68, _JobRepo.getOne(31), _AccountRepo.getAccountById(14),new Date("04/24/2024")));
+
+
+        data.add(new FollowJob(69, _JobRepo.getOne(34), _AccountRepo.getAccountById(21),new Date("02/15/2024")));
+        data.add(new FollowJob(70, _JobRepo.getOne(34), _AccountRepo.getAccountById(19),new Date("02/16/2024")));
+        data.add(new FollowJob(71, _JobRepo.getOne(34), _AccountRepo.getAccountById(13),new Date("02/17/2024")));
+        data.add(new FollowJob(72, _JobRepo.getOne(34), _AccountRepo.getAccountById(16),new Date("02/18/2024")));
+        data.add(new FollowJob(73, _JobRepo.getOne(34), _AccountRepo.getAccountById(20),new Date("02/20/2024")));
+
+
+        data.add(new FollowJob(74, _JobRepo.getOne(35), _AccountRepo.getAccountById(21),new Date("01/15/2024")));
+        data.add(new FollowJob(75, _JobRepo.getOne(35), _AccountRepo.getAccountById(19),new Date("01/16/2024")));
+        data.add(new FollowJob(75, _JobRepo.getOne(35), _AccountRepo.getAccountById(13),new Date("01/17/2024")));
+        data.add(new FollowJob(77, _JobRepo.getOne(35), _AccountRepo.getAccountById(16),new Date("01/18/2024")));
+        data.add(new FollowJob(78, _JobRepo.getOne(35), _AccountRepo.getAccountById(20),new Date("01/20/2024")));
+        data.add(new FollowJob(79, _JobRepo.getOne(35), _AccountRepo.getAccountById(18),new Date("01/21/2024")));
+        data.add(new FollowJob(80, _JobRepo.getOne(35), _AccountRepo.getAccountById(17),new Date("01/22/2024")));
+        data.add(new FollowJob(81, _JobRepo.getOne(35), _AccountRepo.getAccountById(15),new Date("01/23/2024")));
+        data.add(new FollowJob(82, _JobRepo.getOne(35), _AccountRepo.getAccountById(14),new Date("01/24/2024")));
+
+
 
         return data;
     }
