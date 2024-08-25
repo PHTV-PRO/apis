@@ -45,12 +45,14 @@ import com.company.phtv.Utils.Convert;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.HandleDate;
 import com.company.phtv.Utils.Pagination;
+import com.company.phtv.Utils.Regex;
 import com.company.phtv.Utils.Variable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -89,6 +91,8 @@ public class CompanyService implements ICompanyService {
     // call service
     @Autowired
     CloudinaryService _cloudinaryService;
+    @Autowired
+    PasswordEncoder _passwordEncoder;
 
     // call util
     Pagination<CompanyDTO> pagination = new Pagination<CompanyDTO>();
@@ -681,11 +685,20 @@ public class CompanyService implements ICompanyService {
     }
 
     public CompanyDTO registerCompany(RequestCompanyRegister requestCompanyRegister) {
+        boolean checkEmail = Regex.regexEmail(requestCompanyRegister.getEmail());
+        if (!checkEmail) {
+            throw Variable.EMAIL_INVALID;
+        }
         // STEP 1: get account
         Account account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
         if (account == null) {
-            // account not found
-            throw Variable.EMAIL_OR_PASSWORD_INCORRECT;
+            // account not found -> create
+            Account newAccount = new Account();
+            newAccount.setEmail(requestCompanyRegister.getEmail());
+            newAccount.setPassword(_passwordEncoder.encode(requestCompanyRegister.getPassword()));
+            newAccount.setRole(Role.EMPLOYER);
+            _accountRepo.save(newAccount);
+            account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
         }
         for (Company c : account.getCompanies()) {
             // STEP 2: check company existing

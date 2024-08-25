@@ -48,6 +48,8 @@ public class AccountService implements IAccountService {
     // call service
     @Autowired
     CloudinaryService _cloudinaryService;
+    @Autowired
+    JobService _jobService;
 
     // call utils
     @Autowired
@@ -170,9 +172,13 @@ public class AccountService implements IAccountService {
                 if (c.getDeleted_at() == null) {
                     c.setDeleted_at(new Date());
                     _companyRepo.save(c);
+                    for (Jobs job : c.getJobs()) {
+                        _jobService.delete(job.getId());
+                    }
                 }
             }
         }
+        account.setEmail("PHTV4");
         account.setDeleted_at(new Date());
         _accountRepo.save(account);
         return AccountMapping.accountDTO(account);
