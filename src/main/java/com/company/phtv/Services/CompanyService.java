@@ -778,6 +778,7 @@ public class CompanyService implements ICompanyService {
         if (requestCompanyRegister.getLocation() != null) {
             company.setLocation(requestCompanyRegister.getLocation());
         }
+        company.setList_image("");
         _companyRepo.save(company);
 
         // STEP 5: save
