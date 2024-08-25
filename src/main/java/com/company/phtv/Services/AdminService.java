@@ -241,6 +241,30 @@ public class AdminService implements IAdminService {
                             skillDTOs.add(SkillMapping.getSkill(s.getSkill()));
                         }
                     }
+                    List<JobDTO> jobDTOs = new ArrayList<>();
+                    int count = 0;
+                    for (Jobs j : sc.getCompany().getJobs()) {
+
+                        if (j.is_active() == false) {
+                            continue;
+                        }
+                        boolean checkJobNotDeleted = j.getDeleted_at() == null;
+                        boolean checkDateJob = j.getStart_date().before(new Date())
+                                && j.getEnd_date().after(new Date());
+                        if (checkJobNotDeleted && checkDateJob) {
+                            if (checkDateSubcriptionPlan(j)) {
+                                continue;
+                            }
+                            JobDTO jobDTO = JobMapping.getJob(j);
+                            jobDTO = setAppliedAndSaved(j, jobDTO);
+                            jobDTO = setSkill_level(j, jobDTO);
+                            count++;
+                            jobDTOs.add(jobDTO);
+
+                        }
+                    }
+                    companyDTO.setJobs(jobDTOs);
+                    companyDTO.setOpening_jobs(count);
                     companyDTO.setSkills(skillDTOs);
                     searchAll.getCompanies().add(companyDTO);
                 }
