@@ -734,12 +734,22 @@ public class CompanyService implements ICompanyService {
         Company company = new Company();
         // data not null
         company.setName(requestCompanyRegister.getName_company());
-        if (requestCompanyRegister.getLogo_image() != null) {
+        if (requestCompanyRegister.getLogo() != null) {
             try {
                 @SuppressWarnings("rawtypes")
-                Map check = _cloudinaryService.uploadImage(requestCompanyRegister.getLogo_image(),
-                        requestCompanyRegister.getLogo_image().getName());
+                Map check = _cloudinaryService.uploadImage(requestCompanyRegister.getLogo(),
+                        requestCompanyRegister.getLogo().getName());
                 company.setLogo_image(check.get("url").toString());
+            } catch (IOException e) {
+                throw Variable.ADD_IMAGE_FAIL;
+            }
+        }
+        if (requestCompanyRegister.getBackground() != null) {
+            try {
+                @SuppressWarnings("rawtypes")
+                Map check = _cloudinaryService.uploadImage(requestCompanyRegister.getBackground(),
+                        requestCompanyRegister.getBackground().getName());
+                company.setBackground_image(check.get("url").toString());
             } catch (IOException e) {
                 throw Variable.ADD_IMAGE_FAIL;
             }

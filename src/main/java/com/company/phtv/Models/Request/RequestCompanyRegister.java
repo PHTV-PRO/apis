@@ -39,9 +39,9 @@ public class RequestCompanyRegister {
     @NotNull
     public int city_province_id;
     @Nullable
-    public MultipartFile background_image;
+    public MultipartFile background;
     // need
     @Nullable
-    public MultipartFile logo_image;
+    public MultipartFile logo;
 
 }
