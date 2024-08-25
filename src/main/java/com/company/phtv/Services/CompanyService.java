@@ -700,12 +700,15 @@ public class CompanyService implements ICompanyService {
             _accountRepo.save(newAccount);
             account = _userRepo.getAccountByEmail(requestCompanyRegister.getEmail());
         }
-        for (Company c : account.getCompanies()) {
-            // STEP 2: check company existing
-            if (c.getDeleted_at() == null) {
-                throw Variable.COMPANY_CONFLIG;
+        if (account.getCompanies() != null) {
+            for (Company c : account.getCompanies()) {
+                // STEP 2: check company existing
+                if (c.getDeleted_at() == null) {
+                    throw Variable.COMPANY_CONFLIG;
+                }
             }
         }
+
         try {
             // STEP 3: check email and password
             _authenticationManager.authenticate(
@@ -723,9 +726,11 @@ public class CompanyService implements ICompanyService {
             _accountRepo.save(account);
         }
         if (account.getRole() == Role.EMPLOYER) {
-            for (Company c : account.getCompanies()) {
-                if (c.getDeleted_at() == null) {
-                    throw Variable.COMPANY_ACCOUNT_EXISTING;
+            if (account.getCompanies() != null) {
+                for (Company c : account.getCompanies()) {
+                    if (c.getDeleted_at() == null) {
+                        throw Variable.COMPANY_ACCOUNT_EXISTING;
+                    }
                 }
             }
         }
