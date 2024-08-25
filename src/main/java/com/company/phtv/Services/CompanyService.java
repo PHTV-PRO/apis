@@ -832,7 +832,7 @@ public class CompanyService implements ICompanyService {
         for (SkillCompany i : skillCompanies) {
             _SkillCompanyRepo.delete(i);
         }
-        if (requestCompany.getSkill_id() != "") {
+        if (requestCompany.getSkill_id() != null && requestCompany.getSkill_id() != "") {
             // handle string skill -> array skill for create by ","
             String[] skillId = requestCompany.getSkill_id().split(",");
             for (String i : skillId) {
