@@ -93,7 +93,7 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         if (subcriptionPlan.getSubcritionPlanCompanies().size() > 0) {
             throw Variable.ACTION_FAIL;
         }
-        _subcriptionPlanRepo.save(subcriptionPlan);
+        _subcriptionPlanRepo.delete(subcriptionPlan);
         return "Success";
     }
 
