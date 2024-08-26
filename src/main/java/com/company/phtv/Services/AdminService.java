@@ -282,6 +282,9 @@ public class AdminService implements IAdminService {
                 if (searchAll.getJobs() != null && searchAll.getJobs().size() >= 30) {
                     break;
                 }
+                if (job.is_active() == false) {
+                    continue;
+                }
                 JobDTO jobDTO = JobMapping.getJob(job);
                 List<SkillDTO> skillDTOs = new ArrayList<>();
                 for (SkillJob s : job.getSkillJobs()) {
@@ -329,6 +332,9 @@ public class AdminService implements IAdminService {
                         }
                     }
                     if (checkExist == false) {
+                        if (s.getJobs().is_active() == false) {
+                            continue;
+                        }
                         JobDTO jobDTO = JobMapping.getJob(s.getJobs());
 
                         List<SkillDTO> skillDTOs = new ArrayList<>();
