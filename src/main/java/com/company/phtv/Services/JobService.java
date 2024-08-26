@@ -71,7 +71,7 @@ public class JobService implements IJobService {
 
     // method for get
     @Override
-    public List<JobDTO> getAll(int size,int page) {
+    public List<JobDTO> getAll(int size, int page) {
         // STEP 1: get data
         List<Jobs> jobs = _jobRepo.findAll();
         List<JobDTO> jobDTOS = new ArrayList<>();
@@ -376,7 +376,7 @@ public class JobService implements IJobService {
         // STEP 4: create job
         _jobRepo.save(job);
         // STEP 5: handle skill and level (one to many, many to one)
-        if (requestJob.getSkill_id() != "") {
+        if (requestJob.getSkill_id() != null && requestJob.getSkill_id() != "") {
             // handle string skill -> array skill for create by ","
             String[] skillId = requestJob.getSkill_id().split(",");
             for (String i : skillId) {
@@ -386,7 +386,7 @@ public class JobService implements IJobService {
                 _skillJobRepo.save(skillJob);
             }
         }
-        if (requestJob.getLevel_id() != "") {
+        if (requestJob.getLevel_id() != null && requestJob.getLevel_id() != "") {
             // handle string level -> array level for create by ","
             String[] levelId = requestJob.getLevel_id().split(",");
             for (String i : levelId) {
@@ -429,8 +429,8 @@ public class JobService implements IJobService {
             return true;
         }
         // STEP 3: save
-//        Change
-        _followJobRepo.save(new FollowJob(0, job, account,new Date("11/11/2024")));
+        // Change
+        _followJobRepo.save(new FollowJob(0, job, account, new Date("11/11/2024")));
         return true;
     }
 
@@ -462,8 +462,8 @@ public class JobService implements IJobService {
             }
         }
         // viewedJobBetween have job -> update create_at job
-//        Change
-        _ViewedJobRepo.save(new ViewedJob(0, job, account,new Date("11/11/2024")));
+        // Change
+        _ViewedJobRepo.save(new ViewedJob(0, job, account, new Date("11/11/2024")));
         // finished
         return true;
     }
@@ -493,8 +493,9 @@ public class JobService implements IJobService {
             }
         }
         // STEP 4: save application
-        //Change
-        _applicationRepo.save(new Application(0, requestApplication.getNote(), account, job, Cv,new Date("11/11/2024")));
+        // Change
+        _applicationRepo
+                .save(new Application(0, requestApplication.getNote(), account, job, Cv, new Date("11/11/2024")));
         return "Success";
     }
 
@@ -509,10 +510,9 @@ public class JobService implements IJobService {
         }
         // boolean checkJobOff = getJob.is_active() == false;
         // if (checkJobOff) {
-        //     throw Variable.JOB_OFF;
+        // throw Variable.JOB_OFF;
         // }
         // STEP 2: handle level and skill (Intermediate table)
-        
 
         // STEP 3: add request to entity for save
         Jobs job = JobMapping.jobPut(requestJob, getJob);
