@@ -21,7 +21,7 @@ public class SubcriptionPlanCompanyData {
 //        còn hạn sử dụng
         // 1 combo 30 , 2 combo 50 , 3 combo 100 , 4 combo 360
         data.add(new SubcriptionPlanCompany(1,new Date("08/24/2024"),new Date("11/04/2024"),_CompanyRepo.getOne(1),_SubcriptionPlanRepo.getOne(3),new Date("08/24/2024")));
-        data.add(new SubcriptionPlanCompany(2,new Date("08/24/2024"),new Date("08/24/2025"),_CompanyRepo.getOne(2),_SubcriptionPlanRepo.getOne(4),new Date("08/24/2024")));
+        // data.add(new SubcriptionPlanCompany(2,new Date("08/24/2024"),new Date("08/24/2025"),_CompanyRepo.getOne(2),_SubcriptionPlanRepo.getOne(4),new Date("08/24/2024")));
         data.add(new SubcriptionPlanCompany(3,new Date("08/01/2024"),new Date("11/11/2024"),_CompanyRepo.getOne(3),_SubcriptionPlanRepo.getOne(3),new Date("08/01/2024")));
         data.add(new SubcriptionPlanCompany(4,new Date("08/07/2024"),new Date("09/07/2024"),_CompanyRepo.getOne(4),_SubcriptionPlanRepo.getOne(1),new Date("08/07/2024")));
         data.add(new SubcriptionPlanCompany(5,new Date("08/07/2024"),new Date("09/07/2024"),_CompanyRepo.getOne(5),_SubcriptionPlanRepo.getOne(1),new Date("08/07/2024")));
