@@ -43,7 +43,7 @@ public class FollowJobData {
         data.add(new FollowJob(20, _JobRepo.getOne(20), _AccountRepo.getAccountById(21),new Date("08/15/2024")));
 
 
-        data.add(new FollowJob(21, _JobRepo.getOne(13), _AccountRepo.getAccountById(14),new Date("08/15/2024")));
+        // data.add(new FollowJob(21, _JobRepo.getOne(13), _AccountRepo.getAccountById(14),new Date("08/15/2024")));
         data.add(new FollowJob(22, _JobRepo.getOne(13), _AccountRepo.getAccountById(15),new Date("08/16/2024")));
         data.add(new FollowJob(23, _JobRepo.getOne(13), _AccountRepo.getAccountById(16),new Date("08/16/2024")));
         data.add(new FollowJob(24, _JobRepo.getOne(13), _AccountRepo.getAccountById(17),new Date("08/18/2024")));

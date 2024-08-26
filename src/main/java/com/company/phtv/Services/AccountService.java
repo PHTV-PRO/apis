@@ -20,6 +20,7 @@ import com.company.phtv.Models.Map.SubcriptionPlanMapping;
 import com.company.phtv.Models.Request.RequestAccount;
 import com.company.phtv.Repository.AccountRepo;
 import com.company.phtv.Repository.CompanyRepo;
+import com.company.phtv.Repository.UserRepo;
 import com.company.phtv.Services.IServices.IAccountService;
 import com.company.phtv.Utils.CurrentAccount;
 import com.company.phtv.Utils.Regex;
@@ -42,6 +43,8 @@ public class AccountService implements IAccountService {
     // call repository(database)
     @Autowired
     AccountRepo _accountRepo;
+    @Autowired
+    UserRepo _userRepo;
     @Autowired
     CompanyRepo _companyRepo;
 
@@ -111,6 +114,14 @@ public class AccountService implements IAccountService {
         if (!checkPassword) {
             throw Variable.PASSWORD_INVALID;
         }
+        Account getAccount = _userRepo.getAccountByEmail(requestAccount.getEmail());
+        boolean checkMailExisting = getAccount != null;
+        if (checkMailExisting) {
+            if (getAccount.getDeleted_at() == null) {
+                throw Variable.EMAIL_EXISTING;
+            }
+        }
+
         requestAccount.setPassword(_passwordEncoder.encode(requestAccount.getPassword()));
         Account account = AccountMapping.account(requestAccount);
         if (requestAccount.UploadFile != null) {

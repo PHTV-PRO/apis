@@ -90,7 +90,9 @@ public class SubcriptionPlanService implements ISubcriptionPlanService {
         if (checkSubcriptionPlanNotFound) {
             throw Variable.NOT_FOUND;
         }
-        subcriptionPlan.setDeleted_at(new Date());
+        if (subcriptionPlan.getSubcritionPlanCompanies().size() > 0) {
+            throw Variable.ACTION_FAIL;
+        }
         _subcriptionPlanRepo.save(subcriptionPlan);
         return "Success";
     }
