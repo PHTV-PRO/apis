@@ -73,7 +73,19 @@ public class MailService implements IMailService {
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setSubject("PHTV4: FROM " + c.getName() + "");
 
-			String html = "";
+			String html = "<div>\n" + //
+					"  <div>Hi " + email + "</div> <br/>\n" + //
+					"  <div>We are excited to see your resume! Your experience and passion for " + jobs.getTitle()
+					+ " really impressed us. </div> <br/>\n"
+					+ //
+					"  <div>We believe you will be a valuable member of our team. To learn more about you and this opportunity, we would like to invite you to an interview. </div>\n"
+					+ //
+					"  <br/>\n" + //
+					"  <div>We will contact you soon to schedule an interview. </div><br/>\n" + //
+					"  <div>Sincerely</div>\n" + //
+					"  <div>" + c.getName() + "</div>\n" + //
+					"  <div>" + jobs.getTitle() + "</div>\n" + //
+					"<div/>";
 
 			helper.setText(html, true);
 			helper.setTo(email);
@@ -90,7 +102,14 @@ public class MailService implements IMailService {
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 			helper.setSubject("PHTV4: BUY SUBCRIPTION PLAN");
 
-			String html = "";
+			String html = "<div>\n" + //
+					" Are you looking for a dynamic working environment with many development\n" + //
+					" opportunities? Sign up to receive recruitment notifications at " + c.getName() + ". We\n" + //
+					" always welcome talents from all fields.\n" + //
+					" Don't miss the opportunity to explore interesting projects and create new values\n" + //
+					" with us.\n" + //
+					" New job: " + job.getTitle() + ".\n" + //
+					"<div/>";
 
 			helper.setText(html, true);
 			helper.setTo(email);
