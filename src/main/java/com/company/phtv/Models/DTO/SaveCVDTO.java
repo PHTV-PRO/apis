@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SaveCVDTO {
     private int id;
+    private int application_id;
     private JobDTO job;
     private CVDTO cv;
     private AccountDTO account;

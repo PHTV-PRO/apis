@@ -65,6 +65,7 @@ public class SaveCvService implements ISaveCVService {
             saveCVDTO.setAccount(AccountMapping.accountDTO(saveCV.getApplication().getCurriculumVitae().getAccount()));
             saveCVDTO.setJob(JobMapping.getJob(saveCV.getApplication().getJobs()));
             saveCVDTO.setDate_applied(saveCV.getApplication().getCreated_at());
+            saveCVDTO.setApplication_id(saveCV.getApplication().getId());
 
             saveCVDTOs.add(saveCVDTO);
         }
