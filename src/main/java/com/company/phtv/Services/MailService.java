@@ -106,8 +106,10 @@ public class MailService implements IMailService {
 					" Are you looking for a dynamic working environment with many development\n" + //
 					" opportunities? Sign up to receive recruitment notifications at " + c.getName() + ". We\n" + //
 					" always welcome talents from all fields.\n" + //
+					"  <br/>\n" + //
 					" Don't miss the opportunity to explore interesting projects and create new values\n" + //
 					" with us.\n" + //
+					"  <br/>\n" + //
 					" New job: " + job.getTitle() + ".\n" + //
 					"<div/>";
 

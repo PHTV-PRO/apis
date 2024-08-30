@@ -403,7 +403,7 @@ public class JobService implements IJobService {
         _companyRepo.save(c);
         // STEP 7: send mail for all account saved company
         for (FollowCompany fl : c.getFollowCompany()) {
-            if (fl.getDeleted_at() == null) {
+            if (fl.getDeleted_at() != null) {
                 continue;
             }
             _mailService.SendMailForCreateJob(fl.getAccount().getEmail(), c, job);
