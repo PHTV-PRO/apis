@@ -100,7 +100,7 @@ public class MailService implements IMailService {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-			helper.setSubject("PHTV4: BUY SUBCRIPTION PLAN");
+			helper.setSubject("PHTV4: COMPANY HAVE NEW JOB");
 
 			String html = "<div>\n" + //
 					" Are you looking for a dynamic working environment with many development\n" + //
